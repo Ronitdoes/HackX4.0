@@ -59,8 +59,12 @@ export default function SdgMarquee() {
                 <img
                   src={item.src}
                   alt={item.alt}
+                  width={80}
+                  height={80}
                   className="h-14 sm:h-16 md:h-20 w-auto object-contain pointer-events-none"
                   draggable={false}
+                  loading="lazy"
+                  decoding="async"
                 />
               </div>
             ))}

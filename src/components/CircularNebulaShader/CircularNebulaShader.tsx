@@ -41,14 +41,14 @@ const FRAGMENT_SHADER_SOURCE = `
     return mix(mix(a, b, u.x), mix(c, d, u.x), u.y);
   }
 
-  // Fractional Brownian Motion (4 octaves)
+  // Fractional Brownian Motion (3 octaves)
   float fbm(vec2 p) {
     float v = 0.0;
     float a = 0.5;
     vec2 shift = vec2(100.0);
     // Rotate to reduce grid axis artifacts
     mat2 rot = mat2(0.8776, 0.4794, -0.4794, 0.8776);
-    for (int i = 0; i < 4; ++i) {
+    for (int i = 0; i < 3; ++i) {
       v += a * noise(p);
       p = rot * p * 2.0 + shift;
       a *= 0.5;
@@ -79,9 +79,9 @@ const FRAGMENT_SHADER_SOURCE = `
     // Dense sampling makes the wake a continuous ribbon when the orbit crosses
     // the viewport edge. Normalize each sample so the total brightness stays
     // consistent with the previous 22-sample trail.
-    for (int i = 0; i < 42; i++) {
+    for (int i = 0; i < 22; i++) {
       float index = float(i);
-      float age = index / 41.0;
+      float age = index / 21.0;
       // The tail samples further apart as it ages, giving it a natural fade
       // instead of a stack of visible circular stamps.
       float trailPhase = phase - age * 2.85;
@@ -228,6 +228,8 @@ export default function CircularNebulaShader() {
     let isPageVisible = document.visibilityState === "visible";
     const render = () => {
       if (!isPageVisible) return;
+      animationFrameId = requestAnimationFrame(render);
+
       const elapsedSeconds = (performance.now() - startTime) / 1000;
       if (timeLoc) {
         gl.uniform1f(timeLoc, elapsedSeconds);
@@ -237,18 +239,18 @@ export default function CircularNebulaShader() {
       gl.clear(gl.COLOR_BUFFER_BIT);
 
       gl.drawArrays(gl.TRIANGLES, 0, 6);
-
-      animationFrameId = requestAnimationFrame(render);
     };
 
     const handleVisibilityChange = () => {
       isPageVisible = document.visibilityState === "visible";
-      if (isPageVisible) render();
+      if (isPageVisible) {
+        requestAnimationFrame(render);
+      }
     };
 
     document.addEventListener("visibilitychange", handleVisibilityChange);
 
-    render();
+    requestAnimationFrame(render);
 
     return () => {
       resizeObserver.disconnect();
@@ -272,35 +274,15 @@ export default function CircularNebulaShader() {
         style={{ zIndex: 0 }}
       />
 
-      {/* 2. Backdrop Atmospheric Blur for depth */}
+      {/* 2. Lightweight static grain overlay (GPU-cheap, no per-frame reblur) */}
       <div
-        className="pointer-events-none absolute inset-0"
+        className="pointer-events-none absolute inset-0 opacity-[0.05] mix-blend-overlay"
         style={{
-          zIndex: 1,
-          backdropFilter: "blur(6px) saturate(1.1) contrast(1.02)",
-          WebkitBackdropFilter: "blur(6px) saturate(1.1) contrast(1.02)",
+          zIndex: 2,
+          backgroundImage:
+            "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='1' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")",
         }}
       />
-
-      {/* 3. High-Fidelity Monochrome Film Grain SVG Overlay */}
-      <svg
-        className="pointer-events-none absolute inset-0 h-full w-full opacity-[0.06]"
-        style={{ zIndex: 2 }}
-      >
-        <filter id="neutralNoise">
-          <feTurbulence
-            type="fractalNoise"
-            baseFrequency="0.75"
-            numOctaves="1"
-            stitchTiles="stitch"
-          />
-          <feColorMatrix
-            type="matrix"
-            values="0.33 0.33 0.33 0 0  0.33 0.33 0.33 0 0  0.33 0.33 0.33 0 0  0 0 0 1 0"
-          />
-        </filter>
-        <rect width="100%" height="100%" filter="url(#neutralNoise)" />
-      </svg>
     </>
   );
 }
