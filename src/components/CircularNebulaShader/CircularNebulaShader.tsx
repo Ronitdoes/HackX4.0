@@ -142,7 +142,7 @@ export default function CircularNebulaShader() {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const gl = canvas.getContext("webgl", { alpha: false, antialias: true });
+    const gl = canvas.getContext("webgl", { alpha: false, antialias: false });
     if (!gl) {
       console.error("WebGL not supported");
       return;
@@ -201,7 +201,10 @@ export default function CircularNebulaShader() {
     let animationFrameId: number;
     const startTime = performance.now();
 
+    let resizeFrame: number | undefined;
     const resize = () => {
+      if (resizeFrame !== undefined) cancelAnimationFrame(resizeFrame);
+      resizeFrame = requestAnimationFrame(() => {
       const dpr = Math.min(window.devicePixelRatio || 1, 1.0); // Capped for performance
       const rect = canvas.getBoundingClientRect();
       const width = rect.width;
@@ -214,12 +217,17 @@ export default function CircularNebulaShader() {
       if (resolutionLoc) {
         gl.uniform2f(resolutionLoc, canvas.width, canvas.height);
       }
+      resizeFrame = undefined;
+      });
     };
 
-    window.addEventListener("resize", resize);
+    const resizeObserver = new ResizeObserver(resize);
+    resizeObserver.observe(canvas);
     resize();
 
+    let isPageVisible = document.visibilityState === "visible";
     const render = () => {
+      if (!isPageVisible) return;
       const elapsedSeconds = (performance.now() - startTime) / 1000;
       if (timeLoc) {
         gl.uniform1f(timeLoc, elapsedSeconds);
@@ -233,11 +241,20 @@ export default function CircularNebulaShader() {
       animationFrameId = requestAnimationFrame(render);
     };
 
+    const handleVisibilityChange = () => {
+      isPageVisible = document.visibilityState === "visible";
+      if (isPageVisible) render();
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
     render();
 
     return () => {
-      window.removeEventListener("resize", resize);
+      resizeObserver.disconnect();
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
       cancelAnimationFrame(animationFrameId);
+      if (resizeFrame !== undefined) cancelAnimationFrame(resizeFrame);
 
       gl.deleteBuffer(buffer);
       gl.deleteProgram(program);
@@ -251,15 +268,15 @@ export default function CircularNebulaShader() {
       {/* 1. Transparent WebGL Canvas covering the background */}
       <canvas
         ref={canvasRef}
-        className="pointer-events-none fixed inset-0 w-full h-full"
-        style={{ zIndex: -15 }}
+        className="pointer-events-none absolute inset-0 w-full h-full"
+        style={{ zIndex: 0 }}
       />
 
       {/* 2. Backdrop Atmospheric Blur for depth */}
       <div
-        className="pointer-events-none fixed inset-0"
+        className="pointer-events-none absolute inset-0"
         style={{
-          zIndex: -12,
+          zIndex: 1,
           backdropFilter: "blur(6px) saturate(1.1) contrast(1.02)",
           WebkitBackdropFilter: "blur(6px) saturate(1.1) contrast(1.02)",
         }}
@@ -267,8 +284,8 @@ export default function CircularNebulaShader() {
 
       {/* 3. High-Fidelity Monochrome Film Grain SVG Overlay */}
       <svg
-        className="pointer-events-none fixed inset-0 h-full w-full opacity-[0.06]"
-        style={{ zIndex: -10 }}
+        className="pointer-events-none absolute inset-0 h-full w-full opacity-[0.06]"
+        style={{ zIndex: 2 }}
       >
         <filter id="neutralNoise">
           <feTurbulence

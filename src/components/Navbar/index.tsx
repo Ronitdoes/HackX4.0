@@ -1,40 +1,98 @@
 "use client";
 
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import gsap from "gsap";
 import { usePathname } from "next/navigation";
+
+const loadCircularNebulaShader = () =>
+  import("@/components/CircularNebulaShader/CircularNebulaShader");
+
+const CircularNebulaShader = dynamic(loadCircularNebulaShader, { ssr: false });
+
+const MENU_ITEMS = [
+  { label: "Home", href: "/" },
+  { label: "About Us", href: "/about" },
+  { label: "Timeline", href: "/timeline" },
+  { label: "Ambassador", href: "/ambassador" },
+  { label: "Team", href: "/team" },
+  { label: "Gallery", href: "/gallery" },
+  { label: "Contact", href: "/contact" },
+] as const;
+
+const menuVariants = {
+  initial: { y: "-100%" },
+  animate: { y: "0%", transition: { duration: 0.95, ease: [0.76, 0, 0.24, 1] } },
+  exit: { y: "-100%", transition: { duration: 0.8, ease: [0.76, 0, 0.24, 1] } },
+};
+
+const navLinksVariants = {
+  initial: {},
+  animate: { transition: { staggerChildren: 0.08, delayChildren: 0.5 } },
+  exit: { transition: { staggerChildren: 0.05, staggerDirection: -1 } },
+};
+
+const linkVariants = {
+  initial: { y: 60, opacity: 0 },
+  animate: { y: 0, opacity: 1, transition: { duration: 0.6, ease: [0.215, 0.61, 0.355, 1] } },
+  exit: { y: 30, opacity: 0, transition: { duration: 0.4, ease: [0.215, 0.61, 0.355, 1] } },
+};
+
+const footerVariants = {
+  initial: { opacity: 0, y: 20 },
+  animate: { opacity: 1, y: 0, transition: { delay: 0.75, duration: 0.5, ease: "easeOut" } },
+  exit: { opacity: 0, y: 10, transition: { duration: 0.35, ease: "easeIn" } },
+};
 
 export default function Navbar() {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   const buttonRef = useRef<HTMLButtonElement>(null);
   const hoverTimelineRef = useRef<gsap.core.Timeline | null>(null);
+  const menuItemRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const wasOpenRef = useRef(false);
+  const isCoarsePointerRef = useRef(false);
 
   const [isSafari, setIsSafari] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
-    if (typeof window === "undefined") return;
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
+    const mediaQuery = window.matchMedia("(pointer: coarse), (max-width: 767px)");
+    const updatePointerMode = () => {
+      isCoarsePointerRef.current = mediaQuery.matches;
     };
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
-    return () => window.removeEventListener("resize", checkMobile);
+    updatePointerMode();
+    mediaQuery.addEventListener("change", updatePointerMode);
+    return () => mediaQuery.removeEventListener("change", updatePointerMode);
   }, []);
 
   useEffect(() => {
-    if (typeof navigator !== "undefined") {
-      const ua = navigator.userAgent.toLowerCase();
-      const isSafariBrowser =
-        ua.includes("safari") &&
-        !ua.includes("chrome") &&
-        !ua.includes("chromium") &&
-        !ua.includes("android");
-      setIsSafari(isSafariBrowser);
+    let idleId: number | undefined;
+    let timeoutId: ReturnType<typeof setTimeout> | undefined;
+    const preload = () => void loadCircularNebulaShader();
+
+    if ("requestIdleCallback" in window) {
+      idleId = window.requestIdleCallback(preload, { timeout: 1500 });
+    } else {
+      timeoutId = globalThis.setTimeout(preload, 300);
     }
+
+    return () => {
+      if (idleId !== undefined) window.cancelIdleCallback(idleId);
+      if (timeoutId !== undefined) globalThis.clearTimeout(timeoutId);
+    };
+  }, []);
+
+  useEffect(() => {
+    const ua = navigator.userAgent.toLowerCase();
+    const isSafariBrowser =
+      ua.includes("safari") &&
+      !ua.includes("chrome") &&
+      !ua.includes("chromium") &&
+      !ua.includes("android");
+    const frame = requestAnimationFrame(() => setIsSafari(isSafariBrowser));
+    return () => cancelAnimationFrame(frame);
   }, []);
 
   const handleMouseEnter = () => {
@@ -70,6 +128,38 @@ export default function Navbar() {
         .to(lines[1], { x: "0%", duration: 0.25, ease: "power2.out" }, "<");
     }
   };
+
+  const resetMenuItemHover = useCallback(() => {
+    menuItemRefs.current.forEach((item) => {
+      if (!item) return;
+      gsap.to(item, {
+        filter: "blur(0px)",
+        opacity: 1,
+        scale: 1,
+        duration: 0.35,
+        ease: "power2.out",
+        overwrite: true,
+      });
+    });
+  }, []);
+
+  const handleMenuItemHover = useCallback((hoveredIndex: number) => {
+    const shouldBlur = !isCoarsePointerRef.current;
+    menuItemRefs.current.forEach((item, index) => {
+      if (!item) return;
+      const distance = Math.abs(hoveredIndex - index);
+      gsap.to(item, {
+        filter: shouldBlur && index !== hoveredIndex
+          ? `blur(${Math.min(12, 4 + distance * 3.5)}px)`
+          : "blur(0px)",
+        opacity: index === hoveredIndex ? 1 : Math.max(0.12, 0.45 - distance * 0.05),
+        scale: index === hoveredIndex ? 1.03 : 1,
+        duration: 0.45,
+        ease: "power3.out",
+        overwrite: true,
+      });
+    });
+  }, []);
 
   const handleMouseLeave = () => {
     if (!isOpen) return;
@@ -139,9 +229,10 @@ export default function Navbar() {
 
   // Clean up all running GSAP timelines on unmount
   useEffect(() => {
+    const button = buttonRef.current;
     return () => {
       hoverTimelineRef.current?.kill();
-      const lines = buttonRef.current?.querySelectorAll("span");
+      const lines = button?.querySelectorAll("span");
       if (lines) {
         gsap.killTweensOf(lines);
       }
@@ -164,101 +255,27 @@ export default function Navbar() {
     };
   }, [isOpen]);
 
-  const menuItems = [
-    { label: "Home", href: "/" },
-    { label: "About Us", href: "/about" },
-    { label: "Timeline", href: "/timeline" },
-    { label: "Ambassador", href: "/ambassador" },
-    { label: "Team", href: "/team" },
-    { label: "Gallery", href: "/gallery" },
-    { label: "Contact", href: "/contact" },
-  ];
+  useEffect(() => {
+    if (isOpen) {
+      const previousHtmlOverflow = document.documentElement.style.overflow;
+      const previousBodyOverflow = document.body.style.overflow;
+      wasOpenRef.current = true;
+      document.documentElement.dataset.navOpen = "true";
+      document.body.dataset.navOpen = "true";
+      document.documentElement.style.overflow = "hidden";
+      document.body.style.overflow = "hidden";
 
-  // Wipe animation
-  const menuVariants = {
-    initial: {
-      y: "-100%",
-    },
-    animate: {
-      y: "0%",
-      transition: {
-        duration: 0.95,
-        ease: [0.76, 0, 0.24, 1], 
-      },
-    },
-    exit: {
-      y: "-100%",
-      transition: {
-        duration: 0.8,
-        ease: [0.76, 0, 0.24, 1],
-      },
-    },
-  };
+      return () => {
+        delete document.documentElement.dataset.navOpen;
+        delete document.body.dataset.navOpen;
+        document.documentElement.style.overflow = previousHtmlOverflow;
+        document.body.style.overflow = previousBodyOverflow;
+      };
+    }
 
-  const navLinksVariants = {
-    initial: {},
-    animate: {
-      transition: {
-        staggerChildren: 0.08,
-        delayChildren: 0.5, 
-      },
-    },
-    exit: {
-      transition: {
-        staggerChildren: 0.05,
-        staggerDirection: -1,
-      },
-    },
-  };
-
-  const linkVariants = {
-    initial: {
-      y: 60,
-      opacity: 0,
-    },
-    animate: {
-      y: 0,
-      opacity: 1,
-      transition: {
-        duration: 0.6,
-        ease: [0.215, 0.61, 0.355, 1],
-      },
-    },
-    exit: {
-      y: 30,
-      opacity: 0,
-      transition: {
-        duration: 0.4,
-        ease: [0.215, 0.61, 0.355, 1],
-      },
-    },
-  };
-
-  const footerVariants = {
-    initial: {
-      opacity: 0,
-      y: 20,
-    },
-    animate: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        delay: 0.75, 
-        duration: 0.5,
-        ease: "easeOut",
-      },
-    },
-    exit: {
-      opacity: 0,
-      y: 10,
-      transition: {
-        duration: 0.35,
-        ease: "easeIn",
-      },
-    },
-  };
-
-  const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
+    resetMenuItemHover();
+    if (wasOpenRef.current) buttonRef.current?.focus();
+  }, [isOpen, resetMenuItemHover]);
 
   if (pathname === "/test-shader") return null;
 
@@ -268,7 +285,7 @@ export default function Navbar() {
       <header className="fixed top-0 left-0 z-[100] isolate h-24 w-full overflow-hidden px-7 md:h-32 md:px-12 flex justify-between items-center pointer-events-none">
         <div
           aria-hidden="true"
-          className="absolute inset-0 z-0 will-change-[backdrop-filter]"
+          className="absolute inset-0 z-0"
           style={{
             background:
               "linear-gradient(to bottom, rgba(4, 5, 16, 0.78) 0%, rgba(4, 5, 16, 0.48) 56%, rgba(4, 5, 16, 0.16) 82%, rgba(4, 5, 16, 0) 100%)",
@@ -278,17 +295,20 @@ export default function Navbar() {
         />
         <button
           ref={buttonRef}
+          type="button"
           onClick={() => setIsOpen(!isOpen)}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
           className="pointer-events-auto relative z-10 group flex items-center gap-2.5 justify-center text-white hover:opacity-85 transition-opacity mix-blend-difference"
           aria-label={isOpen ? "Close Menu" : "Open Menu"}
+          aria-expanded={isOpen}
+          aria-controls="site-navigation"
         >
           <div className="relative w-6 h-6 flex items-center justify-center overflow-hidden">
             <span className="absolute w-4 h-[0.5px] bg-white" style={{ transform: "translateY(-4px)" }}></span>
             <span className="absolute w-4 h-[0.5px] bg-white" style={{ transform: "translateY(4px)" }}></span>
           </div>
-          <span className="text-[10px] uppercase tracking-[0.2em] font-semibold font-sans h-4 flex items-center overflow-hidden relative select-none">
+          <span className="text-[10px] uppercase tracking-[0.2em] font-semibold font-sans h-4 flex items-center overflow-hidden relative select-none px-1.5 -mx-1.5">
             <AnimatePresence mode="wait">
               <motion.span
                 key={isOpen ? "close" : "menu"}
@@ -304,13 +324,13 @@ export default function Navbar() {
           </span>
         </button>
 
-        <a
-          href="#register"
+        <Link
+          href="/#register"
           className="pointer-events-auto relative z-10 group/btn font-sans text-xs md:text-sm font-normal tracking-tight text-white hover:opacity-85 transition-opacity flex items-center gap-1.5 mix-blend-difference"
         >
           <span>Register</span>
           <span className="transition-transform duration-300 group-hover/btn:translate-x-1">→</span>
-        </a>
+        </Link>
       </header>
 
       {/* Fullscreen Overlay Menu */}
@@ -322,50 +342,42 @@ export default function Navbar() {
             animate="animate"
             exit="exit"
             style={{
-              background: "radial-gradient(ellipse at center, rgba(192, 118, 236, 0.42) 0%, rgba(162, 35, 237, 0.28) 45%, rgba(87, 44, 230, 0.15) 75%, #08010F 100%)",
               backgroundColor: "#08010F",
             }}
-            className="fixed inset-0 w-screen h-screen z-[90] flex flex-col justify-between px-6 py-8 md:px-12 md:py-12 select-none overflow-hidden"
+            className="fixed inset-0 z-[90] flex h-screen w-screen flex-col justify-between overflow-hidden px-6 py-8 select-none md:px-12 md:py-12"
+            id="site-navigation"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Site navigation"
+            data-lenis-prevent
           >
+            <CircularNebulaShader />
+
             {/* Overlay Spacer to maintain layout alignment */}
-            <div className="flex justify-start items-center w-full h-6 pointer-events-none" />
+            <div className="relative z-10 flex justify-start items-center w-full h-6 pointer-events-none" />
 
             {/* Menu Items Centered */}
-            <div className="flex-grow flex items-center justify-center">
+            <div className="relative z-10 flex-grow flex items-center justify-center">
               <motion.nav
                 variants={navLinksVariants}
                 className="flex flex-col items-center justify-center gap-2 text-center"
               >
-                {menuItems.map((item, idx) => {
-                  const isHovered = hoveredIdx === idx;
-                  const isAnyHovered = hoveredIdx !== null;
-                  const distance = isAnyHovered ? Math.abs((hoveredIdx as number) - idx) : 0;
-                  
-                  // Distance-based blur cap to handle 7 items elegantly, disabled on mobile view
-                  const blurVal = !isMobile && isAnyHovered ? (isHovered ? 0 : Math.min(12, 4 + distance * 3.5)) : 0;
-                  const opacityVal = isAnyHovered ? (isHovered ? 1 : Math.max(0.12, 0.45 - distance * 0.05)) : 1;
-                  const scaleVal = isHovered ? 1.03 : 1;
-
+                {MENU_ITEMS.map((item, idx) => {
                   return (
-                    <div key={idx} className="py-1 px-4 overflow-visible">
+                    <div key={item.href} className="py-1 px-4 overflow-visible">
                       <motion.div variants={linkVariants}>
                         <motion.div
-                          animate={{
-                            filter: `blur(${blurVal}px)`,
-                            opacity: opacityVal,
-                            scale: scaleVal,
+                          ref={(node) => {
+                            menuItemRefs.current[idx] = node;
                           }}
-                          transition={{
-                            duration: 0.45,
-                            ease: [0.25, 1, 0.5, 1], 
-                          }}
-                          className="origin-center will-change-[filter,opacity,transform]"
+                          className="origin-center"
                         >
                           <Link
                             href={item.href}
                             onClick={() => setIsOpen(false)}
-                            onMouseEnter={() => setHoveredIdx(idx)}
-                            onMouseLeave={() => setHoveredIdx(null)}
+                            onMouseEnter={() => handleMenuItemHover(idx)}
+                            onMouseLeave={resetMenuItemHover}
+                            aria-current={pathname === item.href ? "page" : undefined}
                             className="block text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-normal text-[#F9F6F0] font-sans cursor-pointer select-none"
                           >
                             {item.label}
@@ -381,7 +393,7 @@ export default function Navbar() {
             {/* Contact Info at bottom */}
             <motion.div
               variants={footerVariants}
-              className="flex flex-col items-center justify-center text-center mt-auto"
+              className="relative z-10 flex flex-col items-center justify-center text-center mt-auto"
             >
               <span className="font-serif italic text-xs md:text-sm text-[#F9F6F0]/80 mb-1">
                 Contact us
