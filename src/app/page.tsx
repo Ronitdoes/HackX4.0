@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import Stats from "@/components/Stats";
 import SdgComponent from "@/components/sdg";
 import SdgMarquee from "@/components/SdgMarquee";
+import Sponsors from "@/components/Sponsors";
 
 export default function Home() {
   // Smooth staggered entry animations
@@ -112,6 +113,7 @@ export default function Home() {
 
       <Stats />
       <SdgComponent />
+      <Sponsors />
     </>
   );
 }
