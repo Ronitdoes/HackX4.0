@@ -7,6 +7,7 @@ import SdgComponent from "@/components/sdg";
 import SdgMarquee from "@/components/SdgMarquee";
 import Sponsors from "@/components/Sponsors";
 import GlassPill from "@/components/GlassPill";
+import PrizePoolCircle from "@/components/PrizePoolCircle";
 
 export default function Home() {
   // Smooth staggered entry animations
@@ -87,13 +88,18 @@ export default function Home() {
             </div>
             <div className="overflow-visible py-2 md:py-3">
               <motion.div variants={lineVariants} className="block origin-bottom">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src="/assets/logos/hackx-white.svg"
-                  alt="MUJ HackX 4.0"
-                  className="w-[55vw] max-w-[480px] md:w-[40vw] md:max-w-[620px] h-auto mx-auto select-none pointer-events-none"
-                  draggable={false}
-                />
+                <div className="relative inline-block">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src="/assets/logos/hackx-white.svg"
+                    alt="MUJ HackX 4.0"
+                    className="w-[55vw] max-w-[480px] md:w-[40vw] md:max-w-[620px] h-auto mx-auto select-none pointer-events-none"
+                    draggable={false}
+                  />
+                  <div className="absolute top-[8%] right-[14%] z-30">
+                    <PrizePoolCircle />
+                  </div>
+                </div>
               </motion.div>
             </div>
             <div className="overflow-hidden py-1 md:py-2">

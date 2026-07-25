@@ -12,4 +12,8 @@ export function useIsMobile(breakpoint = 767) {
     mediaQuery.addEventListener("change", update);
     return () => mediaQuery.removeEventListener("change", update);
   }, [breakpoint]);
-g
+
+  return isMobile;
+}
+
+export default useIsMobile;
