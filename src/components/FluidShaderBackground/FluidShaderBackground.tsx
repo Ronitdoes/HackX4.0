@@ -482,7 +482,7 @@ export default function FluidShaderBackground() {
         const backdropBlur = 10 + timelineProgress * 14; // 10px at header/footer, up to 24px
         const saturate = 1.3 + timelineProgress * 0.3; // 1.3 at header/footer, up to 1.6
         blurOverlay.style.backdropFilter = `blur(${backdropBlur}px) saturate(${saturate}) contrast(1.02)`;
-        blurOverlay.style.webkitBackdropFilter = `blur(${backdropBlur}px) saturate(${saturate}) contrast(1.02)`;
+        blurOverlay.style.setProperty("-webkit-backdrop-filter", `blur(${backdropBlur}px) saturate(${saturate}) contrast(1.02)`);
       }
 
       const grainOverlay = grainOverlayRef.current;
@@ -515,7 +515,7 @@ export default function FluidShaderBackground() {
       }
       if (blurOverlayRef.current) {
         blurOverlayRef.current.style.backdropFilter = "blur(10px) saturate(1.3) contrast(1.02)";
-        blurOverlayRef.current.style.webkitBackdropFilter = "blur(10px) saturate(1.3) contrast(1.02)";
+        blurOverlayRef.current.style.setProperty("-webkit-backdrop-filter", "blur(10px) saturate(1.3) contrast(1.02)");
       }
       if (grainOverlayRef.current) {
         grainOverlayRef.current.style.opacity = "0.09";
@@ -566,7 +566,8 @@ export default function FluidShaderBackground() {
       }
 
       if (blurOverlay) {
-        gsap.set(blurOverlay, { backdropFilter: "blur(10px) saturate(1.3) contrast(1.02)", WebkitBackdropFilter: "blur(10px) saturate(1.3) contrast(1.02)" });
+        gsap.set(blurOverlay, { backdropFilter: "blur(10px) saturate(1.3) contrast(1.02)" });
+        blurOverlay.style.setProperty("-webkit-backdrop-filter", "blur(10px) saturate(1.3) contrast(1.02)");
       }
       if (grainOverlay) {
         gsap.set(grainOverlay, { opacity: 0.09 });
@@ -643,7 +644,7 @@ export default function FluidShaderBackground() {
           ease: "power1.out",
           onUpdate: () => {
             blurOverlay.style.backdropFilter = `blur(${blurParams.blur}px) saturate(${blurParams.sat}) contrast(1.02)`;
-            blurOverlay.style.webkitBackdropFilter = `blur(${blurParams.blur}px) saturate(${blurParams.sat}) contrast(1.02)`;
+            blurOverlay.style.setProperty("-webkit-backdrop-filter", `blur(${blurParams.blur}px) saturate(${blurParams.sat}) contrast(1.02)`);
           }
         }, 0);
       }
@@ -730,7 +731,7 @@ export default function FluidShaderBackground() {
           ease: "power1.in",
           onUpdate: () => {
             blurOverlay.style.backdropFilter = `blur(${blurParams.blur}px) saturate(${blurParams.sat}) contrast(1.02)`;
-            blurOverlay.style.webkitBackdropFilter = `blur(${blurParams.blur}px) saturate(${blurParams.sat}) contrast(1.02)`;
+            blurOverlay.style.setProperty("-webkit-backdrop-filter", `blur(${blurParams.blur}px) saturate(${blurParams.sat}) contrast(1.02)`);
           }
         }, 4.6);
       }
