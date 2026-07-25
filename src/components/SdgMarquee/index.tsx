@@ -44,7 +44,7 @@ export default function SdgMarquee() {
   }, { scope: scrollWrapperRef });
 
   return (
-    <div className="w-full py-6 select-none pointer-events-auto relative z-10 overflow-hidden">
+    <div className="w-full py-10 md:py-14 select-none pointer-events-auto relative z-10 overflow-hidden">
       {/* Scroll-driven wrapper */}
       <div ref={scrollWrapperRef} className="w-full">
         {/* Infinite scrolling track */}

@@ -61,14 +61,14 @@ export default function Home() {
               fontSize: "clamp(1.8rem, 5.4vw, 5.6rem)",
             }}
           >
-            <div className="overflow-visible pb-3 md:pb-5 -mt-28 md:-mt-40">
+            <div className="overflow-visible pb-1">
               <motion.div variants={lineVariants} className="block origin-bottom">
                 <GlassPill className="text-[0.26em] md:text-[0.22em] tracking-[0.15em]">
                   Department of Computer Science and Engineering, SCSE, FOSTA
                 </GlassPill>
               </motion.div>
             </div>
-            <div className="overflow-visible pb-2 md:pb-4">
+            <div className="overflow-visible pb-2 md:pb-4 -mt-3 md:-mt-5">
               <motion.div variants={lineVariants} className="block origin-bottom">
                 <div className="relative inline-flex items-center justify-center px-5 py-2.5 md:px-6 md:py-3">
                   {/* Top-left corner */}
@@ -85,19 +85,20 @@ export default function Home() {
                 </div>
               </motion.div>
             </div>
-            <div className="overflow-hidden py-1 md:py-2">
-              <motion.span variants={lineVariants} className="block origin-bottom font-medium text-transparent bg-clip-text bg-gradient-to-r from-white via-[#FAF8F5] to-white/90">
-                Muj HackX 4.0
-              </motion.span>
+            <div className="overflow-visible py-2 md:py-3">
+              <motion.div variants={lineVariants} className="block origin-bottom">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/assets/logos/hackx-white.svg"
+                  alt="MUJ HackX 4.0"
+                  className="w-[55vw] max-w-[480px] md:w-[40vw] md:max-w-[620px] h-auto mx-auto select-none pointer-events-none"
+                  draggable={false}
+                />
+              </motion.div>
             </div>
             <div className="overflow-hidden py-1 md:py-2">
-              <motion.span variants={lineVariants} className="block origin-bottom font-medium">
-                Muj's Largest
-              </motion.span>
-            </div>
-            <div className="overflow-hidden py-1 md:py-2">
-              <motion.span variants={lineVariants} className="block origin-bottom font-medium">
-                Hackathon
+              <motion.span variants={lineVariants} className="block origin-bottom font-medium whitespace-nowrap text-[0.42em] md:text-[0.44em] tracking-wide">
+                Muj's Largest Hackathon
               </motion.span>
             </div>
           </motion.h1>
@@ -126,7 +127,7 @@ export default function Home() {
         </div>
 
         {/* Absolute positioned SDG Marquee at the bottom of the hero */}
-        <div className="absolute bottom-6 md:bottom-10 left-0 w-full z-20">
+        <div className="absolute -bottom-8 md:-bottom-12 left-0 w-full z-20">
           <SdgMarquee />
         </div>
       </div>
