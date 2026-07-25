@@ -51,7 +51,7 @@ export default function Home() {
       <div className="relative w-full h-[100vh] flex flex-col items-center justify-center bg-transparent overflow-hidden px-6 md:px-12 select-none">
         
         {/* Relative container to keep typography and its side accents grouped and close */}
-        <div className="relative flex flex-col items-center justify-center max-w-[85vw] md:max-w-[70vw]">
+        <div className="relative flex flex-col items-center justify-center max-w-[85vw] md:max-w-[70vw] -translate-y-10 md:-translate-y-14">
           {/* Main Center Typography Group */}
           <motion.h1
             variants={containerVariants}
@@ -71,15 +71,15 @@ export default function Home() {
             </div>
             <div className="overflow-visible pb-2 md:pb-4 -mt-3 md:-mt-5">
               <motion.div variants={lineVariants} className="block origin-bottom">
-                <div className="relative inline-flex items-center justify-center px-5 py-2.5 md:px-6 md:py-3">
+                <div className="relative inline-flex items-center justify-center px-3 py-1.5 md:px-4 md:py-2">
                   {/* Top-left corner */}
-                  <span className="absolute left-0 top-0 h-2 w-2 md:h-2.5 md:w-2.5 border-t-2 border-l-2 border-white" />
+                  <span className="absolute left-0 top-0 h-2 w-2 md:h-2.5 md:w-2.5 border-t-[3px] border-l-[3px] border-white" />
                   {/* Top-right corner */}
-                  <span className="absolute right-0 top-0 h-2 w-2 md:h-2.5 md:w-2.5 border-t-2 border-r-2 border-white" />
+                  <span className="absolute right-0 top-0 h-2 w-2 md:h-2.5 md:w-2.5 border-t-[3px] border-r-[3px] border-white" />
                   {/* Bottom-left corner */}
-                  <span className="absolute left-0 bottom-0 h-2 w-2 md:h-2.5 md:w-2.5 border-b-2 border-l-2 border-white" />
+                  <span className="absolute left-0 bottom-0 h-2 w-2 md:h-2.5 md:w-2.5 border-b-[3px] border-l-[3px] border-white" />
                   {/* Bottom-right corner */}
-                  <span className="absolute right-0 bottom-0 h-2 w-2 md:h-2.5 md:w-2.5 border-b-2 border-r-2 border-white" />
+                  <span className="absolute right-0 bottom-0 h-2 w-2 md:h-2.5 md:w-2.5 border-b-[3px] border-r-[3px] border-white" />
                   <span className="font-sans font-bold uppercase tracking-[0.3em] text-[#FAF8F5] text-[0.2em] md:text-[0.16em]">
                     Presents
                   </span>
@@ -102,7 +102,7 @@ export default function Home() {
                 </div>
               </motion.div>
             </div>
-            <div className="overflow-hidden py-1 md:py-2">
+            <div className="overflow-hidden py-1 md:py-2 -mt-6 md:-mt-10">
               <motion.span variants={lineVariants} className="block origin-bottom font-medium whitespace-nowrap text-[0.42em] md:text-[0.44em] tracking-wide">
                 Muj's Largest Hackathon
               </motion.span>
@@ -133,7 +133,7 @@ export default function Home() {
         </div>
 
         {/* Absolute positioned SDG Marquee at the bottom of the hero */}
-        <div className="absolute -bottom-8 md:-bottom-12 left-0 w-full z-20">
+        <div className="absolute bottom-2 md:bottom-4 left-0 w-full z-20">
           <SdgMarquee />
         </div>
       </div>
