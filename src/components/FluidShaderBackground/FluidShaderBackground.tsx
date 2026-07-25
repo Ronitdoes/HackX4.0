@@ -806,7 +806,7 @@ export default function FluidShaderBackground() {
         ref={logoContainerRef}
         className="pointer-events-none fixed inset-0 flex items-center justify-center select-none"
         style={{
-          zIndex: -10,
+          zIndex: -4,
           transformOrigin: "center center",
           willChange: "transform",
           "--x-color-stop-0": "#5200c7",
@@ -825,8 +825,8 @@ export default function FluidShaderBackground() {
           style={{
             height: "28vh",
             width: "25.06vh",
-            opacity: 1.0,
-            filter: "drop-shadow(0 0 25px var(--x-shadow-1, rgba(174, 115, 242, 0.80))) drop-shadow(0 0 50px var(--x-shadow-2, rgba(82, 0, 199, 0.70))) drop-shadow(0 0 15px rgba(255, 255, 255, 0.50))",
+            opacity: 0.55,
+            filter: "blur(2px) drop-shadow(0 0 25px var(--x-shadow-1, rgba(174, 115, 242, 0.80))) drop-shadow(0 0 50px var(--x-shadow-2, rgba(82, 0, 199, 0.70))) drop-shadow(0 0 15px rgba(255, 255, 255, 0.50))",
           }}
         >
           <defs>
@@ -849,7 +849,7 @@ export default function FluidShaderBackground() {
             d="M335.279 0.25L559.355 400.69L894.574 999.75H559.721L335.645 599.31L0.425781 0.25H335.279ZM335.177 999.75H0.535156L335.177 600.119V999.75ZM894.465 0.25L559.823 399.88V0.25H894.465Z"
             fill="url(#movingGradient)"
             stroke="#ffffff"
-            strokeWidth="24.0"
+            strokeWidth="10.0"
             strokeLinejoin="round"
             strokeOpacity="1.0"
           />
@@ -880,7 +880,7 @@ export default function FluidShaderBackground() {
       <svg
         ref={grainOverlayRef}
         className="pointer-events-none fixed inset-0 h-full w-full opacity-[0.09]"
-        style={{ zIndex: -4 }}
+        style={{ zIndex: -3 }}
       >
         <filter id="visionNoise">
           <feTurbulence
