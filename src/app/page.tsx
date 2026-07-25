@@ -68,6 +68,23 @@ export default function Home() {
                 </GlassPill>
               </motion.div>
             </div>
+            <div className="overflow-visible pb-2 md:pb-4">
+              <motion.div variants={lineVariants} className="block origin-bottom">
+                <div className="relative inline-flex items-center justify-center px-5 py-2.5 md:px-6 md:py-3">
+                  {/* Top-left corner */}
+                  <span className="absolute left-0 top-0 h-2 w-2 md:h-2.5 md:w-2.5 border-t-2 border-l-2 border-white" />
+                  {/* Top-right corner */}
+                  <span className="absolute right-0 top-0 h-2 w-2 md:h-2.5 md:w-2.5 border-t-2 border-r-2 border-white" />
+                  {/* Bottom-left corner */}
+                  <span className="absolute left-0 bottom-0 h-2 w-2 md:h-2.5 md:w-2.5 border-b-2 border-l-2 border-white" />
+                  {/* Bottom-right corner */}
+                  <span className="absolute right-0 bottom-0 h-2 w-2 md:h-2.5 md:w-2.5 border-b-2 border-r-2 border-white" />
+                  <span className="font-sans font-bold uppercase tracking-[0.3em] text-[#FAF8F5] text-[0.2em] md:text-[0.16em]">
+                    Presents
+                  </span>
+                </div>
+              </motion.div>
+            </div>
             <div className="overflow-hidden py-1 md:py-2">
               <motion.span variants={lineVariants} className="block origin-bottom font-medium text-transparent bg-clip-text bg-gradient-to-r from-white via-[#FAF8F5] to-white/90">
                 Muj HackX 4.0
