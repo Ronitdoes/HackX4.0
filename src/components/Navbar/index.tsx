@@ -277,8 +277,6 @@ export default function Navbar() {
     if (wasOpenRef.current) buttonRef.current?.focus();
   }, [isOpen, resetMenuItemHover]);
 
-  if (pathname === "/test-shader") return null;
-
   return (
     <>
       {/* Sleek Floating Header Bar */}
