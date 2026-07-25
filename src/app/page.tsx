@@ -6,6 +6,7 @@ import Stats from "@/components/Stats";
 import SdgComponent from "@/components/sdg";
 import SdgMarquee from "@/components/SdgMarquee";
 import Sponsors from "@/components/Sponsors";
+import GlassPill from "@/components/GlassPill";
 
 export default function Home() {
   // Smooth staggered entry animations
@@ -60,10 +61,12 @@ export default function Home() {
               fontSize: "clamp(1.8rem, 5.4vw, 5.6rem)",
             }}
           >
-            <div className="overflow-hidden py-1 md:py-2">
-              <motion.span variants={lineVariants} className="block origin-bottom font-medium">
-                Department of SCSE
-              </motion.span>
+            <div className="overflow-visible pb-3 md:pb-5 -mt-28 md:-mt-40">
+              <motion.div variants={lineVariants} className="block origin-bottom">
+                <GlassPill className="text-[0.26em] md:text-[0.22em] tracking-[0.15em]">
+                  Department of Computer Science and Engineering, SCSE, FOSTA
+                </GlassPill>
+              </motion.div>
             </div>
             <div className="overflow-hidden py-1 md:py-2">
               <motion.span variants={lineVariants} className="block origin-bottom font-medium text-transparent bg-clip-text bg-gradient-to-r from-white via-[#FAF8F5] to-white/90">
