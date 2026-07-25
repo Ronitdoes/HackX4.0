@@ -92,7 +92,7 @@ export default function Home() {
             animate="visible"
             className="absolute left-[-1.5vw] bottom-[0.5vh] md:left-[-4vw] md:bottom-[0.5vh] font-serif italic text-xs md:text-sm text-white hover:opacity-80 transition-opacity pointer-events-auto cursor-default whitespace-nowrap"
           >
-            HackX 2026
+          
           </motion.div>
 
           {/* Middle/Bottom Right Accent (corresponds to VN | CN | FR) */}
@@ -102,9 +102,9 @@ export default function Home() {
             animate="visible"
             className="absolute right-[-1.5vw] bottom-[0.5vh] md:right-[-4vw] md:bottom-[0.5vh] font-serif italic text-xs md:text-sm tracking-widest text-white hover:opacity-80 transition-opacity pointer-events-auto cursor-default flex flex-col md:flex-row items-center gap-1.5 md:gap-3 whitespace-nowrap"
           >
-            <span>SCSE</span>
-            <span className="hidden md:inline text-white/30">|</span>
-            <span>MUJ</span>
+            <span></span>
+            <span className="hidden md:inline text-white/30"></span>
+            <span></span>
           </motion.div>
         </div>
 
