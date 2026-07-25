@@ -96,7 +96,7 @@ export default function Home() {
                     className="w-[55vw] max-w-[480px] md:w-[40vw] md:max-w-[620px] h-auto mx-auto select-none pointer-events-none"
                     draggable={false}
                   />
-                  <div className="absolute top-[8%] right-[14%] z-30">
+                  <div className="absolute top-[-6%] right-[6%] z-30">
                     <PrizePoolCircle />
                   </div>
                 </div>

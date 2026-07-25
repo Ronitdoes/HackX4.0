@@ -85,7 +85,7 @@ const PrizePoolCircle = () => {
       <CircularText text={text} spinDuration={15} radius={isMobile ? 27 : 42} />
       <div className="absolute inset-0 flex items-center justify-center">
         <span className="text-[#FAF8F5] rotate-[-15.15deg] transform text-base font-bold lg:text-2xl">
-          ₹5L+
+          ₹6L+
         </span>
       </div>
     </div>
