@@ -96,7 +96,7 @@ export function WaterRippleImage({ imageUrl, isActive, priority = false }: Water
     <div
       ref={elementRef}
       className="relative w-full overflow-hidden bg-cover bg-center"
-      style={{ backgroundImage: isActive ? `url("${imageUrl}")` : undefined }}
+      style={{ backgroundImage: `url("${imageUrl}")` }}
       onPointerEnter={(event) => {
         lastPointerRef.current = { x: event.clientX, y: event.clientY };
       }}
