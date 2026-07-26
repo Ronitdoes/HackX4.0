@@ -36,13 +36,14 @@ export default function LenisProvider({ children }: { children: React.ReactNode 
       ref={lenisRef}
       autoRaf={false}
       options={{
-        // Deliberately slow, cinematic scroll response.
-        duration: 1.55,
+        // Keep the cinematic interpolation, without making navigation feel
+        // detached from the user's wheel or trackpad input.
+        duration: 0.85,
         easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
         orientation: "vertical",
         gestureOrientation: "vertical",
         smoothWheel: true,
-        wheelMultiplier: 0.8,
+        wheelMultiplier: 1,
       }}
     >
       {children}

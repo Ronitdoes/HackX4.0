@@ -258,8 +258,13 @@ export default function FluidShaderBackground() {
     const zoomLoc = gl.getUniformLocation(program, "uZoom");
     const colorTransitionLoc = gl.getUniformLocation(program, "uColorTransition");
 
-    let animationFrameId: number;
+    let animationFrameId: number | undefined;
+    let isLoopRunning = false;
+    let isDocumentVisible = document.visibilityState === "visible";
+    let isNavigationOpen = document.documentElement.dataset.navOpen === "true";
     const startTime = performance.now();
+
+    const shouldRender = () => isDocumentVisible && !isNavigationOpen;
 
     const resize = () => {
       // Capped at 1.0 because the canvas has a 10px blur filter overlay,
@@ -280,6 +285,11 @@ export default function FluidShaderBackground() {
     resize();
 
     const render = () => {
+      if (!shouldRender()) {
+        isLoopRunning = false;
+        return;
+      }
+
       const elapsedSeconds = (performance.now() - startTime) / 1000;
       gl.uniform1f(timeLoc, elapsedSeconds);
       gl.uniform1f(zoomLoc, shaderParams.current.zoom);
@@ -293,11 +303,51 @@ export default function FluidShaderBackground() {
       animationFrameId = requestAnimationFrame(render);
     };
 
-    animationFrameId = requestAnimationFrame(render);
+    const startLoop = () => {
+      if (!isLoopRunning && shouldRender()) {
+        isLoopRunning = true;
+        animationFrameId = requestAnimationFrame(render);
+      }
+    };
+
+    const stopLoop = () => {
+      if (animationFrameId !== undefined) {
+        cancelAnimationFrame(animationFrameId);
+        animationFrameId = undefined;
+      }
+      isLoopRunning = false;
+    };
+
+    const syncLoop = () => {
+      if (shouldRender()) {
+        startLoop();
+      } else {
+        stopLoop();
+      }
+    };
+
+    const handleVisibilityChange = () => {
+      isDocumentVisible = document.visibilityState === "visible";
+      syncLoop();
+    };
+
+    const navigationObserver = new MutationObserver(() => {
+      isNavigationOpen = document.documentElement.dataset.navOpen === "true";
+      syncLoop();
+    });
+
+    navigationObserver.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["data-nav-open"],
+    });
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    startLoop();
 
     return () => {
       window.removeEventListener("resize", resize);
-      cancelAnimationFrame(animationFrameId);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+      navigationObserver.disconnect();
+      stopLoop();
 
       gl.deleteBuffer(buffer);
       gl.deleteProgram(program);
@@ -886,18 +936,17 @@ export default function FluidShaderBackground() {
       <canvas
         ref={canvasRef}
         className="pointer-events-none fixed inset-0 w-full h-full opacity-45"
-        style={{ zIndex: -15 }}
+        style={{ zIndex: -15, filter: "blur(16px)" }}
       />
 
-      {/* 4. Vision Blur Overlay. This blurs both the SVG and the canvas together,
-             making them dissolve into a single atmospheric entity. */}
+      {/* 4. The canvas is blurred directly above. A fullscreen backdrop-filter here
+             would continuously re-rasterize page content during scrolling. */}
       <div
         ref={blurOverlayRef}
         className="pointer-events-none fixed inset-0"
         style={{
           zIndex: -5,
-          backdropFilter: "blur(10px) saturate(1.3) contrast(1.02)",
-          WebkitBackdropFilter: "blur(10px) saturate(1.3) contrast(1.02)",
+          background: "linear-gradient(115deg, rgba(24, 8, 54, 0.08), rgba(5, 2, 13, 0.02) 55%, rgba(0, 0, 0, 0.08))",
         }}
       />
 
@@ -908,19 +957,13 @@ export default function FluidShaderBackground() {
         className="pointer-events-none fixed inset-0 h-full w-full opacity-[0.09]"
         style={{ zIndex: -3 }}
       >
-        <filter id="visionNoise">
-          <feTurbulence
-            type="fractalNoise"
-            baseFrequency="0.8"
-            numOctaves="1"
-            stitchTiles="stitch"
-          />
-          <feColorMatrix
-            type="matrix"
-            values="0.33 0.33 0.33 0 0  0.33 0.33 0.33 0 0  0.33 0.33 0.33 0 0  0 0 0 1 0"
-          />
-        </filter>
-        <rect width="100%" height="100%" filter="url(#visionNoise)" />
+        <defs>
+          <linearGradient id="visionNoise" x1="0" y1="0" x2="1" y2="1">
+            <stop stopColor="rgba(255,255,255,0.12)" stopOpacity="0.12" />
+            <stop offset="1" stopColor="rgba(255,255,255,0)" stopOpacity="0" />
+          </linearGradient>
+        </defs>
+        <rect width="100%" height="100%" fill="url(#visionNoise)" />
       </svg>
     </>
   );

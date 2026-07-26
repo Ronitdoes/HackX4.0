@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useState, useRef, useEffect, useCallback } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import React, { useState, useRef, useEffect, useCallback, useMemo } from "react";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import gsap from "gsap";
@@ -22,50 +22,76 @@ const MENU_ITEMS = [
   { label: "Contact", href: "/contact" },
 ] as const;
 
-const menuVariants = {
-  initial: { y: "-100%" },
-  animate: { y: "0%", transition: { duration: 0.95, ease: [0.76, 0, 0.24, 1] } },
-  exit: { y: "-100%", transition: { duration: 0.8, ease: [0.76, 0, 0.24, 1] } },
+type MenuItemTarget = {
+  filter: string;
+  opacity: number;
+  scale: number;
 };
 
-const navLinksVariants = {
-  initial: {},
-  animate: { transition: { staggerChildren: 0.08, delayChildren: 0.5 } },
-  exit: { transition: { staggerChildren: 0.05, staggerDirection: -1 } },
+const RESTING_MENU_ITEM_TARGET: MenuItemTarget = {
+  filter: "blur(0px)",
+  opacity: 1,
+  scale: 1,
 };
 
-const linkVariants = {
-  initial: { y: 60, opacity: 0 },
-  animate: { y: 0, opacity: 1, transition: { duration: 0.6, ease: [0.215, 0.61, 0.355, 1] } },
-  exit: { y: 30, opacity: 0, transition: { duration: 0.4, ease: [0.215, 0.61, 0.355, 1] } },
-};
+const createMenuItemTargets = (hoveredIndex: number) =>
+  MENU_ITEMS.map((_, index): MenuItemTarget => {
+    const distance = Math.abs(hoveredIndex - index);
 
-const footerVariants = {
-  initial: { opacity: 0, y: 20 },
-  animate: { opacity: 1, y: 0, transition: { delay: 0.75, duration: 0.5, ease: "easeOut" } },
-  exit: { opacity: 0, y: 10, transition: { duration: 0.35, ease: "easeIn" } },
-};
+    return {
+      filter: index === hoveredIndex
+        ? "blur(0px)"
+        : `blur(${Math.min(8, 4 + distance * 1.35)}px)`,
+      opacity: index === hoveredIndex ? 1 : Math.max(0.18, 0.5 - distance * 0.055),
+      scale: index === hoveredIndex ? 1.03 : 1,
+    };
+  });
+
+const MENU_ITEM_HOVER_TARGETS = MENU_ITEMS.map((_, index) => createMenuItemTargets(index));
+const RESTING_MENU_ITEM_TARGETS = MENU_ITEMS.map(() => RESTING_MENU_ITEM_TARGET);
+
+const isSameMenuItemTarget = (a: MenuItemTarget | undefined, b: MenuItemTarget) =>
+  a?.filter === b.filter && a.opacity === b.opacity && a.scale === b.scale;
 
 export default function Navbar() {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
+  const prefersReducedMotion = useReducedMotion() ?? false;
+  const isOpenRef = useRef(isOpen);
   const buttonRef = useRef<HTMLButtonElement>(null);
+  const headerBackdropRef = useRef<HTMLDivElement>(null);
+  const line1Ref = useRef<HTMLSpanElement>(null);
+  const line2Ref = useRef<HTMLSpanElement>(null);
   const hoverTimelineRef = useRef<gsap.core.Timeline | null>(null);
   const menuItemRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const menuItemTargetsRef = useRef<(MenuItemTarget | undefined)[]>([]);
+  const activeMenuItemRef = useRef<number | null>(null);
   const wasOpenRef = useRef(false);
-  const isCoarsePointerRef = useRef(false);
 
-  const [isSafari, setIsSafari] = useState(false);
+  const getLines = useCallback(() => {
+    if (line1Ref.current && line2Ref.current) {
+      return [line1Ref.current, line2Ref.current];
+    }
+    return null;
+  }, []);
+
+  const setMenuItemRef = useCallback((node: HTMLDivElement | null, index: number) => {
+    menuItemRefs.current[index] = node;
+  }, []);
+
+  const setNavBackgroundPaused = useCallback((paused: boolean) => {
+    if (paused) {
+      document.documentElement.dataset.navOpen = "true";
+      document.body.dataset.navOpen = "true";
+    } else {
+      delete document.documentElement.dataset.navOpen;
+      delete document.body.dataset.navOpen;
+    }
+  }, []);
 
   useEffect(() => {
-    const mediaQuery = window.matchMedia("(pointer: coarse), (max-width: 767px)");
-    const updatePointerMode = () => {
-      isCoarsePointerRef.current = mediaQuery.matches;
-    };
-    updatePointerMode();
-    mediaQuery.addEventListener("change", updatePointerMode);
-    return () => mediaQuery.removeEventListener("change", updatePointerMode);
-  }, []);
+    isOpenRef.current = isOpen;
+  }, [isOpen]);
 
   useEffect(() => {
     let idleId: number | undefined;
@@ -91,153 +117,193 @@ export default function Navbar() {
       !ua.includes("chrome") &&
       !ua.includes("chromium") &&
       !ua.includes("android");
-    const frame = requestAnimationFrame(() => setIsSafari(isSafariBrowser));
-    return () => cancelAnimationFrame(frame);
+
+    if (isSafariBrowser && headerBackdropRef.current) {
+      headerBackdropRef.current.style.backdropFilter = "none";
+      headerBackdropRef.current.style.setProperty("-webkit-backdrop-filter", "none");
+    }
   }, []);
 
-  const handleMouseEnter = () => {
-    const lines = buttonRef.current?.querySelectorAll("span");
-    if (!lines || lines.length < 2) return;
+  const animationSpeed = prefersReducedMotion ? 0 : 1;
 
-    // Kill any active hover animations and timelines
+  const killLineAnimation = useCallback(() => {
     hoverTimelineRef.current?.kill();
-    gsap.killTweensOf(lines);
+    hoverTimelineRef.current = null;
+
+    const lines = getLines();
+    if (lines) gsap.killTweensOf(lines);
+  }, [getLines]);
+
+  const handleMouseEnter = () => {
+    const lines = getLines();
+    if (!lines) return;
+
+    killLineAnimation();
 
     const tl = gsap.timeline();
     hoverTimelineRef.current = tl;
+    tl.eventCallback("onComplete", () => {
+      if (hoverTimelineRef.current === tl) hoverTimelineRef.current = null;
+    });
 
     if (isOpen) {
       // Premium diagonal scissor slide-out-in (the cross "builds" itself)
-      tl.to(lines[0], { x: -24, y: -24, opacity: 0, duration: 0.2, ease: "power2.in" }, 0)
-        .to(lines[1], { x: 24, y: -24, opacity: 0, duration: 0.2, ease: "power2.in" }, 0)
+      tl.to(lines[0], { x: -24, y: -24, opacity: 0, duration: 0.2 * animationSpeed, ease: "power2.in", force3D: true }, 0)
+        .to(lines[1], { x: 24, y: -24, opacity: 0, duration: 0.2 * animationSpeed, ease: "power2.in", force3D: true }, 0)
         // Teleport to opposite diagonal corners
-        .set(lines[0], { x: 24, y: 24 })
-        .set(lines[1], { x: -24, y: 24 })
+        .set(lines[0], { x: 24, y: 24, force3D: true })
+        .set(lines[1], { x: -24, y: 24, force3D: true })
         // Slide back to center from opposite corners
-        .to(lines[0], { x: 0, y: 0, opacity: 1, duration: 0.25, ease: "power2.out" }, ">")
-        .to(lines[1], { x: 0, y: 0, opacity: 1, duration: 0.25, ease: "power2.out" }, "<");
+        .to(lines[0], { x: 0, y: 0, opacity: 1, duration: 0.25 * animationSpeed, ease: "power2.out", force3D: true }, ">")
+        .to(lines[1], { x: 0, y: 0, opacity: 1, duration: 0.25 * animationSpeed, ease: "power2.out", force3D: true }, "<");
     } else {
       // Top line slides right (135%), bottom line slides left (-135%)
-      tl.to(lines[0], { x: "135%", duration: 0.2, ease: "power2.in" }, 0)
-        .to(lines[1], { x: "-135%", duration: 0.2, ease: "power2.in" }, 0)
+      tl.to(lines[0], { x: "135%", duration: 0.2 * animationSpeed, ease: "power2.in", force3D: true }, 0)
+        .to(lines[1], { x: "-135%", duration: 0.2 * animationSpeed, ease: "power2.in", force3D: true }, 0)
         // Teleport to opposite sides
-        .set(lines[0], { x: "-135%" })
-        .set(lines[1], { x: "135%" })
+        .set(lines[0], { x: "-135%", force3D: true })
+        .set(lines[1], { x: "135%", force3D: true })
         // Slide back to center from opposite sides
-        .to(lines[0], { x: "0%", duration: 0.25, ease: "power2.out" }, ">")
-        .to(lines[1], { x: "0%", duration: 0.25, ease: "power2.out" }, "<");
+        .to(lines[0], { x: "0%", duration: 0.25 * animationSpeed, ease: "power2.out", force3D: true }, ">")
+        .to(lines[1], { x: "0%", duration: 0.25 * animationSpeed, ease: "power2.out", force3D: true }, "<");
     }
   };
 
-  const resetMenuItemHover = useCallback(() => {
-    menuItemRefs.current.forEach((item) => {
-      if (!item) return;
+  const animateMenuItems = useCallback((targets: readonly MenuItemTarget[], duration: number, ease: string) => {
+    menuItemRefs.current.forEach((item, index) => {
+      const target = targets[index];
+      if (!item || !target || isSameMenuItemTarget(menuItemTargetsRef.current[index], target)) return;
+
+      menuItemTargetsRef.current[index] = target;
+      gsap.killTweensOf(item);
+      gsap.set(item, { willChange: "filter, transform, opacity" });
       gsap.to(item, {
-        filter: "blur(0px)",
-        opacity: 1,
-        scale: 1,
-        duration: 0.35,
-        ease: "power2.out",
-        overwrite: true,
+        ...target,
+        duration: duration * animationSpeed,
+        ease,
+        force3D: true,
+        onComplete: () => {
+          if (isSameMenuItemTarget(menuItemTargetsRef.current[index], target)) {
+            gsap.set(item, { willChange: "auto" });
+          }
+        },
       });
     });
-  }, []);
+  }, [animationSpeed]);
+
+  const resetMenuItemHover = useCallback(() => {
+    if (activeMenuItemRef.current === null) return;
+    activeMenuItemRef.current = null;
+
+    animateMenuItems(RESTING_MENU_ITEM_TARGETS, 0.35, "power2.out");
+  }, [animateMenuItems]);
 
   const handleMenuItemHover = useCallback((hoveredIndex: number) => {
-    const shouldBlur = !isCoarsePointerRef.current;
-    menuItemRefs.current.forEach((item, index) => {
-      if (!item) return;
-      const distance = Math.abs(hoveredIndex - index);
-      gsap.to(item, {
-        filter: shouldBlur && index !== hoveredIndex
-          ? `blur(${Math.min(12, 4 + distance * 3.5)}px)`
-          : "blur(0px)",
-        opacity: index === hoveredIndex ? 1 : Math.max(0.12, 0.45 - distance * 0.05),
-        scale: index === hoveredIndex ? 1.03 : 1,
-        duration: 0.45,
-        ease: "power3.out",
-        overwrite: true,
-      });
-    });
-  }, []);
+    if (activeMenuItemRef.current === hoveredIndex) return;
+    activeMenuItemRef.current = hoveredIndex;
+
+    animateMenuItems(MENU_ITEM_HOVER_TARGETS[hoveredIndex], 0.45, "power3.out");
+  }, [animateMenuItems]);
 
   const handleMouseLeave = () => {
     if (!isOpen) return;
-    const lines = buttonRef.current?.querySelectorAll("span");
-    if (!lines || lines.length < 2) return;
+    const lines = getLines();
+    if (!lines) return;
 
-    hoverTimelineRef.current?.kill();
-    gsap.killTweensOf(lines);
+    killLineAnimation();
     // Smoothly slide back to the base cross state (45deg / -45deg)
-    gsap.to(lines[0], { x: 0, y: 0, rotation: 45, opacity: 1, duration: 0.35, ease: "power2.out" });
-    gsap.to(lines[1], { x: 0, y: 0, rotation: -45, opacity: 1, duration: 0.35, ease: "power2.out" });
+    const tl = gsap.timeline();
+    hoverTimelineRef.current = tl;
+    tl.to(lines[0], { x: 0, y: 0, rotation: 45, opacity: 1, duration: 0.35 * animationSpeed, ease: "power2.out", force3D: true }, 0)
+      .to(lines[1], { x: 0, y: 0, rotation: -45, opacity: 1, duration: 0.35 * animationSpeed, ease: "power2.out", force3D: true }, 0)
+      .eventCallback("onComplete", () => {
+        if (hoverTimelineRef.current === tl) hoverTimelineRef.current = null;
+      });
   };
 
   const isInitialRender = useRef(true);
 
   // Synchronized state transformations
   useEffect(() => {
-    const lines = buttonRef.current?.querySelectorAll("span");
-    if (!lines || lines.length < 2) return;
+    const lines = getLines();
+    if (!lines) return;
 
-    hoverTimelineRef.current?.kill();
-    gsap.killTweensOf(lines);
+    killLineAnimation();
 
     if (isInitialRender.current) {
       isInitialRender.current = false;
-      gsap.set(lines[0], { y: -4, rotation: 0, x: 0, opacity: 1 });
-      gsap.set(lines[1], { y: 4, rotation: 0, x: 0, opacity: 1 });
+      gsap.set(lines[0], { y: -4, rotation: 0, x: 0, opacity: 1, force3D: true });
+      gsap.set(lines[1], { y: 4, rotation: 0, x: 0, opacity: 1, force3D: true });
       return;
     }
 
+    const tl = gsap.timeline();
+    hoverTimelineRef.current = tl;
+
     if (isOpen) {
-      gsap.to(lines[0], {
+      tl.to(lines[0], {
         y: 0,
         rotation: 45,
         x: 0,
         opacity: 1,
-        duration: 0.35,
-        ease: "power2.out"
-      });
-      gsap.to(lines[1], {
+        duration: 0.35 * animationSpeed,
+        ease: "power2.out",
+        force3D: true,
+      }, 0).to(lines[1], {
         y: 0,
         rotation: -45,
         x: 0,
         opacity: 1,
-        duration: 0.35,
-        ease: "power2.out"
-      });
+        duration: 0.35 * animationSpeed,
+        ease: "power2.out",
+        force3D: true,
+      }, 0);
     } else {
-      gsap.to(lines[0], {
+      tl.to(lines[0], {
         y: -4,
         rotation: 0,
         x: 0,
         opacity: 1,
-        duration: 0.35,
-        ease: "power2.out"
-      });
-      gsap.to(lines[1], {
+        duration: 0.35 * animationSpeed,
+        ease: "power2.out",
+        force3D: true,
+      }, 0).to(lines[1], {
         y: 4,
         rotation: 0,
         x: 0,
         opacity: 1,
-        duration: 0.35,
-        ease: "power2.out"
-      });
+        duration: 0.35 * animationSpeed,
+        ease: "power2.out",
+        force3D: true,
+      }, 0);
     }
-  }, [isOpen]);
+    tl.eventCallback("onComplete", () => {
+      if (hoverTimelineRef.current === tl) hoverTimelineRef.current = null;
+    });
+  }, [animationSpeed, isOpen, getLines, killLineAnimation]);
 
   // Clean up all running GSAP timelines on unmount
   useEffect(() => {
-    const button = buttonRef.current;
+    const menuItems = menuItemRefs.current;
     return () => {
       hoverTimelineRef.current?.kill();
-      const lines = button?.querySelectorAll("span");
+      const lines = getLines();
       if (lines) {
         gsap.killTweensOf(lines);
       }
+      menuItems.forEach((item) => {
+        if (!item) return;
+        gsap.killTweensOf(item);
+        gsap.set(item, { willChange: "auto" });
+      });
+      menuItemTargetsRef.current = [];
     };
-  }, []);
+  }, [getLines]);
+
+  const closeMenu = useCallback(() => {
+    setNavBackgroundPaused(false);
+    setIsOpen(false);
+  }, [setNavBackgroundPaused]);
 
   // Keyboard navigation event handler (a11y)
   useEffect(() => {
@@ -245,7 +311,7 @@ export default function Navbar() {
 
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
-        setIsOpen(false);
+        closeMenu();
       }
     };
 
@@ -253,48 +319,80 @@ export default function Navbar() {
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [isOpen]);
+  }, [isOpen, closeMenu]);
 
   useEffect(() => {
     if (isOpen) {
       const previousHtmlOverflow = document.documentElement.style.overflow;
       const previousBodyOverflow = document.body.style.overflow;
       wasOpenRef.current = true;
-      document.documentElement.dataset.navOpen = "true";
-      document.body.dataset.navOpen = "true";
       document.documentElement.style.overflow = "hidden";
       document.body.style.overflow = "hidden";
 
       return () => {
-        delete document.documentElement.dataset.navOpen;
-        delete document.body.dataset.navOpen;
         document.documentElement.style.overflow = previousHtmlOverflow;
         document.body.style.overflow = previousBodyOverflow;
       };
     }
 
+    setNavBackgroundPaused(false);
     resetMenuItemHover();
     if (wasOpenRef.current) buttonRef.current?.focus();
-  }, [isOpen, resetMenuItemHover]);
+  }, [isOpen, resetMenuItemHover, setNavBackgroundPaused]);
+
+  const toggleMenu = useCallback(() => {
+    if (isOpen) {
+      closeMenu();
+      return;
+    }
+    setIsOpen(true);
+  }, [closeMenu, isOpen]);
+
+  const animationVariants = useMemo(() => ({
+    menu: {
+      initial: { y: "-100%" },
+      animate: { y: "0%", transition: { duration: 0.95 * animationSpeed, ease: [0.76, 0, 0.24, 1] as const } },
+      exit: { y: "-100%", transition: { duration: 0.8 * animationSpeed, ease: [0.76, 0, 0.24, 1] as const } },
+    },
+    navLinks: {
+      initial: {},
+      animate: { transition: { staggerChildren: 0.08 * animationSpeed, delayChildren: 0.5 * animationSpeed } },
+      exit: { transition: { staggerChildren: 0.05 * animationSpeed, staggerDirection: -1 } },
+    },
+    link: {
+      initial: { y: 60, opacity: 0 },
+      animate: { y: 0, opacity: 1, transition: { duration: 0.6 * animationSpeed, ease: [0.215, 0.61, 0.355, 1] as const } },
+      exit: { y: 30, opacity: 0, transition: { duration: 0.4 * animationSpeed, ease: [0.215, 0.61, 0.355, 1] as const } },
+    },
+    footer: {
+      initial: { opacity: 0, y: 20 },
+      animate: { opacity: 1, y: 0, transition: { delay: 0.75 * animationSpeed, duration: 0.5 * animationSpeed, ease: "easeOut" as const } },
+      exit: { opacity: 0, y: 10, transition: { duration: 0.35 * animationSpeed, ease: "easeIn" as const } },
+    },
+  }), [animationSpeed]);
 
   return (
     <>
       {/* Sleek Floating Header Bar */}
       <header className="fixed top-0 left-0 z-[100] isolate h-24 w-full overflow-hidden px-7 md:h-32 md:px-12 flex justify-between items-center pointer-events-none">
         <div
+          ref={headerBackdropRef}
           aria-hidden="true"
-          className="absolute inset-0 z-0"
+          className="absolute inset-0 z-0 transition-opacity duration-300"
           style={{
             background:
               "linear-gradient(to bottom, rgba(4, 5, 16, 0.78) 0%, rgba(4, 5, 16, 0.48) 56%, rgba(4, 5, 16, 0.16) 82%, rgba(4, 5, 16, 0) 100%)",
-            backdropFilter: isSafari ? "none" : "blur(52px) saturate(1.7)",
-            WebkitBackdropFilter: isSafari ? "none" : "blur(52px) saturate(1.7)",
+            backdropFilter: "blur(28px) saturate(1.35)",
+            WebkitBackdropFilter: "blur(28px) saturate(1.35)",
+            transform: "translateZ(0)",
+            willChange: "transform",
+            opacity: isOpen ? 0 : 1,
           }}
         />
         <button
           ref={buttonRef}
           type="button"
-          onClick={() => setIsOpen(!isOpen)}
+          onClick={toggleMenu}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
           className="pointer-events-auto relative z-10 group flex items-center gap-2.5 justify-center text-white hover:opacity-85 transition-opacity mix-blend-difference"
@@ -303,8 +401,8 @@ export default function Navbar() {
           aria-controls="site-navigation"
         >
           <div className="relative w-6 h-6 flex items-center justify-center overflow-hidden">
-            <span className="absolute w-4 h-[0.5px] bg-white" style={{ transform: "translateY(-4px)" }}></span>
-            <span className="absolute w-4 h-[0.5px] bg-white" style={{ transform: "translateY(4px)" }}></span>
+            <span ref={line1Ref} className="absolute w-4 h-[0.5px] bg-white" style={{ transform: "translateY(-4px)" }}></span>
+            <span ref={line2Ref} className="absolute w-4 h-[0.5px] bg-white" style={{ transform: "translateY(4px)" }}></span>
           </div>
           <span className="text-[10px] uppercase tracking-[0.2em] font-semibold font-sans h-4 flex items-center overflow-hidden relative select-none px-1.5 -mx-1.5">
             <AnimatePresence mode="wait">
@@ -313,7 +411,7 @@ export default function Navbar() {
                 initial={{ y: 12, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 exit={{ y: -12, opacity: 0 }}
-                transition={{ duration: 0.22, ease: "easeOut" }}
+                transition={{ duration: 0.22 * animationSpeed, ease: "easeOut" }}
                 className="block"
               >
                 {isOpen ? "Close" : "Menu"}
@@ -335,7 +433,7 @@ export default function Navbar() {
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            variants={menuVariants}
+            variants={animationVariants.menu}
             initial="initial"
             animate="animate"
             exit="exit"
@@ -348,8 +446,13 @@ export default function Navbar() {
             aria-modal="true"
             aria-label="Site navigation"
             data-lenis-prevent
+            onAnimationComplete={() => {
+              if (isOpenRef.current) {
+                setNavBackgroundPaused(true);
+              }
+            }}
           >
-            <CircularNebulaShader />
+            <CircularNebulaShader active={isOpen} animate={!prefersReducedMotion} />
 
             {/* Overlay Spacer to maintain layout alignment */}
             <div className="relative z-10 flex justify-start items-center w-full h-6 pointer-events-none" />
@@ -357,30 +460,28 @@ export default function Navbar() {
             {/* Menu Items Centered */}
             <div className="relative z-10 flex-grow flex items-center justify-center">
               <motion.nav
-                variants={navLinksVariants}
+                variants={animationVariants.navLinks}
                 className="flex flex-col items-center justify-center gap-2 text-center"
+                onMouseLeave={resetMenuItemHover}
               >
                 {MENU_ITEMS.map((item, idx) => {
                   return (
                     <div key={item.href} className="py-1 px-4 overflow-visible">
-                      <motion.div variants={linkVariants}>
-                        <motion.div
-                          ref={(node) => {
-                            menuItemRefs.current[idx] = node;
-                          }}
+                      <motion.div variants={animationVariants.link}>
+                        <div
+                          ref={(node) => setMenuItemRef(node, idx)}
                           className="origin-center"
                         >
                           <Link
                             href={item.href}
-                            onClick={() => setIsOpen(false)}
+                            onClick={closeMenu}
                             onMouseEnter={() => handleMenuItemHover(idx)}
-                            onMouseLeave={resetMenuItemHover}
                             aria-current={pathname === item.href ? "page" : undefined}
                             className="block text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-normal text-[#F9F6F0] font-sans cursor-pointer select-none"
                           >
                             {item.label}
                           </Link>
-                        </motion.div>
+                        </div>
                       </motion.div>
                     </div>
                   );
@@ -390,7 +491,7 @@ export default function Navbar() {
 
             {/* Contact Info at bottom */}
             <motion.div
-              variants={footerVariants}
+              variants={animationVariants.footer}
               className="relative z-10 flex flex-col items-center justify-center text-center mt-auto"
             >
               <span className="font-serif italic text-xs md:text-sm text-[#F9F6F0]/80 mb-1">
