@@ -103,9 +103,9 @@ const FRAGMENT_SHADER_SOURCE = `
     float trailGlow = 0.0;
 
     // Dense sampling makes the wake a continuous ribbon when sweeping the edge (increased to 40 samples).
-    for (int i = 0; i < 40; i++) {
+    for (int i = 0; i < 31; i++) {
       float index = float(i);
-      float age = index / 39.0;
+      float age = index / 30.0;
       // Original tail calculation preserved as requested.
       float trailPhase = phase - age * 2.85;
       vec2 trailPoint = orbitCenter + vec2(cos(trailPhase), -sin(trailPhase)) * orbitRadius;

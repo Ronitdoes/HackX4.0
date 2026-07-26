@@ -169,41 +169,57 @@ export default function Navbar() {
     }
   };
 
-  const animateMenuItems = useCallback((targets: readonly MenuItemTarget[], duration: number, ease: string) => {
-    menuItemRefs.current.forEach((item, index) => {
-      const target = targets[index];
-      if (!item || !target || isSameMenuItemTarget(menuItemTargetsRef.current[index], target)) return;
+  const hoverTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-      menuItemTargetsRef.current[index] = target;
-      gsap.killTweensOf(item);
-      gsap.set(item, { willChange: "filter, transform, opacity" });
-      gsap.to(item, {
-        ...target,
-        duration: duration * animationSpeed,
-        ease,
-        force3D: true,
-        onComplete: () => {
-          if (isSameMenuItemTarget(menuItemTargetsRef.current[index], target)) {
-            gsap.set(item, { willChange: "auto" });
-          }
-        },
+  const updateMenuItemStyles = useCallback(
+    (
+      targets: readonly MenuItemTarget[],
+      duration: number,
+      ease = "cubic-bezier(0.16, 1, 0.3, 1)"
+    ) => {
+      const transitionStyle = prefersReducedMotion
+        ? "none"
+        : `filter ${duration}s ${ease}, opacity ${duration}s ${ease}, transform ${duration}s ${ease}`;
+
+      menuItemRefs.current.forEach((item, index) => {
+        const target = targets[index];
+        if (!item || !target || isSameMenuItemTarget(menuItemTargetsRef.current[index], target)) return;
+
+        menuItemTargetsRef.current[index] = target;
+        item.style.transition = transitionStyle;
+        item.style.filter = target.filter;
+        item.style.opacity = String(target.opacity);
+        item.style.transform = target.scale === 1 ? "none" : `scale(${target.scale})`;
       });
-    });
-  }, [animationSpeed]);
+    },
+    [prefersReducedMotion]
+  );
 
   const resetMenuItemHover = useCallback(() => {
-    if (activeMenuItemRef.current === null) return;
-    activeMenuItemRef.current = null;
+    if (hoverTimeoutRef.current) {
+      clearTimeout(hoverTimeoutRef.current);
+    }
 
-    animateMenuItems(RESTING_MENU_ITEM_TARGETS, 0.35, "power2.out");
-  }, [animateMenuItems]);
+    hoverTimeoutRef.current = setTimeout(() => {
+      hoverTimeoutRef.current = null;
+      if (activeMenuItemRef.current === null) return;
+      activeMenuItemRef.current = null;
+
+      updateMenuItemStyles(RESTING_MENU_ITEM_TARGETS, 0.8, "cubic-bezier(0.25, 1, 0.5, 1)");
+    }, 60);
+  }, [updateMenuItemStyles]);
 
   const handleMenuItemHover = useCallback((hoveredIndex: number) => {
+    if (hoverTimeoutRef.current) {
+      clearTimeout(hoverTimeoutRef.current);
+      hoverTimeoutRef.current = null;
+    }
+
     if (activeMenuItemRef.current === hoveredIndex) return;
     activeMenuItemRef.current = hoveredIndex;
 
-    animateMenuItems(MENU_ITEM_HOVER_TARGETS[hoveredIndex], 0.45, "power3.out");
-  }, [animateMenuItems]);
+    updateMenuItemStyles(MENU_ITEM_HOVER_TARGETS[hoveredIndex], 0.45, "cubic-bezier(0.16, 1, 0.3, 1)");
+  }, [updateMenuItemStyles]);
 
   const handleMouseLeave = () => {
     if (!isOpen) return;
@@ -286,6 +302,10 @@ export default function Navbar() {
   useEffect(() => {
     const menuItems = menuItemRefs.current;
     return () => {
+      if (hoverTimeoutRef.current) {
+        clearTimeout(hoverTimeoutRef.current);
+        hoverTimeoutRef.current = null;
+      }
       hoverTimelineRef.current?.kill();
       const lines = getLines();
       if (lines) {
@@ -293,14 +313,18 @@ export default function Navbar() {
       }
       menuItems.forEach((item) => {
         if (!item) return;
-        gsap.killTweensOf(item);
-        gsap.set(item, { willChange: "auto" });
+        item.style.transition = "none";
       });
       menuItemTargetsRef.current = [];
     };
   }, [getLines]);
 
   const closeMenu = useCallback(() => {
+    if (hoverTimeoutRef.current) {
+      clearTimeout(hoverTimeoutRef.current);
+      hoverTimeoutRef.current = null;
+    }
+    activeMenuItemRef.current = null;
     setNavBackgroundPaused(false);
     setIsOpen(false);
   }, [setNavBackgroundPaused]);
