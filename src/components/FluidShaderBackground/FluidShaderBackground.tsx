@@ -362,8 +362,8 @@ export default function FluidShaderBackground() {
   useEffect(() => {
     if (pathname !== "/timeline") return;
 
-    const logoContainer = logoContainerRef.current;
-    shaderParams.current = { zoom: 1.25, colorTransition: 0.0 };
+    let tl: gsap.core.Timeline | null = null;
+    let active = true;
 
     const interpolateHex = (color1: string, color2: string, factor: number) => {
       const r1 = parseInt(color1.substring(1, 3), 16);
@@ -379,7 +379,7 @@ export default function FluidShaderBackground() {
       return `#${clampChannel(r).toString(16).padStart(2, "0")}${clampChannel(g).toString(16).padStart(2, "0")}${clampChannel(b).toString(16).padStart(2, "0")}`;
     };
 
-    const handleScroll = () => {
+    const updateShaderState = () => {
       const timelineSection = document.getElementById("timeline-section");
       let currentPos = 0;
       let minPos = 0;
@@ -389,7 +389,7 @@ export default function FluidShaderBackground() {
         const vh = window.innerHeight;
         currentPos = (vh / 2) - rect.top;
 
-        // minPos is the currentPos value when window.scrollY = 0 (top of document)
+        // minPos is currentPos when top of document is at window.scrollY = 0
         const containerTop = rect.top + window.scrollY;
         minPos = (vh / 2) - containerTop;
       } else {
@@ -397,11 +397,7 @@ export default function FluidShaderBackground() {
         minPos = 0;
       }
 
-      // Smooth horizontal sway:
-      // When scrolled to top (currentPos <= minPos): 0vw (perfectly centered on load & scroll-top)
-      // Top -> M1 (minPos to 500px): smooth half-cosine arc from 0vw to +18vw (M1 right peak)
-      // M1 -> M6 (500px to 5500px): harmonic sway between +18vw and -18vw
-      // M6 -> Footer (5500px to 6000px): smooth half-cosine arc from -18vw back to 0vw
+      // Smooth horizontal sway calculation
       const maxShiftVw = 18;
       let xShiftVw = 0;
 
@@ -418,7 +414,7 @@ export default function FluidShaderBackground() {
         xShiftVw = -maxShiftVw * (0.5 + 0.5 * Math.cos(exitProgress * Math.PI));
       }
 
-      // Effective active progress for zoom, blur, and glow (0 at top header & footer, 1 at peak timeline end)
+      // Timeline progress calculation
       let timelineProgress = 0;
       if (currentPos <= minPos) {
         timelineProgress = 0;
@@ -430,7 +426,6 @@ export default function FluidShaderBackground() {
         timelineProgress = 1 - exitProgress;
       }
 
-      // Zoom range: 1.25 unzoomed (at header and footer) down to 0.90 at peak
       const targetZoom = 1.25 - timelineProgress * 0.35;
       const logoScale = 1.25 / targetZoom;
 
@@ -457,8 +452,9 @@ export default function FluidShaderBackground() {
       }
 
       // 2. Shift and scale X logo in tandem, plus soft blur dissolve
+      const logoContainer = logoContainerRef.current;
       if (logoContainer) {
-        const xBlur = timelineProgress * 5; // gentle blur dissolve up to 5px, 0px at header/footer
+        const xBlur = timelineProgress * 5;
         logoContainer.style.transform = `translate(${xShiftVw}vw, 0px) scale(${logoScale})`;
         logoContainer.style.filter = `blur(${xBlur}px)`;
 
@@ -476,18 +472,18 @@ export default function FluidShaderBackground() {
         logoContainer.style.setProperty("--x-shadow-2", shadow2);
       }
 
-      // 3. Dynamic Backdrop Blur & Film Grain ramping over timeline scroll, returning to base at header/footer
+      // 3. Dynamic Backdrop Blur & Film Grain ramping over timeline scroll
       const blurOverlay = blurOverlayRef.current;
       if (blurOverlay) {
-        const backdropBlur = 10 + timelineProgress * 14; // 10px at header/footer, up to 24px
-        const saturate = 1.3 + timelineProgress * 0.3; // 1.3 at header/footer, up to 1.6
+        const backdropBlur = 10 + timelineProgress * 14;
+        const saturate = 1.3 + timelineProgress * 0.3;
         blurOverlay.style.backdropFilter = `blur(${backdropBlur}px) saturate(${saturate}) contrast(1.02)`;
         blurOverlay.style.setProperty("-webkit-backdrop-filter", `blur(${backdropBlur}px) saturate(${saturate}) contrast(1.02)`);
       }
 
       const grainOverlay = grainOverlayRef.current;
       if (grainOverlay) {
-        grainOverlay.style.opacity = `${0.09 + timelineProgress * 0.07}`; // 0.09 at header/footer, up to 0.16
+        grainOverlay.style.opacity = `${0.09 + timelineProgress * 0.07}`;
       }
 
       const fromColor = interpolateHex("#1f093f", "#001c13", targetColorTransition);
@@ -500,11 +496,40 @@ export default function FluidShaderBackground() {
       document.documentElement.style.setProperty("--logo-hue-rotate", `${rotateDeg}deg`);
     };
 
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll();
+    const initScrollTrigger = () => {
+      if (!active) return;
+      const timelineSection = document.getElementById("timeline-section");
+      if (!timelineSection) {
+        setTimeout(initScrollTrigger, 100);
+        return;
+      }
+
+      shaderParams.current = { zoom: 1.25, colorTransition: 0.0 };
+
+      // Bind updateShaderState to GSAP ScrollTrigger scrubbed animation
+      tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: timelineSection,
+          start: "top bottom",
+          end: "bottom top",
+          scrub: 0.8,
+          onUpdate: updateShaderState,
+          invalidateOnRefresh: true,
+        }
+      });
+
+      // Run initial frame alignment
+      updateShaderState();
+    };
+
+    initScrollTrigger();
 
     return () => {
-      window.removeEventListener("scroll", handleScroll);
+      active = false;
+      if (tl) {
+        tl.kill();
+        tl.scrollTrigger?.kill();
+      }
       if (canvasRef.current) {
         canvasRef.current.style.transform = "none";
         canvasRef.current.style.opacity = "0.45";
