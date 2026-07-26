@@ -196,7 +196,7 @@ export default function FluidShaderBackground() {
   const shaderParams = useRef({ zoom: 1.25, colorTransition: 0.0 });
 
   useEffect(() => {
-    if (pathname === "/team") return;
+    if (pathname === "/team" || pathname === "/gallery") return;
     const canvas = canvasRef.current;
     if (!canvas) return;
 
@@ -317,10 +317,10 @@ export default function FluidShaderBackground() {
       container.style.opacity = "1";
       if (logoContainer) {
         logoContainer.style.transform = "scale(1)";
-        logoContainer.style.opacity = "1";
+        logoContainer.style.opacity = pathname === "/gallery" ? "0" : "1";
       }
       if (canvas) {
-        canvas.style.opacity = pathname === "/timeline" ? "0.65" : "0.45";
+        canvas.style.opacity = pathname === "/gallery" ? "0" : pathname === "/timeline" ? "0.65" : "0.45";
       }
       return;
     }
