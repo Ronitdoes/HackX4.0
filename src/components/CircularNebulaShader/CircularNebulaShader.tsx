@@ -56,6 +56,32 @@ const FRAGMENT_SHADER_SOURCE = `
     return v;
   }
 
+  // One-directional bottom-to-top sweep angle & alpha generator with cooldown.
+  vec2 getPhaseAndAlpha(float t) {
+    float tSweep = 2.8; // duration of sweep along the arc from bottom to top (seconds)
+    float tCool = 1.2;  // cooldown pause duration after reaching top (seconds)
+    float totalPeriod = tSweep + tCool;
+    float localTime = mod(t, totalPeriod);
+
+    // Left edge arc angle range (centered at PI)
+    // minAngle is at the bottom of the left edge, maxAngle is at the top.
+    float minAngle = 3.14159265 - 0.85;
+    float maxAngle = 3.14159265 + 0.85;
+
+    if (localTime < tSweep) {
+      float u = localTime / tSweep;
+      // Quintic ease in-out for smooth acceleration and deceleration
+      float ease = u * u * u * (u * (u * 6.0 - 15.0) + 10.0);
+      float phase = mix(minAngle, maxAngle, ease);
+      // Smooth fade in as it leaves bottom, smooth fade out as it reaches top
+      float alpha = smoothstep(0.0, 0.12, u) * (1.0 - smoothstep(0.88, 1.0, u));
+      return vec2(phase, alpha);
+    } else {
+      // Cooldown phase: reset to bottom, zero opacity
+      return vec2(minAngle, 0.0);
+    }
+  }
+
   void main() {
     // Work in aspect-corrected coordinates so the moving light stays circular
     // on every viewport.
@@ -68,22 +94,19 @@ const FRAGMENT_SHADER_SOURCE = `
     vec3 finalColor = vec3(0.0);
     vec3 glowColor = vec3(0.55, 0.22, 0.90);
 
-    // The emitter travels just outside the left edge. Instead of one blurred
-    // blob, draw its recent positions along the same circular path.
+    // The emitter travels just outside the left edge in a bottom-to-top arc sweep.
     float orbitRadius = aspect * 0.5 + 0.15;
-    float orbitSpeed = 0.5;
-    float phase = uTime * orbitSpeed;
     vec2 orbitCenter = vec2(0.2, 0.0);
+    vec2 phaseAndAlpha = getPhaseAndAlpha(uTime);
+    float phase = phaseAndAlpha.x;
+    float lightAlpha = phaseAndAlpha.y;
     float trailGlow = 0.0;
 
-    // Dense sampling makes the wake a continuous ribbon when the orbit crosses
-    // the viewport edge. Normalize each sample so the total brightness stays
-    // consistent with the previous 22-sample trail.
-    for (int i = 0; i < 22; i++) {
+    // Dense sampling makes the wake a continuous ribbon when sweeping the edge (increased to 40 samples).
+    for (int i = 0; i < 31; i++) {
       float index = float(i);
-      float age = index / 21.0;
-      // The tail samples further apart as it ages, giving it a natural fade
-      // instead of a stack of visible circular stamps.
+      float age = index / 30.0;
+      // Original tail calculation preserved as requested.
       float trailPhase = phase - age * 2.85;
       vec2 trailPoint = orbitCenter + vec2(cos(trailPhase), -sin(trailPhase)) * orbitRadius;
       vec2 toTrail = uv - trailPoint;
@@ -93,7 +116,7 @@ const FRAGMENT_SHADER_SOURCE = `
       float verticalStretch = mix(1.60, 0.42, age);
       vec2 ellipse = vec2(toTrail.x * horizontalCompression, toTrail.y * verticalStretch);
       float width = mix(44.0, 5.0, age);
-      float fade = exp(-age * 1.65) * mix(0.78, 0.07, age) * 0.52;
+      float fade = exp(-age * 1.65) * mix(0.78, 0.07, age) * 0.52 * (22.0 / 40.0);
       trailGlow += exp(-dot(ellipse, ellipse) * width) * fade;
     }
 
@@ -102,10 +125,10 @@ const FRAGMENT_SHADER_SOURCE = `
     vec2 headOffset = uv - head;
     headOffset.x *= 3.45;
     headOffset.y *= 1.30;
-    float atmosphericBloom = exp(-dot(headOffset, headOffset) * 10.0) * 0.18;
-    float light = min(trailGlow * 0.30 + atmosphericBloom, 1.0);
-    // Intensity only: preserve the point and trail's current geometry.
-    finalColor += glowColor * light * 1.85;
+    float atmosphericBloom = exp(-dot(headOffset, headOffset) * 10.0) * 0.22;
+    float light = min(trailGlow * 0.36 + atmosphericBloom, 1.0);
+    // Intensity boost: slightly richer, more luminous purple sweep glow.
+    finalColor += glowColor * light * 2.40 * lightAlpha;
 
     // Original pulsating nebula on the right.
     vec2 nebulaCenter = vec2(aspect * 0.5 + 0.07, 0.0);
@@ -125,8 +148,8 @@ const FRAGMENT_SHADER_SOURCE = `
     float outerGlow = exp(-max(distToNebula - baseRadius, 0.0) * 5.0) * mix(0.22, 0.50, pulse);
     float coreRadius = mix(0.012, 0.04, pulse);
     float innerGlow = exp(-max(length(toNebula) - coreRadius - gasNoise * 0.045, 0.0) * 11.0) * mix(0.12, 0.35, pulse);
-    // Intensity only: preserve the existing nebula radius and falloff.
-    finalColor += glowColor * (outerGlow + innerGlow) * 1.05;
+    // Intensity boost: slightly richer nebula glow.
+    finalColor += glowColor * (outerGlow + innerGlow) * 1.30;
 
     float grain = (fract(sin(dot(vUv + uTime * 0.005, vec2(12.9898, 78.233))) * 43758.5453) - 0.5) * 0.022;
     finalColor += vec3(grain);
@@ -135,8 +158,22 @@ const FRAGMENT_SHADER_SOURCE = `
   }
 `;
 
-export default function CircularNebulaShader() {
+interface CircularNebulaShaderProps {
+  active?: boolean;
+  animate?: boolean;
+}
+
+export default function CircularNebulaShader({ active = true, animate = true }: CircularNebulaShaderProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const activeRef = useRef(active);
+  const animateRef = useRef(animate);
+  const syncLoopRef = useRef<(() => void) | null>(null);
+
+  useEffect(() => {
+    activeRef.current = active;
+    animateRef.current = animate;
+    syncLoopRef.current?.();
+  }, [active, animate]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -163,16 +200,27 @@ export default function CircularNebulaShader() {
 
     const vertexShader = compileShader(VERTEX_SHADER_SOURCE, gl.VERTEX_SHADER);
     const fragmentShader = compileShader(FRAGMENT_SHADER_SOURCE, gl.FRAGMENT_SHADER);
-    if (!vertexShader || !fragmentShader) return;
+    if (!vertexShader || !fragmentShader) {
+      if (vertexShader) gl.deleteShader(vertexShader);
+      if (fragmentShader) gl.deleteShader(fragmentShader);
+      return;
+    }
 
     const program = gl.createProgram();
-    if (!program) return;
+    if (!program) {
+      gl.deleteShader(vertexShader);
+      gl.deleteShader(fragmentShader);
+      return;
+    }
     gl.attachShader(program, vertexShader);
     gl.attachShader(program, fragmentShader);
     gl.linkProgram(program);
 
     if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
       console.error("Program link error:", gl.getProgramInfoLog(program));
+      gl.deleteProgram(program);
+      gl.deleteShader(vertexShader);
+      gl.deleteShader(fragmentShader);
       return;
     }
 
@@ -198,26 +246,27 @@ export default function CircularNebulaShader() {
     const timeLoc = gl.getUniformLocation(program, "uTime");
     const resolutionLoc = gl.getUniformLocation(program, "uResolution");
 
-    let animationFrameId: number;
+    let animationFrameId: number | null = null;
+    let isLoopRunning = false;
     const startTime = performance.now();
 
     let resizeFrame: number | undefined;
     const resize = () => {
       if (resizeFrame !== undefined) cancelAnimationFrame(resizeFrame);
       resizeFrame = requestAnimationFrame(() => {
-      const dpr = Math.min(window.devicePixelRatio || 1, 1.0); // Capped for performance
-      const rect = canvas.getBoundingClientRect();
-      const width = rect.width;
-      const height = rect.height;
+        const dpr = Math.min(window.devicePixelRatio || 1, 1.0); // Capped for performance
+        const rect = canvas.getBoundingClientRect();
+        const width = rect.width;
+        const height = rect.height;
 
-      canvas.width = width * dpr;
-      canvas.height = height * dpr;
+        canvas.width = width * dpr;
+        canvas.height = height * dpr;
 
-      gl.viewport(0, 0, canvas.width, canvas.height);
-      if (resolutionLoc) {
-        gl.uniform2f(resolutionLoc, canvas.width, canvas.height);
-      }
-      resizeFrame = undefined;
+        gl.viewport(0, 0, canvas.width, canvas.height);
+        if (resolutionLoc) {
+          gl.uniform2f(resolutionLoc, canvas.width, canvas.height);
+        }
+        resizeFrame = undefined;
       });
     };
 
@@ -225,11 +274,12 @@ export default function CircularNebulaShader() {
     resizeObserver.observe(canvas);
     resize();
 
-    let isPageVisible = document.visibilityState === "visible";
     const render = () => {
-      if (!isPageVisible) return;
-      animationFrameId = requestAnimationFrame(render);
-
+      animationFrameId = null;
+      if (!activeRef.current || document.visibilityState !== "visible") {
+        isLoopRunning = false;
+        return;
+      }
       const elapsedSeconds = (performance.now() - startTime) / 1000;
       if (timeLoc) {
         gl.uniform1f(timeLoc, elapsedSeconds);
@@ -239,23 +289,46 @@ export default function CircularNebulaShader() {
       gl.clear(gl.COLOR_BUFFER_BIT);
 
       gl.drawArrays(gl.TRIANGLES, 0, 6);
-    };
 
-    const handleVisibilityChange = () => {
-      isPageVisible = document.visibilityState === "visible";
-      if (isPageVisible) {
-        requestAnimationFrame(render);
+      if (animateRef.current) {
+        animationFrameId = requestAnimationFrame(render);
+      } else {
+        isLoopRunning = false;
       }
     };
 
+    const startLoop = () => {
+      if (!isLoopRunning && activeRef.current && document.visibilityState === "visible") {
+        isLoopRunning = true;
+        animationFrameId = requestAnimationFrame(render);
+      }
+    };
+
+    const stopLoop = () => {
+      if (animationFrameId !== null) {
+        cancelAnimationFrame(animationFrameId);
+        animationFrameId = null;
+      }
+      isLoopRunning = false;
+    };
+
+    const syncLoop = () => {
+      if (activeRef.current && document.visibilityState === "visible") startLoop();
+      else stopLoop();
+    };
+
+    const handleVisibilityChange = syncLoop;
+
     document.addEventListener("visibilitychange", handleVisibilityChange);
 
-    requestAnimationFrame(render);
+    syncLoopRef.current = syncLoop;
+    syncLoop();
 
     return () => {
       resizeObserver.disconnect();
       document.removeEventListener("visibilitychange", handleVisibilityChange);
-      cancelAnimationFrame(animationFrameId);
+      stopLoop();
+      if (syncLoopRef.current === syncLoop) syncLoopRef.current = null;
       if (resizeFrame !== undefined) cancelAnimationFrame(resizeFrame);
 
       gl.deleteBuffer(buffer);

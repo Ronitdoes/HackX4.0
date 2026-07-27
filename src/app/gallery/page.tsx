@@ -374,7 +374,40 @@ export default function Home() {
   }, []);
 
   return (
-    <main className="min-h-screen overflow-x-clip bg-transparent text-[#f3f0e6]">
+    <main className="min-h-screen overflow-x-clip bg-transparent text-[#f3f0e6] relative">
+      {/* Static Purple Nebula Background */}
+      <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden bg-[#070210]">
+        {/* Deep Cosmic Purple & Indigo Nebula Glows */}
+        <div
+          className="absolute inset-0 opacity-90"
+          style={{
+            background: `
+              radial-gradient(ellipse 80% 60% at 20% 15%, rgba(147, 51, 234, 0.35) 0%, rgba(88, 28, 135, 0.18) 45%, transparent 70%),
+              radial-gradient(ellipse 70% 50% at 85% 35%, rgba(192, 132, 252, 0.25) 0%, rgba(126, 34, 206, 0.15) 40%, transparent 65%),
+              radial-gradient(circle 600px at 50% 65%, rgba(168, 85, 247, 0.28) 0%, rgba(79, 70, 229, 0.12) 50%, transparent 75%),
+              radial-gradient(ellipse 60% 70% at 30% 85%, rgba(217, 70, 239, 0.2) 0%, rgba(109, 40, 217, 0.1) 45%, transparent 70%),
+              radial-gradient(ellipse 90% 80% at 75% 90%, rgba(99, 102, 241, 0.22) 0%, rgba(58, 12, 163, 0.15) 50%, transparent 75%)
+            `,
+          }}
+        />
+
+        {/* Soft Nebula Dust Texture Glows */}
+        <div
+          className="absolute inset-0 opacity-40 mix-blend-screen"
+          style={{
+            background: `
+              radial-gradient(circle 350px at 40% 25%, rgba(236, 72, 153, 0.25), transparent 70%),
+              radial-gradient(circle 450px at 70% 60%, rgba(168, 85, 247, 0.3), transparent 70%),
+              radial-gradient(circle 300px at 15% 70%, rgba(129, 140, 248, 0.2), transparent 70%)
+            `,
+            filter: "blur(40px)",
+          }}
+        />
+
+        {/* Ambient Vignette Overlay */}
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(4,1,12,0.6)_100%)]" />
+      </div>
+
       <svg className="fixed pointer-events-none opacity-0 w-0 h-0" aria-hidden="true">
         <defs>
           <clipPath id="gallery-scroll-clip" clipPathUnits="objectBoundingBox">
