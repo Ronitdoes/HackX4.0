@@ -1,8 +1,7 @@
 "use client";
 
-import { AnimatePresence, motion, useInView, useScroll, useSpring, useTransform, useVelocity, type MotionValue } from "framer-motion";
-import { memo, useCallback, useEffect, useRef, useState } from "react";
-import Image from "next/image";
+import { AnimatePresence, motion, useScroll, useSpring, useTransform, useVelocity } from "framer-motion";
+import { memo, useCallback, useEffect, useState } from "react";
 import WaterRippleImage from "@/components/WaterRippleImage";
 
 const getImageUrl = (imagePath: string) => {
@@ -301,7 +300,6 @@ const GalleryCard = memo(function GalleryCard({
   priority,
   onEnter,
   onLeave,
-  onClick,
 }: {
   project: Project;
   isActive: boolean;
@@ -309,15 +307,12 @@ const GalleryCard = memo(function GalleryCard({
   priority: boolean;
   onEnter: (project: Project) => void;
   onLeave: () => void;
-  onClick: (project: Project) => void;
 }) {
   return (
     <article className="mb-2 break-inside-avoid [contain:paint]">
       <motion.div
         aria-label={project.title}
-        role="button"
-        tabIndex={0}
-        className="cursor-crosshair overflow-hidden bg-transparent transition-opacity duration-500 relative"
+        className="overflow-hidden bg-transparent transition-opacity duration-500 relative"
         style={{
           opacity: isDimmed ? 0.3 : 1,
           clipPath: "url(#gallery-scroll-clip)",
@@ -327,8 +322,6 @@ const GalleryCard = memo(function GalleryCard({
         onPointerEnter={() => onEnter(project)}
         onPointerLeave={onLeave}
         onPointerCancel={onLeave}
-        onClick={() => onClick(project)}
-        onKeyDown={(e) => { if (e.key === "Enter") onClick(project); }}
       >
         <WaterRippleImage imageUrl={project.image} isActive={isActive} priority={priority} />
       </motion.div>
@@ -338,7 +331,6 @@ const GalleryCard = memo(function GalleryCard({
 
 export default function Home() {
   const [hoveredProject, setHoveredProject] = useState<typeof PROJECTS[0] | null>(null);
-  const [selectedProject, setSelectedProject] = useState<typeof PROJECTS[0] | null>(null);
   const { scrollY } = useScroll();
   const scrollVelocity = useVelocity(scrollY);
   const smoothVelocity = useSpring(scrollVelocity, { damping: 45, stiffness: 300 });
@@ -381,27 +373,6 @@ export default function Home() {
     setHoveredProject(null);
   }, []);
 
-  const handleClick = useCallback((project: Project) => {
-    setSelectedProject(project);
-  }, []);
-
-  const closeLightbox = useCallback(() => setSelectedProject(null), []);
-
-  useEffect(() => {
-    if (!selectedProject) return;
-    const handleKey = (e: KeyboardEvent) => { if (e.key === "Escape") closeLightbox(); };
-    document.addEventListener("keydown", handleKey);
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.removeEventListener("keydown", handleKey);
-      document.body.style.overflow = "";
-    };
-  }, [selectedProject, closeLightbox]);
-
-  if (typeof window !== "undefined") {
-    window.history.scrollRestoration = "manual";
-  }
-
   return (
     <main className="min-h-screen overflow-x-clip bg-transparent text-[#f3f0e6]">
       <svg className="fixed pointer-events-none opacity-0 w-0 h-0" aria-hidden="true">
@@ -434,74 +405,6 @@ export default function Home() {
         )}
       </AnimatePresence>
 
-      <AnimatePresence>
-        {selectedProject && (
-          <motion.div
-            className="fixed inset-0 z-50 flex items-center justify-center cursor-pointer"
-            onClick={closeLightbox}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.5, ease: "easeInOut" }}
-          >
-            <motion.div
-              className="absolute inset-0 bg-black/90"
-              onClick={closeLightbox}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.5, ease: "easeInOut" }}
-            />
-
-            <motion.div
-              className="relative z-10 flex flex-col items-center w-full max-w-[90vw] max-h-[90vh]"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.6, ease: "easeInOut" }}
-            >
-              <div className="relative w-full max-h-[80vh] rounded-lg overflow-hidden">
-                <Image
-                  src={selectedProject.image}
-                  alt={selectedProject.title}
-                  width={0}
-                  height={0}
-                  sizes="90vw"
-                  unoptimized
-                  priority
-                  className="w-full h-auto max-h-[80vh] object-contain"
-                  style={{ height: "auto" }}
-                />
-              </div>
-
-              <motion.div
-                className="mt-6 text-center"
-                initial={{ opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, ease: "easeInOut", delay: 0.2 }}
-              >
-                <h2 className="font-sans leading-none [font-size:clamp(1.5rem,4vw,3rem)] font-bold tracking-tight text-[#faebac]">
-                  {selectedProject.hoverText.map((part, i) => (
-                    <span key={i}>{part.text}</span>
-                  ))}
-                </h2>
-                <p className="mt-2 text-sm uppercase tracking-[0.2em] opacity-50">{selectedProject.category}</p>
-                <p className="mt-3 max-w-md mx-auto text-base leading-relaxed opacity-70">
-                  {selectedProject.description}
-                </p>
-              </motion.div>
-
-              <button
-                onClick={closeLightbox}
-                className="absolute -top-12 right-0 text-white/60 hover:text-white transition-colors text-sm uppercase tracking-[0.2em]"
-              >
-                Close
-              </button>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
       <section className="relative z-20 mx-auto w-full max-w-[1100px] px-6 pb-28 pt-48 sm:px-10 lg:px-0">
         <div className="columns-1 gap-2 md:columns-2">
           {PROJECTS.map((project, index) => (
@@ -513,7 +416,6 @@ export default function Home() {
               priority={index < 7}
               onEnter={handleEnter}
               onLeave={handleLeave}
-              onClick={handleClick}
             />
           ))}
         </div>
