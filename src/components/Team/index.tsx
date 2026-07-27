@@ -25,8 +25,9 @@ export default function Team() {
   const heroScale = useTransform(scrollYProgress, [0, 0.7], [1, 45]);
   // Opacity: visible → gone
   const heroOpacity = useTransform(scrollYProgress, [0.35, 0.7], [1, 0]);
-  // Blur: 0px → 20px
-  const heroBlur = useTransform(scrollYProgress, [0.3, 0.7], ["blur(0px)", "blur(20px)"]);
+  // Blur: 0px → 8px (kept light — blurring a heavily-scaled element every
+  // scroll frame is very GPU-expensive, so the range is small and late)
+  const heroBlur = useTransform(scrollYProgress, [0.45, 0.7], ["blur(0px)", "blur(8px)"]);
 
   /* ── Entry animations ── */
   const titleContainerVariants = {
@@ -102,6 +103,7 @@ export default function Team() {
               opacity: heroOpacity,
               filter: heroBlur,
               transformOrigin: "57.5% 75%",
+              willChange: "transform, opacity, filter",
             }}
           >
             <div className="relative flex flex-col items-center justify-center max-w-[95vw] md:max-w-[85vw] lg:max-w-[75vw]">
@@ -221,8 +223,9 @@ export default function Team() {
                     <motion.div
                       key={member.id || member.name}
                       initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.35, delay: Math.min(i * 0.04, 0.6) }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true, margin: "0px 0px -10% 0px" }}
+                      transition={{ duration: 0.35, delay: Math.min(i * 0.04, 0.3) }}
                     >
                       <TeamCard member={member} index={i} />
                     </motion.div>

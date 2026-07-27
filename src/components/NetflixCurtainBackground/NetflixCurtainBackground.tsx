@@ -168,12 +168,25 @@ export default function NetflixCurtainBackground({ scrollYProgress }: NetflixCur
   const openUniformRef = useRef<number>(0.0);
   const glRef = useRef<WebGLRenderingContext | null>(null);
   const openLocRef = useRef<WebGLUniformLocation | null>(null);
+  // Whether the curtain is still visible on screen. Once scrolled past the
+  // fade-out point it is fully transparent, so there is no reason to keep
+  // burning GPU frames redrawing it.
+  const isVisibleRef = useRef<boolean>(true);
+  const requestRenderRef = useRef<() => void>(() => {});
 
   // Translate scrollYProgress (0 to 1) into curtain open progress (0 to 1)
   // Curtain opens completely by scroll progress 0.35
   useMotionValueEvent(scrollYProgress, "change", (latest) => {
     const progress = Math.min(latest / 0.35, 1.0);
     openUniformRef.current = progress;
+
+    // Curtain fully fades out by scroll progress 0.7 (see Team/index.tsx).
+    const visible = latest < 0.72;
+    if (visible !== isVisibleRef.current) {
+      isVisibleRef.current = visible;
+      if (visible) requestRenderRef.current();
+    }
+
     if (glRef.current && openLocRef.current) {
       glRef.current.uniform1f(openLocRef.current, progress);
     }
@@ -265,7 +278,14 @@ export default function NetflixCurtainBackground({ scrollYProgress }: NetflixCur
     window.addEventListener("resize", resize);
     resize();
 
+    let isRunning = false;
+
     const render = () => {
+      if (document.visibilityState !== "visible" || !isVisibleRef.current) {
+        isRunning = false;
+        return;
+      }
+
       const elapsedSeconds = (performance.now() - startTime) / 1000;
       gl.uniform1f(timeLoc, elapsedSeconds);
       gl.uniform1f(openLoc, openUniformRef.current);
@@ -278,10 +298,29 @@ export default function NetflixCurtainBackground({ scrollYProgress }: NetflixCur
       animationFrameId = requestAnimationFrame(render);
     };
 
-    render();
+    const startLoop = () => {
+      if (!isRunning && document.visibilityState === "visible" && isVisibleRef.current) {
+        isRunning = true;
+        animationFrameId = requestAnimationFrame(render);
+      }
+    };
+
+    // Allow the scroll handler to wake the loop back up when the curtain
+    // scrolls back into view.
+    requestRenderRef.current = startLoop;
+
+    const handleVisibility = () => {
+      if (document.visibilityState === "visible") {
+        startLoop();
+      }
+    };
+
+    document.addEventListener("visibilitychange", handleVisibility);
+    startLoop();
 
     return () => {
       window.removeEventListener("resize", resize);
+      document.removeEventListener("visibilitychange", handleVisibility);
       cancelAnimationFrame(animationFrameId);
 
       gl.deleteBuffer(buffer);

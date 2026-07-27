@@ -17,9 +17,9 @@ export default function LenisProvider({ children }: { children: React.ReactNode 
       lenisRef.current?.lenis?.raf(time * 1000);
     }
 
-    // GSAP's default lag smoothing rewrites timestamps after an expensive frame.
-    // Lenis then tries to catch up in visible steps instead of tracking input.
-    gsap.ticker.lagSmoothing(0);
+    // Keep GSAP's default lag smoothing so expensive frames (WebGL backgrounds)
+    // don't cause the scroll interpolation to stutter/jump.
+    gsap.ticker.lagSmoothing(500, 33);
     gsap.ticker.add(update);
 
     // Refresh ScrollTrigger to ensure accurate positions after Lenis initializes
@@ -36,9 +36,9 @@ export default function LenisProvider({ children }: { children: React.ReactNode 
       ref={lenisRef}
       autoRaf={false}
       options={{
-        // Keep the cinematic interpolation, without making navigation feel
-        // detached from the user's wheel or trackpad input.
-        duration: 0.85,
+        // Slightly shorter interpolation keeps navigation responsive to the
+        // user's wheel/trackpad input while staying smooth.
+        duration: 0.6,
         easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
         orientation: "vertical",
         gestureOrientation: "vertical",

@@ -10,7 +10,7 @@ interface TeamCardProps {
   index?: number;
 }
 
-export const TeamCard: React.FC<TeamCardProps> = ({ member, index = 0 }) => {
+export const TeamCard: React.FC<TeamCardProps> = React.memo(({ member, index = 0 }) => {
   const [imageError, setImageError] = useState(false);
 
   const getInitials = (name: string) => {
@@ -37,6 +37,8 @@ export const TeamCard: React.FC<TeamCardProps> = ({ member, index = 0 }) => {
           src={member.image}
           alt={member.name}
           onError={() => setImageError(true)}
+          loading="lazy"
+          decoding="async"
           className="absolute inset-0 w-full h-full object-cover"
         />
       ) : (
@@ -112,4 +114,6 @@ export const TeamCard: React.FC<TeamCardProps> = ({ member, index = 0 }) => {
       </div>
     </div>
   );
-};
+});
+
+TeamCard.displayName = "TeamCard";
