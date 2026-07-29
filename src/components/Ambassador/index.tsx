@@ -76,7 +76,7 @@ export default function Ambassador() {
   return (
     <div className="relative w-full min-h-screen bg-transparent text-white flex flex-col">
       {/* Background soft glows */}
-      <div 
+      <div
         className="absolute top-[20%] left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full pointer-events-none select-none z-0 filter blur-[150px] opacity-20"
         style={{
           background: "radial-gradient(circle, var(--color-violet) 0%, var(--color-magenta) 50%, transparent 100%)",
@@ -104,7 +104,7 @@ export default function Ambassador() {
                 Be the representative of your campus!
               </motion.span>
             </div>
-            
+
             {/* Heading Line 1 */}
             <div className="overflow-hidden py-1 md:py-2">
               <motion.span
@@ -176,13 +176,13 @@ export default function Ambassador() {
 
       {/* FAQ Component Section */}
       <section id="faq" className="relative w-full z-10">
-        <FAQ 
-          data={AMBASSADOR_FAQ_DATA} 
+        <FAQ
+          data={AMBASSADOR_FAQ_DATA}
           heading={
             <>
               Campus Ambassador <br />program faqs.
             </>
-          } 
+          }
         />
       </section>
     </div>

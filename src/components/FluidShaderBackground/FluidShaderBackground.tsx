@@ -195,6 +195,9 @@ export default function FluidShaderBackground() {
   const grainOverlayRef = useRef<SVGSVGElement>(null);
   const shaderParams = useRef({ zoom: 1.25, colorTransition: 0.0 });
   const [isMobile, setIsMobile] = useState(false);
+  const defaultLogoTransform = pathname === "/ambassador" && isMobile
+    ? "translate(-10vw, -8vh) scale(1)"
+    : "scale(1)";
 
   useEffect(() => {
     const checkMobile = () => {
@@ -376,7 +379,7 @@ export default function FluidShaderBackground() {
     if (pathname !== "/team") {
       container.style.opacity = "1";
       if (logoContainer) {
-        logoContainer.style.transform = "scale(1)";
+        logoContainer.style.transform = defaultLogoTransform;
         logoContainer.style.opacity = pathname === "/gallery" ? "0" : "1";
       }
       if (canvas) {
@@ -416,7 +419,7 @@ export default function FluidShaderBackground() {
     window.addEventListener("scroll", handleScroll, { passive: true });
     handleScroll(); // initial
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [pathname]);
+  }, [defaultLogoTransform, pathname]);
 
   /* Scroll transition for Timeline page *//////////////
   useEffect(() => {
@@ -600,7 +603,7 @@ export default function FluidShaderBackground() {
         canvasRef.current.style.opacity = "0.45";
       }
       if (logoContainerRef.current) {
-        logoContainerRef.current.style.transform = "scale(1)";
+        logoContainerRef.current.style.transform = defaultLogoTransform;
         logoContainerRef.current.style.filter = "blur(0px)";
       }
       if (blurOverlayRef.current) {
@@ -615,7 +618,7 @@ export default function FluidShaderBackground() {
       document.documentElement.style.setProperty("--bg-gradient-via", "#090416");
       document.documentElement.style.setProperty("--bg-gradient-to", "#04020a");
     };
-  }, [pathname]);
+  }, [defaultLogoTransform, pathname]);
 
   /* Scroll transition for SDG section on homepage */
   useEffect(() => {
