@@ -1,7 +1,7 @@
 // src/components/FluidShaderBackground/FluidShaderBackground.tsx
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -194,6 +194,16 @@ export default function FluidShaderBackground() {
   const blurOverlayRef = useRef<HTMLDivElement>(null);
   const grainOverlayRef = useRef<SVGSVGElement>(null);
   const shaderParams = useRef({ zoom: 1.25, colorTransition: 0.0 });
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
   useEffect(() => {
     if (pathname === "/team" || pathname === "/gallery") return;
@@ -448,10 +458,13 @@ export default function FluidShaderBackground() {
       }
 
       // Smooth horizontal sway calculation
-      const maxShiftVw = 18;
+      const isMobileView = window.innerWidth < 768;
+      const maxShiftVw = isMobileView ? 0 : 18;
       let xShiftVw = 0;
 
-      if (currentPos <= minPos) {
+      if (isMobileView) {
+        xShiftVw = 0;
+      } else if (currentPos <= minPos) {
         xShiftVw = 0;
       } else if (currentPos < 500) {
         const startDist = 500 - minPos;
@@ -497,7 +510,7 @@ export default function FluidShaderBackground() {
       // 1. Shift WebGL Canvas horizontally and ramp opacity
       const canvas = canvasRef.current;
       if (canvas) {
-        canvas.style.transform = `translateX(${xShiftVw}vw)`;
+        canvas.style.transform = isMobileView ? "none" : `translateX(${xShiftVw}vw)`;
         canvas.style.opacity = `${0.45 + timelineProgress * 0.20}`;
       }
 
@@ -505,7 +518,9 @@ export default function FluidShaderBackground() {
       const logoContainer = logoContainerRef.current;
       if (logoContainer) {
         const xBlur = timelineProgress * 5;
-        logoContainer.style.transform = `translate(${xShiftVw}vw, 0px) scale(${logoScale})`;
+        logoContainer.style.transform = isMobileView
+          ? `scale(${logoScale})`
+          : `translate(${xShiftVw}vw, 0px) scale(${logoScale})`;
         logoContainer.style.filter = `blur(${xBlur}px)`;
 
         const logoStop0 = interpolateHex("#5200c7", "#005035", targetColorTransition);

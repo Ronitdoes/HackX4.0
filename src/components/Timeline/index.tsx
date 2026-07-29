@@ -44,17 +44,21 @@ const milestones = [
 
 export default function Timeline() {
   const [mounted, setMounted] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     setMounted(true);
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
   const containerRef = useRef<HTMLDivElement>(null);
-
-  // Track scroll progress manually to bypass hydration/ref lifecycle issues
   const scrollYProgress = useMotionValue(0);
 
-  // Smooth scroll progress using a spring
   const progressSpring = useSpring(scrollYProgress, {
     stiffness: 80,
     damping: 25,
@@ -69,8 +73,7 @@ export default function Timeline() {
       const rect = containerRef.current.getBoundingClientRect();
       const viewportHeight = window.innerHeight;
 
-      // Calculate scroll progress from start center to end center
-      const startPos = viewportHeight / 2;
+      const startPos = viewportHeight * 0.5;
       const currentPos = startPos - rect.top;
       const totalDist = rect.height;
 
@@ -79,63 +82,68 @@ export default function Timeline() {
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
-    // Run on mount
+    window.addEventListener("resize", handleScroll, { passive: true });
     handleScroll();
 
-    // Run on a short delay to ensure Lenis has fully initialized and page layout is stable
     const timer = setTimeout(handleScroll, 100);
 
     return () => {
       window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleScroll);
       clearTimeout(timer);
     };
   }, [mounted, scrollYProgress]);
 
+  // Dimension Constants
+  const DESKTOP_HEIGHT = 5400;
+  const DESKTOP_STEP = 850;
+  const MOBILE_HEIGHT = 3800;
+  const MOBILE_STEP = 600;
 
+  const totalHeight = isMobile ? MOBILE_HEIGHT : DESKTOP_HEIGHT;
+  const stepHeight = isMobile ? MOBILE_STEP : DESKTOP_STEP;
+  const amplitude = isMobile ? 140 : 150;
 
-  // Map scroll progress to the Y position along the SVG viewBox (0 to 5500)
-  const yPosition = useTransform(progressSpring, [0, 1], [0, 5500], { clamp: true });
+  // Sine wave X coordinate formula based on Y position (in 1000px viewBox)
+  const getX = (y: number) => {
+    return 500 + amplitude * Math.sin(y * (Math.PI / stepHeight) + Math.PI);
+  };
 
-  // Derived X position based on the sine wave formula
-  const xPosition = useTransform(yPosition, (y) => {
-    return 500 + 150 * Math.sin(y * (Math.PI / 1000) + Math.PI);
-  });
+  // Motion transforms
+  const yPosition = useTransform(progressSpring, [0, 1], [0, totalHeight], { clamp: true });
+  const xPosition = useTransform(yPosition, (y) => getX(y));
+  const lineProgress = useTransform(yPosition, [0, totalHeight], [0, 1], { clamp: true });
 
-  // Calculate pathLength progress to align exactly with the dot's Y position
-  const lineProgress = useTransform(yPosition, [0, 5500], [0, 1], { clamp: true });
-
-  // Generate the full SVG path Y=0 to Y=5500
-  const generateFullPath = () => {
+  // Generate SVG path for serpentine wave
+  const generatePath = () => {
     let path = "";
-    for (let y = 0; y <= 5500; y += 15) {
-      const x = 500 + 150 * Math.sin(y * (Math.PI / 1000) + Math.PI);
-      if (y === 0) {
-        path += `M ${x} ${y}`;
-      } else {
-        path += `L ${x} ${y}`;
-      }
+    for (let y = 0; y <= totalHeight; y += 15) {
+      const x = getX(y);
+      if (y === 0) path += `M ${x.toFixed(2)} ${y}`;
+      else path += ` L ${x.toFixed(2)} ${y}`;
     }
     return path;
   };
 
-  const fullPathD = generateFullPath();
-
+  const fullPathD = generatePath();
 
   return (
     <section
       id="timeline-section"
       ref={containerRef}
-      className="relative w-full h-[5500px] bg-transparent text-white select-none overflow-visible pt-24 pb-48 mb-[300px]"
+      className={`relative w-full bg-transparent text-white select-none overflow-visible pt-16 pb-32 ${
+        isMobile ? "h-[3800px] mb-16" : "h-[5400px] mb-32"
+      }`}
     >
-      <div className="absolute inset-y-0 left-6 md:left-1/2 -translate-x-0 md:-translate-x-1/2 w-[80px] md:w-[1000px] pointer-events-none z-10 overflow-visible">
+      {/* Central SVG Timeline Line */}
+      <div className="absolute inset-y-0 left-1/2 -translate-x-1/2 w-full max-w-[1000px] pointer-events-none z-10 overflow-visible">
         {mounted && (
           <svg
-            viewBox="0 0 1000 5500"
+            viewBox={`0 0 1000 ${totalHeight}`}
             className="w-full h-full overflow-visible"
             preserveAspectRatio="none"
           >
             <defs>
-              {/* Gradient for the animated timeline line */}
               <linearGradient id="line-gradient" x1="0%" y1="0%" x2="0%" y2="100%">
                 <stop offset="0%" stopColor="#ffffff" />
                 <stop offset="35%" stopColor="#C076EC" />
@@ -143,7 +151,6 @@ export default function Timeline() {
                 <stop offset="100%" stopColor="#ffffff" />
               </linearGradient>
 
-              {/* Glowing filter for the active point */}
               <filter id="active-glow" x="-100%" y="-100%" width="300%" height="300%">
                 <feGaussianBlur stdDeviation="15" result="blur" />
                 <feMerge>
@@ -154,7 +161,7 @@ export default function Timeline() {
               </filter>
             </defs>
 
-            {/* Background thin trace line */}
+            {/* Background trace line */}
             <path
               d={fullPathD}
               fill="none"
@@ -173,24 +180,22 @@ export default function Timeline() {
 
             {/* Milestone static indicators */}
             {milestones.map((_, idx) => {
-              const yVal = (idx + 0.5) * 1000;
-              const xVal = 500 + 150 * Math.sin(yVal * (Math.PI / 1000) + Math.PI);
+              const yVal = (idx + 0.5) * stepHeight;
+              const xVal = getX(yVal);
               return (
                 <g key={idx}>
-                  {/* Outermost ring */}
                   <circle
                     cx={xVal}
                     cy={yVal}
-                    r="14"
+                    r={isMobile ? "12" : "14"}
                     fill="none"
                     stroke="rgba(255, 255, 255, 0.15)"
                     strokeWidth="1"
                   />
-                  {/* Inner dot */}
                   <circle
                     cx={xVal}
                     cy={yVal}
-                    r="5"
+                    r={isMobile ? "4.5" : "5"}
                     fill="#ffffff"
                     opacity="0.65"
                   />
@@ -198,69 +203,109 @@ export default function Timeline() {
               );
             })}
 
-            {/* Moving Active Tracker Dot with direct SVG circle coordinate animation (avoids Safari CSS transform bugs on SVG groups) */}
+            {/* Moving Active Tracker Dot */}
             <motion.circle
               cx={xPosition}
               cy={yPosition}
-              r="22"
+              r={isMobile ? "18" : "22"}
               fill="#ffffff"
               opacity="0.25"
             />
             <motion.circle
               cx={xPosition}
               cy={yPosition}
-              r="9"
+              r={isMobile ? "8" : "9"}
               fill="#ffffff"
             />
-
           </svg>
         )}
       </div>
 
-      {/* Cards list absolutely positioned corresponding to their coordinates */}
-      <div className="relative w-full max-w-[1200px] mx-auto h-full px-6 md:px-12 pointer-events-none">
+      {/* Cards list overlay */}
+      <div className="relative w-full max-w-[1000px] mx-auto h-full px-3 sm:px-6 md:px-12 pointer-events-none">
         {milestones.map((item, idx) => {
-          const yVal = (idx + 0.5) * 1000;
-          const isLeft = idx % 2 === 0; // Alternating cards left/right (on the outward side of curve)
-          const xVal = 500 + 150 * Math.sin(yVal * (Math.PI / 1000) + Math.PI);
+          const yVal = (idx + 0.5) * stepHeight;
+          const isLeft = idx % 2 === 0;
+
+          const xVal = getX(yVal);
           const xPercent = (xVal / 1000) * 100;
-          const gapPercent = 4; // Clear margin between curve dot and card text
+
+          let cardStyle: React.CSSProperties;
+          let isTextRight: boolean;
+
+          if (isMobile) {
+            // On mobile screens: position cards in the spacious side opposite each curve peak with 16px screen padding constraint
+            if (xPercent < 50) {
+              // Peak is on the left half (~36%): place card on spacious right side (40% to screen right)
+              cardStyle = {
+                top: `${yVal}px`,
+                left: `${xPercent + 4}%`,
+                right: "16px",
+              };
+              isTextRight = false;
+            } else {
+              // Peak is on the right half (~64%): place card on spacious left side (screen left to 60%)
+              cardStyle = {
+                top: `${yVal}px`,
+                left: "16px",
+                right: `${100 - (xPercent - 4)}%`,
+              };
+              isTextRight = true;
+            }
+          } else {
+            // Desktop layout
+            const gapPercent = 4;
+            if (isLeft) {
+              cardStyle = {
+                top: `${yVal}px`,
+                right: `${100 - (xPercent - gapPercent)}%`,
+                left: "auto",
+              };
+              isTextRight = true;
+            } else {
+              cardStyle = {
+                top: `${yVal}px`,
+                left: `${xPercent + gapPercent}%`,
+                right: "auto",
+              };
+              isTextRight = false;
+            }
+          }
 
           return (
             <div
               key={idx}
-              style={{
-                top: `${yVal}px`,
-                ...(isLeft
-                  ? { right: `${100 - (xPercent - gapPercent)}%`, left: "auto" }
-                  : { left: `${xPercent + gapPercent}%`, right: "auto" }),
-              }}
-              className="absolute -translate-y-1/2 w-[calc(100%-120px)] md:w-[35%] max-md:!left-[80px] max-md:!right-auto pointer-events-auto"
+              style={cardStyle}
+              className={`absolute -translate-y-1/2 pointer-events-auto ${
+                isMobile ? "w-auto max-w-none" : "w-[36%] max-w-[380px]"
+              }`}
             >
               <motion.div
-                initial={{ opacity: 0, x: isLeft ? -40 : 40 }}
+                initial={{ opacity: 0, x: isTextRight ? 20 : -20 }}
                 whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: false, margin: "-25% 0px -25% 0px" }}
+                viewport={{ once: false, margin: "-15% 0px -15% 0px" }}
                 transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                className={`flex flex-col ${isLeft ? "md:items-end md:text-right" : "items-start text-left"}`}
+                className={`flex flex-col ${
+                  isTextRight ? "items-end text-right" : "items-start text-left"
+                }`}
               >
                 {/* Milestone Big Number */}
-                <span className="font-serif italic text-7xl md:text-8xl text-white leading-none mb-4 block select-none">
+                <span className="font-serif italic text-5xl sm:text-7xl md:text-8xl text-white leading-none mb-2 sm:mb-3 md:mb-4 block select-none">
                   {item.number}
                 </span>
 
                 {/* Milestone Title */}
-                <h3 className="font-sans font-bold text-white text-xl md:text-2xl tracking-wider mb-2">
+                <h3 className="font-sans font-bold text-white text-base sm:text-xl md:text-2xl tracking-wider mb-1 sm:mb-2">
                   {item.title}
                 </h3>
 
                 {/* Milestone Time */}
-                <span className="font-serif italic text-xl md:text-2xl text-white/80 tracking-wide mb-3 block select-none">
+                <span className="font-serif italic text-base sm:text-xl md:text-2xl text-white/80 tracking-wide mb-2 sm:mb-3 block select-none">
                   {item.time}
                 </span>
 
                 {/* Milestone Description */}
-                <p className="font-sans text-white/70 text-sm md:text-base leading-relaxed max-w-sm">
+                <p className="font-sans text-white/70 text-xs sm:text-sm md:text-base leading-relaxed">
                   {item.description}
                 </p>
               </motion.div>
