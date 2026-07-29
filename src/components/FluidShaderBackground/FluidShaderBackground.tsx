@@ -1,7 +1,7 @@
 // src/components/FluidShaderBackground/FluidShaderBackground.tsx
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -194,6 +194,19 @@ export default function FluidShaderBackground() {
   const blurOverlayRef = useRef<HTMLDivElement>(null);
   const grainOverlayRef = useRef<SVGSVGElement>(null);
   const shaderParams = useRef({ zoom: 1.25, colorTransition: 0.0 });
+  const [isMobile, setIsMobile] = useState(false);
+  const defaultLogoTransform = pathname === "/ambassador" && isMobile
+    ? "translate(-10vw, -8vh) scale(1)"
+    : "scale(1)";
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
   useEffect(() => {
     if (pathname === "/team" || pathname === "/gallery") return;
@@ -366,7 +379,7 @@ export default function FluidShaderBackground() {
     if (pathname !== "/team") {
       container.style.opacity = "1";
       if (logoContainer) {
-        logoContainer.style.transform = "scale(1)";
+        logoContainer.style.transform = defaultLogoTransform;
         logoContainer.style.opacity = pathname === "/gallery" ? "0" : "1";
       }
       if (canvas) {
@@ -406,7 +419,7 @@ export default function FluidShaderBackground() {
     window.addEventListener("scroll", handleScroll, { passive: true });
     handleScroll(); // initial
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [pathname]);
+  }, [defaultLogoTransform, pathname]);
 
   /* Scroll transition for Timeline page *//////////////
   useEffect(() => {
@@ -448,10 +461,13 @@ export default function FluidShaderBackground() {
       }
 
       // Smooth horizontal sway calculation
-      const maxShiftVw = 18;
+      const isMobileView = window.innerWidth < 768;
+      const maxShiftVw = isMobileView ? 0 : 18;
       let xShiftVw = 0;
 
-      if (currentPos <= minPos) {
+      if (isMobileView) {
+        xShiftVw = 0;
+      } else if (currentPos <= minPos) {
         xShiftVw = 0;
       } else if (currentPos < 500) {
         const startDist = 500 - minPos;
@@ -497,7 +513,7 @@ export default function FluidShaderBackground() {
       // 1. Shift WebGL Canvas horizontally and ramp opacity
       const canvas = canvasRef.current;
       if (canvas) {
-        canvas.style.transform = `translateX(${xShiftVw}vw)`;
+        canvas.style.transform = isMobileView ? "none" : `translateX(${xShiftVw}vw)`;
         canvas.style.opacity = `${0.45 + timelineProgress * 0.20}`;
       }
 
@@ -505,7 +521,9 @@ export default function FluidShaderBackground() {
       const logoContainer = logoContainerRef.current;
       if (logoContainer) {
         const xBlur = timelineProgress * 5;
-        logoContainer.style.transform = `translate(${xShiftVw}vw, 0px) scale(${logoScale})`;
+        logoContainer.style.transform = isMobileView
+          ? `scale(${logoScale})`
+          : `translate(${xShiftVw}vw, 0px) scale(${logoScale})`;
         logoContainer.style.filter = `blur(${xBlur}px)`;
 
         const logoStop0 = interpolateHex("#5200c7", "#005035", targetColorTransition);
@@ -585,7 +603,7 @@ export default function FluidShaderBackground() {
         canvasRef.current.style.opacity = "0.45";
       }
       if (logoContainerRef.current) {
-        logoContainerRef.current.style.transform = "scale(1)";
+        logoContainerRef.current.style.transform = defaultLogoTransform;
         logoContainerRef.current.style.filter = "blur(0px)";
       }
       if (blurOverlayRef.current) {
@@ -600,7 +618,7 @@ export default function FluidShaderBackground() {
       document.documentElement.style.setProperty("--bg-gradient-via", "#090416");
       document.documentElement.style.setProperty("--bg-gradient-to", "#04020a");
     };
-  }, [pathname]);
+  }, [defaultLogoTransform, pathname]);
 
   /* Scroll transition for SDG section on homepage */
   useEffect(() => {
