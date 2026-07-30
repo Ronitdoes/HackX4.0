@@ -132,15 +132,7 @@ export default function Themes() {
     const isMobileView = vWidth < 768;
 
     const setCardState = (card: HTMLElement, index: number, progress: number) => {
-      if (isMobileView) {
-        gsap.set(card, {
-          rotation: 0,
-          y: 0,
-          z: 0,
-          transformPerspective: 1000,
-        });
-        return;
-      }
+      if (isMobileView) return;
 
       // Linear offset of the card's center relative to screen center
       const dx = (index - progress * (N - 1)) * step;
@@ -163,11 +155,18 @@ export default function Themes() {
     };
 
     // Apply start state immediately
-    cards.forEach((card, i) => setCardState(card, i, 0));
+    if (isMobileView) {
+      cards.forEach((card) => {
+        gsap.set(card, { rotation: 0, y: 0, z: 0, transformPerspective: 1000 });
+      });
+    } else {
+      cards.forEach((card, i) => setCardState(card, i, 0));
+    }
 
     // Build main GSAP Timeline using fromTo and bind an onUpdate to sync card bend
     const timeline = gsap.timeline({
       onUpdate: function () {
+        if (isMobileView) return;
         const p = this.progress();
         cards.forEach((card, i) => {
           setCardState(card, i, p);

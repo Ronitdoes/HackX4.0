@@ -83,15 +83,17 @@ export default function PuzzleJoin() {
     >
       {/* Background Soft Ambient Glows */}
       <div
-        className="absolute top-1/2 left-1/4 -translate-y-1/2 w-[350px] h-[350px] rounded-full pointer-events-none filter blur-[120px] opacity-25"
+        className="absolute top-1/2 left-1/4 -translate-y-1/2 w-[240px] h-[240px] sm:w-[350px] sm:h-[350px] rounded-full pointer-events-none filter blur-[70px] sm:blur-[120px] opacity-25"
         style={{
           background: "radial-gradient(circle, var(--color-violet) 0%, transparent 70%)",
+          transform: "translate3d(-25%, -50%, 0)",
         }}
       />
       <div
-        className="absolute top-1/2 right-1/4 -translate-y-1/2 w-[350px] h-[350px] rounded-full pointer-events-none filter blur-[120px] opacity-25"
+        className="absolute top-1/2 right-1/4 -translate-y-1/2 w-[240px] h-[240px] sm:w-[350px] sm:h-[350px] rounded-full pointer-events-none filter blur-[70px] sm:blur-[120px] opacity-25"
         style={{
           background: "radial-gradient(circle, var(--color-magenta) 0%, transparent 70%)",
+          transform: "translate3d(25%, -50%, 0)",
         }}
       />
 
@@ -110,7 +112,7 @@ export default function PuzzleJoin() {
           className="absolute left-0 top-0 w-[57.14%] h-full will-change-transform cursor-pointer group"
           style={{
             transformStyle: "preserve-3d",
-            transform: !isReady ? "translateX(-150%)" : undefined,
+            transform: !isReady ? "translateX(-150%) translateZ(0)" : "translateZ(0)",
           }}
         >
           {/* SVG Shape */}
@@ -152,7 +154,7 @@ export default function PuzzleJoin() {
           className="absolute right-0 top-0 w-[57.14%] h-full will-change-transform cursor-pointer group"
           style={{
             transformStyle: "preserve-3d",
-            transform: !isReady ? "translateX(150%)" : undefined,
+            transform: !isReady ? "translateX(150%) translateZ(0)" : "translateZ(0)",
           }}
         >
           {/* SVG Shape */}

@@ -361,6 +361,8 @@ export default function Stats() {
                   alt={`Editorial illustration for ${sec.title}`}
                   className="w-full h-full object-cover"
                   draggable={false}
+                  loading="lazy"
+                  decoding="async"
                 />
               </article>
             ))}
@@ -395,10 +397,12 @@ export default function Stats() {
                 className="relative w-full aspect-square overflow-hidden shadow-[0_10px_30px_rgba(0,0,0,0.5)] rounded-none"
               >
                 <img
-                  src={sec.image}
+                  src={sec.image.replace("w=1000&q=85", "w=400&q=80")}
                   alt={sec.title}
                   className="w-full h-full object-cover rounded-none"
                   draggable={false}
+                  loading="lazy"
+                  decoding="async"
                 />
               </div>
             ))}

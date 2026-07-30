@@ -68,12 +68,13 @@ export default function WhyApply() {
 
           {/* Main card */}
           <div
-            className="relative rounded-3xl p-10 md:p-14 overflow-hidden border border-white/10"
+            className="relative rounded-3xl p-10 md:p-14 overflow-hidden border border-white/10 will-change-transform"
             style={{
               background: "rgba(0, 0, 0, 0.5)",
               backdropFilter: "blur(20px)",
               boxShadow:
                 "0 25px 60px rgba(0,0,0,0.2), 0 8px 20px rgba(0,0,0,0.15)",
+              transform: "translateZ(0)",
             }}
           >
 

@@ -77,9 +77,10 @@ export default function Ambassador() {
     <div className="relative w-full min-h-screen bg-transparent text-white flex flex-col overflow-x-clip">
       {/* Background soft glows */}
       <div
-        className="absolute top-[20%] left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full pointer-events-none select-none z-0 filter blur-[150px] opacity-20"
+        className="absolute top-[20%] left-1/2 -translate-x-1/2 w-[300px] h-[300px] sm:w-[600px] sm:h-[600px] rounded-full pointer-events-none select-none z-0 filter blur-[80px] sm:blur-[150px] opacity-20"
         style={{
           background: "radial-gradient(circle, var(--color-violet) 0%, var(--color-magenta) 50%, transparent 100%)",
+          transform: "translate3d(-50%, 0, 0)",
         }}
       />
 

@@ -126,15 +126,17 @@ export default function ThreeSteps() {
     <section ref={sectionRef} className="relative w-full h-screen bg-transparent overflow-hidden select-none flex items-center">
       {/* Background Soft Glows */}
       <div
-        className="absolute top-1/2 left-1/4 -translate-y-1/2 w-[450px] h-[450px] rounded-full pointer-events-none filter blur-[150px] opacity-20"
+        className="absolute top-1/2 left-1/4 -translate-y-1/2 w-[280px] h-[280px] sm:w-[450px] sm:h-[450px] rounded-full pointer-events-none filter blur-[80px] sm:blur-[150px] opacity-20"
         style={{
           background: "radial-gradient(circle, var(--color-violet, #7801FF) 0%, transparent 70%)",
+          transform: "translate3d(-25%, -50%, 0)",
         }}
       />
       <div
-        className="absolute top-1/2 right-1/4 -translate-y-1/2 w-[450px] h-[450px] rounded-full pointer-events-none filter blur-[150px] opacity-15"
+        className="absolute top-1/2 right-1/4 -translate-y-1/2 w-[280px] h-[280px] sm:w-[450px] sm:h-[450px] rounded-full pointer-events-none filter blur-[80px] sm:blur-[150px] opacity-15"
         style={{
           background: "radial-gradient(circle, var(--color-magenta, #D242D7) 0%, transparent 70%)",
+          transform: "translate3d(25%, -50%, 0)",
         }}
       />
 
@@ -150,7 +152,7 @@ export default function ThreeSteps() {
                 ref={(el) => {
                   cardRefs.current[idx] = el;
                 }}
-                className="absolute inset-0 cursor-pointer"
+                className="absolute inset-0 cursor-pointer will-change-transform"
                 style={{
                   zIndex: 10 + idx,
                 }}
@@ -160,8 +162,9 @@ export default function ThreeSteps() {
                   style={{
                     background: "linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.03) 100%)",
                     backgroundColor: isMobile ? "#16072b" : "rgba(18, 5, 38, 0.88)",
-                    backdropFilter: "blur(25px) saturate(140%)",
-                    WebkitBackdropFilter: "blur(25px) saturate(140%)",
+                    backdropFilter: isMobile ? "none" : "blur(25px) saturate(140%)",
+                    WebkitBackdropFilter: isMobile ? "none" : "blur(25px) saturate(140%)",
+                    transform: "translateZ(0)",
                   }}
                 >
                   {/* Top of Card: Step Number */}

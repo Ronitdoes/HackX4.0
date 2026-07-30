@@ -209,7 +209,7 @@ export default function FluidShaderBackground() {
   }, []);
 
   useEffect(() => {
-    if (pathname === "/team" || pathname === "/gallery") return;
+    if (pathname === "/team" || pathname === "/gallery" || isMobile) return;
     const canvas = canvasRef.current;
     if (!canvas) return;
 
@@ -367,7 +367,7 @@ export default function FluidShaderBackground() {
       gl.deleteShader(vertexShader);
       gl.deleteShader(fragmentShader);
     };
-  }, [pathname]); // Re-initialize WebGL when pathname changes
+  }, [pathname, isMobile]); // Re-initialize WebGL when pathname or isMobile changes
 
   /* Scroll zoom for team page - optimized using direct DOM manipulation to bypass React render passes */
   useEffect(() => {
@@ -383,7 +383,7 @@ export default function FluidShaderBackground() {
         logoContainer.style.opacity = pathname === "/gallery" ? "0" : "1";
       }
       if (canvas) {
-        canvas.style.opacity = pathname === "/gallery" ? "0" : pathname === "/timeline" ? "0.65" : "0.45";
+        canvas.style.opacity = isMobile ? "0" : pathname === "/gallery" ? "0" : pathname === "/timeline" ? "0.65" : "0.45";
       }
       return;
     }
@@ -510,10 +510,10 @@ export default function FluidShaderBackground() {
       shaderParams.current.zoom = targetZoom;
       shaderParams.current.colorTransition = targetColorTransition;
 
-      // 1. Shift WebGL Canvas horizontally and ramp opacity
+      // 1. Shift WebGL Canvas horizontally and ramp opacity (desktop only)
       const canvas = canvasRef.current;
-      if (canvas) {
-        canvas.style.transform = isMobileView ? "none" : `translateX(${xShiftVw}vw)`;
+      if (canvas && !isMobileView) {
+        canvas.style.transform = `translateX(${xShiftVw}vw)`;
         canvas.style.opacity = `${0.45 + timelineProgress * 0.20}`;
       }
 
@@ -600,7 +600,7 @@ export default function FluidShaderBackground() {
       }
       if (canvasRef.current) {
         canvasRef.current.style.transform = "none";
-        canvasRef.current.style.opacity = "0.45";
+        canvasRef.current.style.opacity = isMobile ? "0" : "0.45";
       }
       if (logoContainerRef.current) {
         logoContainerRef.current.style.transform = defaultLogoTransform;
@@ -648,6 +648,8 @@ export default function FluidShaderBackground() {
       const grainOverlay = grainOverlayRef.current;
       const canvas = canvasRef.current;
 
+      const isMobileView = window.innerWidth < 768;
+
       if (logoContainer) {
         gsap.set(logoContainer, { scale: 1.0, filter: "blur(0px)" });
         logoContainer.style.setProperty("--x-color-stop-0", "#5200c7");
@@ -666,7 +668,7 @@ export default function FluidShaderBackground() {
         gsap.set(grainOverlay, { opacity: 0.09 });
       }
       if (canvas) {
-        gsap.set(canvas, { opacity: 0.45 });
+        gsap.set(canvas, { opacity: isMobileView ? 0 : 0.45 });
       }
 
       // Animatable objects to handle precise color, degree, blur, and grain interpolation natively in GSAP
@@ -687,8 +689,6 @@ export default function FluidShaderBackground() {
 
       const logoHue = { rotate: 0 };
       const blurParams = { blur: 10, sat: 1.3 };
-
-      const isMobileView = window.innerWidth < 768;
 
       tl = gsap.timeline({
         scrollTrigger: {
@@ -739,6 +739,8 @@ export default function FluidShaderBackground() {
         }
       }, 0);
 
+      let lastBlur = -1;
+      let lastSat = -1;
       if (blurOverlay) {
         tl.to(blurParams, {
           blur: 28,
@@ -746,8 +748,12 @@ export default function FluidShaderBackground() {
           duration: 1,
           ease: "power1.out",
           onUpdate: () => {
-            blurOverlay.style.backdropFilter = `blur(${blurParams.blur}px) saturate(${blurParams.sat}) contrast(1.02)`;
-            blurOverlay.style.setProperty("-webkit-backdrop-filter", `blur(${blurParams.blur}px) saturate(${blurParams.sat}) contrast(1.02)`);
+            if (Math.abs(blurParams.blur - lastBlur) >= 0.2 || Math.abs(blurParams.sat - lastSat) >= 0.03) {
+              lastBlur = blurParams.blur;
+              lastSat = blurParams.sat;
+              blurOverlay.style.backdropFilter = `blur(${blurParams.blur.toFixed(1)}px) saturate(${blurParams.sat.toFixed(2)}) contrast(1.02)`;
+              blurOverlay.style.setProperty("-webkit-backdrop-filter", `blur(${blurParams.blur.toFixed(1)}px) saturate(${blurParams.sat.toFixed(2)}) contrast(1.02)`);
+            }
           }
         }, 0);
       }
@@ -760,7 +766,7 @@ export default function FluidShaderBackground() {
         }, 0);
       }
 
-      if (canvas) {
+      if (canvas && !isMobileView) {
         tl.to(canvas, {
           opacity: 0.70,
           duration: 1,
@@ -843,8 +849,12 @@ export default function FluidShaderBackground() {
           duration: 1,
           ease: "power1.in",
           onUpdate: () => {
-            blurOverlay.style.backdropFilter = `blur(${blurParams.blur}px) saturate(${blurParams.sat}) contrast(1.02)`;
-            blurOverlay.style.setProperty("-webkit-backdrop-filter", `blur(${blurParams.blur}px) saturate(${blurParams.sat}) contrast(1.02)`);
+            if (Math.abs(blurParams.blur - lastBlur) >= 0.2 || Math.abs(blurParams.sat - lastSat) >= 0.03) {
+              lastBlur = blurParams.blur;
+              lastSat = blurParams.sat;
+              blurOverlay.style.backdropFilter = `blur(${blurParams.blur.toFixed(1)}px) saturate(${blurParams.sat.toFixed(2)}) contrast(1.02)`;
+              blurOverlay.style.setProperty("-webkit-backdrop-filter", `blur(${blurParams.blur.toFixed(1)}px) saturate(${blurParams.sat.toFixed(2)}) contrast(1.02)`);
+            }
           }
         }, 4.6);
       }
@@ -857,7 +867,7 @@ export default function FluidShaderBackground() {
         }, 4.6);
       }
 
-      if (canvas) {
+      if (canvas && !isMobileView) {
         tl.to(canvas, {
           opacity: 0.45,
           duration: 1,
@@ -924,7 +934,8 @@ export default function FluidShaderBackground() {
         style={{
           zIndex: -4,
           transformOrigin: "center center",
-          willChange: "transform",
+          transform: "translateZ(0)",
+          willChange: "transform, opacity",
           "--x-color-stop-0": "#5200c7",
           "--x-color-stop-33": "#ae73f2",
           "--x-color-stop-66": "#7801ff",
@@ -942,6 +953,8 @@ export default function FluidShaderBackground() {
             height: "28vh",
             width: "25.06vh",
             opacity: 0.55,
+            transform: "translateZ(0)",
+            willChange: "transform",
             filter: "blur(2px) drop-shadow(0 0 25px var(--x-shadow-1, rgba(174, 115, 242, 0.80))) drop-shadow(0 0 50px var(--x-shadow-2, rgba(82, 0, 199, 0.70))) drop-shadow(0 0 15px rgba(255, 255, 255, 0.50))",
           }}
         >
@@ -976,7 +989,7 @@ export default function FluidShaderBackground() {
       <canvas
         ref={canvasRef}
         className="pointer-events-none fixed inset-0 w-full h-full opacity-45"
-        style={{ zIndex: -15, filter: "blur(16px)" }}
+        style={{ zIndex: -15, filter: "blur(16px)", display: isMobile ? "none" : "block" }}
       />
 
       {/* 4. The canvas is blurred directly above. A fullscreen backdrop-filter here
@@ -986,6 +999,8 @@ export default function FluidShaderBackground() {
         className="pointer-events-none fixed inset-0"
         style={{
           zIndex: -5,
+          transform: "translateZ(0)",
+          willChange: "transform, opacity",
           background: "linear-gradient(115deg, rgba(24, 8, 54, 0.08), rgba(5, 2, 13, 0.02) 55%, rgba(0, 0, 0, 0.08))",
         }}
       />
