@@ -74,12 +74,13 @@ export default function About() {
           {/* Main Card with Glassmorphism */}
           <div
             ref={containerRef}
-            className="relative rounded-3xl p-8 md:p-12 overflow-hidden border border-white/10"
+            className="relative rounded-3xl p-8 md:p-12 overflow-hidden border border-white/10 will-change-transform"
             style={{
               background: "rgba(0, 0, 0, 0.45)",
               backdropFilter: "blur(20px)",
               boxShadow:
                 "0 25px 60px rgba(0,0,0,0.2), 0 8px 20px rgba(0,0,0,0.15)",
+              transform: "translateZ(0)",
             }}
           >
             {/* Ambient Background Glow inside Card */}
@@ -105,6 +106,7 @@ export default function About() {
                   <span
                     key={idx}
                     className="about-word opacity-[0.20] inline-block mr-[0.25em]"
+                    style={{ willChange: "opacity", transform: "translateZ(0)" }}
                   >
                     {word}
                   </span>
@@ -119,6 +121,7 @@ export default function About() {
                   <span
                     key={idx}
                     className="about-word opacity-[0.20] inline-block mr-[0.25em]"
+                    style={{ willChange: "opacity", transform: "translateZ(0)" }}
                   >
                     {word}
                   </span>

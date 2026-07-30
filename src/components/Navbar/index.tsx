@@ -409,7 +409,7 @@ export default function Navbar() {
             backdropFilter: "blur(28px) saturate(1.35)",
             WebkitBackdropFilter: "blur(28px) saturate(1.35)",
             transform: "translateZ(0)",
-            willChange: "transform",
+            willChange: "transform, opacity",
             opacity: isOpen ? 0 : 1,
           }}
         />

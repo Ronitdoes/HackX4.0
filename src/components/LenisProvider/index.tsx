@@ -43,6 +43,7 @@ export default function LenisProvider({ children }: { children: React.ReactNode 
         orientation: "vertical",
         gestureOrientation: "vertical",
         smoothWheel: true,
+        touchMultiplier: 0,
         wheelMultiplier: 1,
       }}
     >
