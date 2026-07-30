@@ -156,12 +156,12 @@ export default function ThreeSteps() {
                 }}
               >
                 <div
-                  className="w-full h-full p-6 md:p-8 rounded-none border border-white/30 flex flex-col justify-between origin-center shadow-[0_20px_60px_rgba(0,0,0,0.6)] transition-all duration-300"
+                  className="w-full h-full p-6 md:p-8 rounded-none border border-white/20 flex flex-col justify-between origin-center shadow-[0_20px_50px_rgba(0,0,0,0.5)] transition-all duration-300"
                   style={{
-                    background: "linear-gradient(135deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.08) 100%)",
-                    backgroundColor: "#16072b",
-                    backdropFilter: "blur(30px) saturate(140%)",
-                    WebkitBackdropFilter: "blur(30px) saturate(140%)",
+                    background: "linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.03) 100%)",
+                    backgroundColor: isMobile ? "#16072b" : "rgba(18, 5, 38, 0.88)",
+                    backdropFilter: "blur(25px) saturate(140%)",
+                    WebkitBackdropFilter: "blur(25px) saturate(140%)",
                   }}
                 >
                   {/* Top of Card: Step Number */}

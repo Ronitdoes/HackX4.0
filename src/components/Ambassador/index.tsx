@@ -74,7 +74,7 @@ export default function Ambassador() {
   };
 
   return (
-    <div className="relative w-full min-h-screen bg-transparent text-white flex flex-col overflow-x-hidden">
+    <div className="relative w-full min-h-screen bg-transparent text-white flex flex-col overflow-x-clip">
       {/* Background soft glows */}
       <div
         className="absolute top-[20%] left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full pointer-events-none select-none z-0 filter blur-[150px] opacity-20"

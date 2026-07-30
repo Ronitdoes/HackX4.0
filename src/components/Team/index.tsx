@@ -9,8 +9,8 @@ import { TEAM_MEMBERS, TeamYear, TeamCategory, TeamMember } from "@/data/team";
 export default function Team() {
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const [selectedYear, setSelectedYear] = useState<TeamYear>("2025");
-  const [selectedCategory, setSelectedCategory] = useState<TeamCategory>("EXECUTIVE");
+  const [selectedYear, setSelectedYear] = useState<TeamYear>("2026");
+  const [selectedCategory, setSelectedCategory] = useState<TeamCategory>("FACULTY");
 
   /* ── scroll progress through the hero container ── */
   const { scrollYProgress } = useScroll({
@@ -226,6 +226,7 @@ export default function Team() {
                       whileInView={{ opacity: 1, y: 0 }}
                       viewport={{ once: true, margin: "0px 0px -10% 0px" }}
                       transition={{ duration: 0.35, delay: Math.min(i * 0.04, 0.3) }}
+                      className="w-full flex justify-center"
                     >
                       <TeamCard member={member} index={i} />
                     </motion.div>

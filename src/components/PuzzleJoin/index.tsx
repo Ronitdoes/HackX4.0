@@ -40,10 +40,10 @@ export default function PuzzleJoin() {
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: container,
-        start: "top top",
-        end: isMobileSize ? "+=40%" : "+=120%", // Scroll height to trigger join
+        start: isMobileSize ? "top 85%" : "top top",
+        end: isMobileSize ? "top 30%" : "+=120%", // Scroll height to trigger join
         scrub: 1,      // Smooth scrubbing lag
-        pin: true,     // Pin the section while scrolling
+        pin: !isMobileSize, // Only pin on desktop view to avoid mobile navbar overlap and empty gaps
         invalidateOnRefresh: true,
         onUpdate: (self) => {
           // Snap threshold: if scroll progress is near 100% (e.g., > 90%), mark as joined
@@ -79,7 +79,7 @@ export default function PuzzleJoin() {
   return (
     <div
       ref={containerRef}
-      className="relative min-h-fit md:min-h-screen w-full flex flex-col items-center justify-center overflow-hidden bg-transparent py-8 md:py-20 px-6 select-none"
+      className="relative w-full flex flex-col items-center justify-center overflow-hidden bg-transparent pt-24 pb-12 md:py-20 px-6 select-none"
     >
       {/* Background Soft Ambient Glows */}
       <div

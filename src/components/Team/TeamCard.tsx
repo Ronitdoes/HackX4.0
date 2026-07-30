@@ -30,7 +30,7 @@ export const TeamCard: React.FC<TeamCardProps> = React.memo(({ member, index = 0
   const hasWebsite = Boolean(socials.website && socials.website.trim() !== "");
 
   return (
-    <div className="group relative w-full aspect-[3/4] overflow-hidden rounded-none bg-zinc-900/90 shadow-lg">
+    <div className="group relative w-full max-w-[260px] sm:max-w-none aspect-[3/4] overflow-hidden rounded-[2px] bg-zinc-900/90 shadow-lg mx-auto">
       {/* Background Image / Gradient Fallback */}
       {member.image && !imageError ? (
         <img
