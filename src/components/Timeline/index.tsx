@@ -104,9 +104,9 @@ export default function Timeline() {
   const stepHeight = isMobile ? MOBILE_STEP : DESKTOP_STEP;
   const amplitude = 150;
 
-  // X coordinate formula: straight line on left (x=40) for mobile, sine wave for desktop
+  // X coordinate formula: straight line on left (x=24) for mobile, sine wave for desktop
   const getX = (y: number) => {
-    if (isMobile) return 40;
+    if (isMobile) return 24;
     return 500 + amplitude * Math.sin(y * (Math.PI / stepHeight) + Math.PI);
   };
 
@@ -118,7 +118,7 @@ export default function Timeline() {
   // Generate SVG path (straight vertical line on mobile, serpentine wave on desktop)
   const generatePath = () => {
     if (isMobile) {
-      return `M 40 0 L 40 ${totalHeight}`;
+      return `M 24 0 L 24 ${totalHeight}`;
     }
     let path = "";
     for (let y = 0; y <= totalHeight; y += 15) {
@@ -140,10 +140,12 @@ export default function Timeline() {
       }`}
     >
       {/* Central SVG Timeline Line */}
-      <div className="absolute inset-y-0 left-1/2 -translate-x-1/2 w-full max-w-[1000px] pointer-events-none z-10 overflow-visible">
+      <div className={`absolute inset-y-0 pointer-events-none z-10 overflow-visible ${
+        isMobile ? "left-0 w-full" : "left-1/2 -translate-x-1/2 w-full max-w-[1000px]"
+      }`}>
         {mounted && (
           <svg
-            viewBox={`0 0 1000 ${totalHeight}`}
+            viewBox={isMobile ? `0 0 375 ${totalHeight}` : `0 0 1000 ${totalHeight}`}
             className="w-full h-full overflow-visible"
             preserveAspectRatio="none"
           >
@@ -153,6 +155,12 @@ export default function Timeline() {
                 <stop offset="35%" stopColor="#C076EC" />
                 <stop offset="70%" stopColor="#572CE6" />
                 <stop offset="100%" stopColor="#ffffff" />
+              </linearGradient>
+
+              <linearGradient id="mobile-line-gradient" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="0" y2={totalHeight}>
+                <stop offset="0%" stopColor="#FAF8F5" stopOpacity="0.45" />
+                <stop offset="50%" stopColor="#FAF8F5" stopOpacity="0.75" />
+                <stop offset="100%" stopColor="#FAF8F5" stopOpacity="0.45" />
               </linearGradient>
 
               <filter id="active-glow" x="-100%" y="-100%" width="300%" height="300%">
@@ -169,8 +177,8 @@ export default function Timeline() {
             <path
               d={fullPathD}
               fill="none"
-              stroke="rgba(255, 255, 255, 0.08)"
-              strokeWidth="3"
+              stroke={isMobile ? "url(#mobile-line-gradient)" : "rgba(255, 255, 255, 0.08)"}
+              strokeWidth={isMobile ? "4" : "3"}
             />
 
             {/* Animated active drawing line */}
@@ -178,7 +186,7 @@ export default function Timeline() {
               d={fullPathD}
               fill="none"
               stroke="url(#line-gradient)"
-              strokeWidth="4.5"
+              strokeWidth={isMobile ? "5" : "4.5"}
               style={{ pathLength: lineProgress }}
             />
 
@@ -191,17 +199,17 @@ export default function Timeline() {
                   <circle
                     cx={xVal}
                     cy={yVal}
-                    r={isMobile ? "10" : "14"}
-                    fill="none"
-                    stroke="rgba(255, 255, 255, 0.3)"
-                    strokeWidth="1.5"
+                    r={isMobile ? "9" : "14"}
+                    fill={isMobile ? "#16003b" : "none"}
+                    stroke={isMobile ? "#FAF8F5" : "rgba(255, 255, 255, 0.3)"}
+                    strokeWidth={isMobile ? "2" : "1.5"}
                   />
                   <circle
                     cx={xVal}
                     cy={yVal}
                     r={isMobile ? "4" : "5"}
                     fill="#ffffff"
-                    opacity="0.9"
+                    opacity="1"
                   />
                 </g>
               );
@@ -211,14 +219,14 @@ export default function Timeline() {
             <motion.circle
               cx={xPosition}
               cy={yPosition}
-              r={isMobile ? "14" : "22"}
+              r={isMobile ? "11" : "22"}
               fill="#ffffff"
               opacity="0.25"
             />
             <motion.circle
               cx={xPosition}
               cy={yPosition}
-              r={isMobile ? "6" : "9"}
+              r={isMobile ? "5" : "9"}
               fill="#ffffff"
             />
           </svg>
@@ -238,10 +246,10 @@ export default function Timeline() {
           let isTextRight: boolean;
 
           if (isMobile) {
-            // On mobile screens: position cards to the right of the straight left line (64px offset)
+            // On mobile screens: position cards to the right of the straight left line (48px offset)
             cardStyle = {
               top: `${yVal}px`,
-              left: "64px",
+              left: "48px",
               right: "16px",
             };
             isTextRight = false;
