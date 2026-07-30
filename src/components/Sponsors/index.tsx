@@ -9,7 +9,7 @@ export default function Sponsors() {
   const marqueeSponsors = [...SPONSORS, ...SPONSORS];
 
   return (
-    <section className="relative w-full -mt-12 md:-mt-24 pt-0 pb-16 md:pb-24 px-4 sm:px-8 md:px-16 flex flex-col items-center justify-center bg-transparent text-white overflow-hidden select-none">
+    <section className="relative w-full mt-12 md:-mt-24 pt-8 md:pt-0 pb-16 md:pb-24 px-4 sm:px-8 md:px-16 flex flex-col items-center justify-center bg-transparent text-white overflow-hidden select-none">
       {/* Top SPONSORS Heading */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -39,7 +39,7 @@ export default function Sponsors() {
       {/* Sponsor Logos Infinite Marquee Row (-6px height decrease) */}
       <div className="w-full relative z-10 overflow-hidden mask-gradient py-4">
         <div className="flex w-max animate-marquee hover:[animation-play-state:paused]">
-          <div className="flex items-center gap-8 sm:gap-12 md:gap-16 lg:gap-20 px-4">
+          <div className="flex items-center gap-12 sm:gap-14 md:gap-16 lg:gap-20 px-6">
             {marqueeSponsors.map((sponsor, idx) => (
               <div
                 key={`${sponsor.id}-${idx}`}

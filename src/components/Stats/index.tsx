@@ -73,13 +73,8 @@ export default function Stats() {
     const mm = gsap.matchMedia();
 
     mm.add(
-      {
-        isDesktop: "(min-width: 768px)",
-        isMobile: "(max-width: 767px)",
-      },
-      (context) => {
-        const { isDesktop } = context.conditions as { isDesktop: boolean };
-
+      "(min-width: 768px)",
+      () => {
         // Measure the image card's active container dimensions dynamically
         const cardEl = imageRefs.current[0];
         let cardWidth = window.innerWidth * 0.3; // safe defaults
@@ -91,8 +86,8 @@ export default function Stats() {
         }
 
         // Spacing offsets: slightly larger than card dimensions to add a small, elegant gap between adjacent edges
-        const xOffsetVal = isDesktop ? cardWidth * 1.06 : cardWidth * 0.45;
-        const yOffsetVal = isDesktop ? cardHeight * 1.06 : cardHeight * 0.65;
+        const xOffsetVal = cardWidth * 1.06;
+        const yOffsetVal = cardHeight * 1.06;
 
         // Set initial element positions
         STATS_DATA.forEach((_, idx) => {
@@ -273,119 +268,143 @@ export default function Stats() {
     );
 
     // Fade in container after paint/measure delay
-    gsap.to(containerRef.current, { opacity: 1, duration: 0.4 });
+    if (containerRef.current) {
+      gsap.to(containerRef.current, { opacity: 1, duration: 0.4 });
+    }
   }, { scope: containerRef, dependencies: [isReady] });
 
   return (
-    <div
-      ref={containerRef}
-      className="relative w-full h-screen overflow-hidden bg-transparent opacity-0"
-      id="stats-archive-page"
-    >
+    <section className="relative w-full bg-transparent overflow-hidden" id="stats-archive-page">
+      {/* Desktop view with GSAP scroll animation */}
+      <div
+        ref={containerRef}
+        className="hidden md:block relative w-full h-screen overflow-hidden opacity-0"
+      >
+        {/* Giant active section number background */}
+        <div className="absolute left-16 md:left-28 lg:left-40 bottom-[2vh] md:bottom-[3vh] lg:bottom-[4vh] z-30 hidden sm:flex items-end pointer-events-none select-none text-cream/90">
+          <span className="font-sans font-medium text-[20vw] md:text-[18vw] lg:text-[15vw] xl:text-[13vw] leading-none">0</span>
+          <div className="relative font-sans font-medium text-[20vw] md:text-[18vw] lg:text-[15vw] xl:text-[13vw] leading-none h-[1em] w-[0.7em] overflow-hidden">
+            {STATS_DATA.map((sec, idx) => {
+              const secondDigit = sec.id.charAt(1) || sec.id;
+              return (
+                <div
+                  key={sec.id}
+                  ref={(el) => { numberRefs.current[idx] = el; }}
+                  className="absolute bottom-0 left-0 font-sans font-medium text-[20vw] md:text-[18vw] lg:text-[15vw] xl:text-[13vw] leading-none will-change-[transform,opacity]"
+                  style={{ display: "block", opacity: idx === 0 ? 1 : 0 }}
+                  id={`stats-number-${sec.id}`}
+                >
+                  {secondDigit}
+                </div>
+              );
+            })}
+          </div>
+        </div>
 
-      {/* Giant active section number background */}
-      <div className="absolute left-16 md:left-28 lg:left-40 bottom-[2vh] md:bottom-[3vh] lg:bottom-[4vh] z-30 hidden sm:flex items-end pointer-events-none select-none text-cream/90">
-        <span className="font-sans font-medium text-[20vw] md:text-[18vw] lg:text-[15vw] xl:text-[13vw] leading-none">0</span>
-        <div className="relative font-sans font-medium text-[20vw] md:text-[18vw] lg:text-[15vw] xl:text-[13vw] leading-none h-[1em] w-[0.7em] overflow-hidden">
+        {/* Left-side vertical rail */}
+        <nav
+          className="absolute left-6 md:left-12 lg:left-16 top-1/2 -translate-y-1/2 z-40 hidden sm:flex flex-col gap-4 font-sans text-[10px] uppercase tracking-[0.25em] select-none"
+          aria-label="Stats Navigation Rail"
+        >
           {STATS_DATA.map((sec, idx) => {
-            const secondDigit = sec.id.charAt(1) || sec.id;
+            const isActive = activeIndex === idx;
             return (
-              <div
+              <button
                 key={sec.id}
-                ref={(el) => { numberRefs.current[idx] = el; }}
-                className="absolute bottom-0 left-0 font-sans font-medium text-[20vw] md:text-[18vw] lg:text-[15vw] xl:text-[13vw] leading-none will-change-[transform,opacity]"
-                style={{ display: "block", opacity: idx === 0 ? 1 : 0 }}
-                id={`stats-number-${sec.id}`}
+                ref={(el) => { railDotRefs.current[idx] = el; }}
+                onClick={() => scrollToSection(idx)}
+                className="flex items-center gap-3 py-1.5 text-left group transition-all duration-300 pointer-events-auto"
+                id={`rail-link-${sec.id}`}
+                aria-label={`Go to section ${sec.id} - ${sec.title}`}
               >
-                {secondDigit}
-              </div>
+                {/* Number */}
+                <span
+                  className={`font-semibold transition-all duration-300 ${isActive ? "text-cream scale-110" : "text-cream/30 group-hover:text-cream/70"
+                    }`}
+                >
+                  {idx + 1}
+                </span>
+
+                {/* Slide/Fade text label */}
+                <span
+                  className={`font-serif italic lowercase text-xs tracking-wider transition-all duration-500 overflow-hidden whitespace-nowrap ${isActive
+                    ? "w-32 opacity-100 text-[#faebac] translate-x-0"
+                    : "w-0 opacity-0 -translate-x-2"
+                    }`}
+                >
+                  — {sec.title}
+                </span>
+              </button>
             );
           })}
-        </div>
+        </nav>
+
+        {/* Central image archive conveyor belt */}
+        <section className="relative w-full h-full flex items-center justify-center z-20 select-none">
+          <div className="relative w-[310px] h-[370px] md:w-[360px] md:h-[430px] lg:w-[400px] lg:h-[480px]">
+            {STATS_DATA.map((sec, idx) => (
+              <article
+                key={sec.id}
+                ref={(el) => { imageRefs.current[idx] = el; }}
+                className="absolute inset-0 w-full h-full overflow-hidden shadow-[0_20px_60px_rgba(0,0,0,0.65)] rounded-sm will-change-[transform,opacity,filter]"
+                style={{
+                  zIndex: idx === 0 ? 10 : 1,
+                  opacity: idx === 0 ? 1 : 0
+                }}
+                id={`stats-article-${sec.id}`}
+              >
+                {/* Soft overlay vignette */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-black/15 pointer-events-none z-10" />
+                {/* Editorial Image */}
+                <img
+                  src={sec.image}
+                  alt={`Editorial illustration for ${sec.title}`}
+                  className="w-full h-full object-cover"
+                  draggable={false}
+                />
+              </article>
+            ))}
+          </div>
+        </section>
+
+        {/* Right-side text block */}
+        <aside className="absolute md:right-16 lg:right-24 md:top-[40%] md:-translate-y-1/2 md:w-[320px] lg:w-[380px] text-left z-40 pointer-events-none select-none">
+          <div className="relative w-full h-24">
+            {STATS_DATA.map((sec, idx) => (
+              <div
+                key={sec.id}
+                ref={(el) => { textRefs.current[idx] = el; }}
+                className="absolute top-0 right-0 left-0 md:-translate-y-1/2 font-serif text-base md:text-lg lg:text-xl text-cream/90 leading-relaxed font-light pointer-events-auto"
+                style={{ display: "block", opacity: idx === 0 ? 1 : 0 }}
+                id={`stats-caption-${sec.id}`}
+              >
+                {sec.caption}
+              </div>
+            ))}
+          </div>
+        </aside>
       </div>
 
-      {/* Left-side vertical rail */}
-      <nav
-        className="absolute left-6 md:left-12 lg:left-16 top-1/2 -translate-y-1/2 z-40 hidden sm:flex flex-col gap-4 font-sans text-[10px] uppercase tracking-[0.25em] select-none"
-        aria-label="Stats Navigation Rail"
-      >
-        {STATS_DATA.map((sec, idx) => {
-          const isActive = activeIndex === idx;
-          return (
-            <button
-              key={sec.id}
-              ref={(el) => { railDotRefs.current[idx] = el; }}
-              onClick={() => scrollToSection(idx)}
-              className="flex items-center gap-3 py-1.5 text-left group transition-all duration-300 pointer-events-auto"
-              id={`rail-link-${sec.id}`}
-              aria-label={`Go to section ${sec.id} - ${sec.title}`}
-            >
-              {/* Number */}
-              <span
-                className={`font-semibold transition-all duration-300 ${isActive ? "text-cream scale-110" : "text-cream/30 group-hover:text-cream/70"
-                  }`}
+      {/* Mobile view: 2x2 Grid, No scroll animation */}
+      <div className="block md:hidden w-full py-10 px-4 sm:px-6 select-none">
+        <div className="max-w-md mx-auto">
+          <div className="grid grid-cols-2 gap-3 sm:gap-4">
+            {STATS_DATA.slice(0, 4).map((sec) => (
+              <div
+                key={sec.id}
+                className="relative w-full aspect-square overflow-hidden shadow-[0_10px_30px_rgba(0,0,0,0.5)] rounded-none"
               >
-                {idx + 1}
-              </span>
-
-              {/* Slide/Fade text label */}
-              <span
-                className={`font-serif italic lowercase text-xs tracking-wider transition-all duration-500 overflow-hidden whitespace-nowrap ${isActive
-                  ? "w-32 opacity-100 text-[#faebac] translate-x-0"
-                  : "w-0 opacity-0 -translate-x-2"
-                  }`}
-              >
-                — {sec.title}
-              </span>
-            </button>
-          );
-        })}
-      </nav>
-
-      {/* Central image archive conveyor belt */}
-      <section className="relative w-full h-full flex items-center justify-center z-20 select-none">
-        <div className="relative w-[65vw] h-[36vh] sm:w-[310px] sm:h-[370px] md:w-[360px] md:h-[430px] lg:w-[400px] lg:h-[480px]">
-          {STATS_DATA.map((sec, idx) => (
-            <article
-              key={sec.id}
-              ref={(el) => { imageRefs.current[idx] = el; }}
-              className="absolute inset-0 w-full h-full overflow-hidden shadow-[0_20px_60px_rgba(0,0,0,0.65)] rounded-sm will-change-[transform,opacity,filter]"
-              style={{
-                zIndex: idx === 0 ? 10 : 1,
-                opacity: idx === 0 ? 1 : 0
-              }}
-              id={`stats-article-${sec.id}`}
-            >
-              {/* Soft overlay vignette */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-black/15 pointer-events-none z-10" />
-              {/* Editorial Image */}
-              <img
-                src={sec.image}
-                alt={`Editorial illustration for ${sec.title}`}
-                className="w-full h-full object-cover"
-                draggable={false}
-              />
-            </article>
-          ))}
+                <img
+                  src={sec.image}
+                  alt={sec.title}
+                  className="w-full h-full object-cover rounded-none"
+                  draggable={false}
+                />
+              </div>
+            ))}
+          </div>
         </div>
-      </section>
-
-      {/* Right-side text block / Mobile bottom text block */}
-      <aside className="absolute max-md:bottom-[8vh] max-md:left-1/2 max-md:-translate-x-1/2 max-md:w-[85vw] max-md:text-center md:right-16 lg:right-24 md:top-[40%] md:-translate-y-1/2 md:w-[320px] lg:w-[380px] text-left z-40 pointer-events-none select-none">
-        <div className="relative w-full h-12 md:h-24">
-          {STATS_DATA.map((sec, idx) => (
-            <div
-              key={sec.id}
-              ref={(el) => { textRefs.current[idx] = el; }}
-              className="absolute top-0 right-0 left-0 max-md:-translate-y-1/2 md:-translate-y-1/2 font-serif text-[15px] sm:text-base md:text-lg lg:text-xl text-cream/90 leading-relaxed font-light pointer-events-auto"
-              style={{ display: "block", opacity: idx === 0 ? 1 : 0 }}
-              id={`stats-caption-${sec.id}`}
-            >
-              {sec.caption}
-            </div>
-          ))}
-        </div>
-      </aside>
-    </div>
+      </div>
+    </section>
   );
 }

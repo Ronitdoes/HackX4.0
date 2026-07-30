@@ -48,10 +48,10 @@ export default function Home() {
 
   return (
     <>
-      <div className="relative w-full h-[100vh] flex flex-col items-center justify-center bg-transparent overflow-hidden px-6 md:px-12 select-none">
+      <div className="relative w-full min-h-screen md:h-[100vh] flex flex-col items-center justify-center bg-transparent overflow-x-hidden overflow-y-auto md:overflow-hidden px-4 sm:px-6 md:px-12 select-none pt-24 pb-12 md:py-0">
         
         {/* Relative container to keep typography and its side accents grouped and close */}
-        <div className="relative flex flex-col items-center justify-center max-w-[85vw] md:max-w-[70vw] -translate-y-10 md:-translate-y-14">
+        <div className="relative flex flex-col items-center justify-center max-w-[85vw] md:max-w-[70vw] mt-4 md:mt-0 md:-translate-y-14">
           {/* Main Center Typography Group */}
           <motion.h1
             variants={containerVariants}
@@ -69,7 +69,7 @@ export default function Home() {
                 </GlassPill>
               </motion.div>
             </div>
-            <div className="overflow-visible pb-2 md:pb-4 -mt-3 md:-mt-5">
+            <div className="overflow-visible py-2 md:py-3 mt-1 md:mt-2">
               <motion.div variants={lineVariants} className="block origin-bottom">
                 <div className="relative inline-flex items-center justify-center px-3 py-1.5 md:px-4 md:py-2">
                   {/* Top-left corner */}
@@ -80,7 +80,7 @@ export default function Home() {
                   <span className="absolute left-0 bottom-0 h-2 w-2 md:h-2.5 md:w-2.5 border-b-[3px] border-l-[3px] border-white" />
                   {/* Bottom-right corner */}
                   <span className="absolute right-0 bottom-0 h-2 w-2 md:h-2.5 md:w-2.5 border-b-[3px] border-r-[3px] border-white" />
-                  <span className="font-sans font-bold uppercase tracking-[0.3em] text-[#FAF8F5] text-[0.2em] md:text-[0.16em]">
+                  <span className="font-sans font-bold uppercase tracking-[0.3em] text-[#FAF8F5] text-[12px] sm:text-[14px] md:text-[16px]">
                     Presents
                   </span>
                 </div>
@@ -96,7 +96,7 @@ export default function Home() {
                     className="w-[55vw] max-w-[480px] md:w-[40vw] md:max-w-[620px] h-auto mx-auto select-none pointer-events-none"
                     draggable={false}
                   />
-                  <div className="absolute top-[-6%] right-[6%] z-30">
+                  <div className="absolute top-[-6%] -right-2 sm:-right-4 md:right-[14%] z-30">
                     <PrizePoolCircle />
                   </div>
                 </div>
@@ -108,6 +108,33 @@ export default function Home() {
               </motion.span>
             </div>
           </motion.h1>
+
+          {/* Subtitle description matching HackX 3.0 format */}
+          <motion.p
+            variants={accentVariants}
+            initial="hidden"
+            animate="visible"
+            className="mt-6 md:mt-8 max-w-xl text-center font-sans font-bold uppercase text-xs sm:text-sm md:text-base leading-relaxed tracking-wider text-white/90 px-4"
+          >
+            JOIN THE ULTIMATE TECH SHOWDOWN A HACKATHON WHERE YOUR IDEAS IGNITE, YOUR CODE TRANSFORMS, AND YOUR INNOVATIONS SHINE!
+          </motion.p>
+
+          {/* REGISTER NOW Button (Mobile View Only) */}
+          <motion.div
+            variants={accentVariants}
+            initial="hidden"
+            animate="visible"
+            className="block md:hidden mt-6 md:mt-8"
+          >
+            <a
+              href="#register"
+              className="inline-block transition-transform duration-300 hover:scale-105 active:scale-95 cursor-pointer"
+            >
+              <GlassPill className="text-[13px] sm:text-[15px] md:text-[16px] tracking-[0.2em] font-bold px-8 py-3.5 hover:bg-white/20">
+                REGISTER NOW
+              </GlassPill>
+            </a>
+          </motion.div>
 
           {/* Bottom Left Accent (corresponds to Since 2020) */}
           <motion.div
@@ -132,8 +159,8 @@ export default function Home() {
           </motion.div>
         </div>
 
-        {/* Absolute positioned SDG Marquee at the bottom of the hero */}
-        <div className="absolute bottom-2 md:bottom-4 left-0 w-full z-20">
+        {/* SDG Marquee at the bottom of the hero (visible on mobile below REGISTER NOW) */}
+        <div className="w-full z-20 mt-4 md:mt-0 md:absolute md:bottom-2 lg:bottom-4 left-0">
           <SdgMarquee />
         </div>
       </div>

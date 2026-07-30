@@ -688,6 +688,8 @@ export default function FluidShaderBackground() {
       const logoHue = { rotate: 0 };
       const blurParams = { blur: 10, sat: 1.3 };
 
+      const isMobileView = window.innerWidth < 768;
+
       tl = gsap.timeline({
         scrollTrigger: {
           trigger: sdgSection,
@@ -700,12 +702,20 @@ export default function FluidShaderBackground() {
       });
 
       // Transition IN (0.0 to 1.0)
-      tl.to(shaderParams.current, {
-        zoom: 0.65, // 0.75 of previous zoom delta (1/4th lesser zoom)
-        colorTransition: 1.0,
-        duration: 1,
-        ease: "power1.out"
-      }, 0);
+      if (!isMobileView) {
+        tl.to(shaderParams.current, {
+          zoom: 0.65, // 0.75 of previous zoom delta (1/4th lesser zoom)
+          colorTransition: 1.0,
+          duration: 1,
+          ease: "power1.out"
+        }, 0);
+      } else {
+        tl.to(shaderParams.current, {
+          colorTransition: 1.0,
+          duration: 1,
+          ease: "power1.out"
+        }, 0);
+      }
 
       tl.to(logoHue, {
         rotate: 140,
@@ -778,21 +788,31 @@ export default function FluidShaderBackground() {
           }
         }, 0);
 
-        tl.to(logoContainer, {
-          scale: 1.9,
-          filter: "blur(1px)",
-          duration: 1,
-          ease: "power1.out"
-        }, 0);
+        if (!isMobileView) {
+          tl.to(logoContainer, {
+            scale: 1.9,
+            filter: "blur(1px)",
+            duration: 1,
+            ease: "power1.out"
+          }, 0);
+        }
       }
 
       // Transition OUT (4.6 to 5.6)
-      tl.to(shaderParams.current, {
-        zoom: 1.25,
-        colorTransition: 0.0,
-        duration: 1,
-        ease: "power1.in"
-      }, 4.6);
+      if (!isMobileView) {
+        tl.to(shaderParams.current, {
+          zoom: 1.25,
+          colorTransition: 0.0,
+          duration: 1,
+          ease: "power1.in"
+        }, 4.6);
+      } else {
+        tl.to(shaderParams.current, {
+          colorTransition: 0.0,
+          duration: 1,
+          ease: "power1.in"
+        }, 4.6);
+      }
 
       tl.to(logoHue, {
         rotate: 0,
@@ -865,12 +885,14 @@ export default function FluidShaderBackground() {
           }
         }, 4.6);
 
-        tl.to(logoContainer, {
-          scale: 1.0,
-          filter: "blur(0px)",
-          duration: 1,
-          ease: "power1.in"
-        }, 4.6);
+        if (!isMobileView) {
+          tl.to(logoContainer, {
+            scale: 1.0,
+            filter: "blur(0px)",
+            duration: 1,
+            ease: "power1.in"
+          }, 4.6);
+        }
       }
     };
 
