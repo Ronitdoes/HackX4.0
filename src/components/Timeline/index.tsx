@@ -97,15 +97,16 @@ export default function Timeline() {
   // Dimension Constants
   const DESKTOP_HEIGHT = 5400;
   const DESKTOP_STEP = 850;
-  const MOBILE_HEIGHT = 3800;
-  const MOBILE_STEP = 600;
+  const MOBILE_HEIGHT = 1800;
+  const MOBILE_STEP = 280;
 
   const totalHeight = isMobile ? MOBILE_HEIGHT : DESKTOP_HEIGHT;
   const stepHeight = isMobile ? MOBILE_STEP : DESKTOP_STEP;
-  const amplitude = isMobile ? 140 : 150;
+  const amplitude = 150;
 
-  // Sine wave X coordinate formula based on Y position (in 1000px viewBox)
+  // X coordinate formula: straight line on left (x=40) for mobile, sine wave for desktop
   const getX = (y: number) => {
+    if (isMobile) return 40;
     return 500 + amplitude * Math.sin(y * (Math.PI / stepHeight) + Math.PI);
   };
 
@@ -114,8 +115,11 @@ export default function Timeline() {
   const xPosition = useTransform(yPosition, (y) => getX(y));
   const lineProgress = useTransform(yPosition, [0, totalHeight], [0, 1], { clamp: true });
 
-  // Generate SVG path for serpentine wave
+  // Generate SVG path (straight vertical line on mobile, serpentine wave on desktop)
   const generatePath = () => {
+    if (isMobile) {
+      return `M 40 0 L 40 ${totalHeight}`;
+    }
     let path = "";
     for (let y = 0; y <= totalHeight; y += 15) {
       const x = getX(y);
@@ -132,7 +136,7 @@ export default function Timeline() {
       id="timeline-section"
       ref={containerRef}
       className={`relative w-full bg-transparent text-white select-none overflow-visible pt-16 pb-32 ${
-        isMobile ? "h-[3800px] mb-16" : "h-[5400px] mb-32"
+        isMobile ? "h-[1800px] mb-12" : "h-[5400px] mb-32"
       }`}
     >
       {/* Central SVG Timeline Line */}
@@ -178,7 +182,7 @@ export default function Timeline() {
               style={{ pathLength: lineProgress }}
             />
 
-            {/* Milestone static indicators */}
+            {/* Milestone static checkpoint indicators */}
             {milestones.map((_, idx) => {
               const yVal = (idx + 0.5) * stepHeight;
               const xVal = getX(yVal);
@@ -187,17 +191,17 @@ export default function Timeline() {
                   <circle
                     cx={xVal}
                     cy={yVal}
-                    r={isMobile ? "12" : "14"}
+                    r={isMobile ? "10" : "14"}
                     fill="none"
-                    stroke="rgba(255, 255, 255, 0.15)"
-                    strokeWidth="1"
+                    stroke="rgba(255, 255, 255, 0.3)"
+                    strokeWidth="1.5"
                   />
                   <circle
                     cx={xVal}
                     cy={yVal}
-                    r={isMobile ? "4.5" : "5"}
+                    r={isMobile ? "4" : "5"}
                     fill="#ffffff"
-                    opacity="0.65"
+                    opacity="0.9"
                   />
                 </g>
               );
@@ -207,14 +211,14 @@ export default function Timeline() {
             <motion.circle
               cx={xPosition}
               cy={yPosition}
-              r={isMobile ? "18" : "22"}
+              r={isMobile ? "14" : "22"}
               fill="#ffffff"
               opacity="0.25"
             />
             <motion.circle
               cx={xPosition}
               cy={yPosition}
-              r={isMobile ? "8" : "9"}
+              r={isMobile ? "6" : "9"}
               fill="#ffffff"
             />
           </svg>
@@ -234,24 +238,13 @@ export default function Timeline() {
           let isTextRight: boolean;
 
           if (isMobile) {
-            // On mobile screens: position cards in the spacious side opposite each curve peak with 16px screen padding constraint
-            if (xPercent < 50) {
-              // Peak is on the left half (~36%): place card on spacious right side (40% to screen right)
-              cardStyle = {
-                top: `${yVal}px`,
-                left: `${xPercent + 4}%`,
-                right: "16px",
-              };
-              isTextRight = false;
-            } else {
-              // Peak is on the right half (~64%): place card on spacious left side (screen left to 60%)
-              cardStyle = {
-                top: `${yVal}px`,
-                left: "16px",
-                right: `${100 - (xPercent - 4)}%`,
-              };
-              isTextRight = true;
-            }
+            // On mobile screens: position cards to the right of the straight left line (64px offset)
+            cardStyle = {
+              top: `${yVal}px`,
+              left: "64px",
+              right: "16px",
+            };
+            isTextRight = false;
           } else {
             // Desktop layout
             const gapPercent = 4;
