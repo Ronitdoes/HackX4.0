@@ -17,11 +17,12 @@ const brands: Brand[] = [
   {
     name: "Health",
     logo: (
-      <svg className="w-full h-auto max-h-[75px] sm:max-h-[85px] md:max-h-[100px] fill-current text-[#f9f6f0]" viewBox="0 0 200 75">
-        <text x="50%" y="15" dominantBaseline="middle" textAnchor="middle" fontFamily="sans-serif" fontWeight="700" fontSize="14" letterSpacing="0.03em" fill="currentColor">GOOD HEALTH</text>
-        <text x="50%" y="30" dominantBaseline="middle" textAnchor="middle" fontFamily="sans-serif" fontWeight="700" fontSize="14" letterSpacing="0.03em" fill="currentColor">AND WELL-BEING</text>
-        <path d="M100 50 Q100 46 104 46 Q108 46 108 50 Q108 54 100 60 Q92 54 92 50 Q92 46 96 46 Q100 46 100 50Z" stroke="currentColor" strokeWidth="1.6" fill="none" />
-        <path d="M88 56 L90 53 M88 56 L92 58" stroke="currentColor" strokeWidth="1.3" fill="none" />
+      <svg className="w-full h-auto max-h-[95px] fill-current text-[#f9f6f0]" viewBox="0 0 200 90">
+        <text x="28" y="22" dominantBaseline="middle" textAnchor="end" fontFamily="sans-serif" fontWeight="900" fontSize="27" fill="currentColor">3</text>
+        <text x="36" y="15" dominantBaseline="middle" textAnchor="start" fontFamily="sans-serif" fontWeight="700" fontSize="13" letterSpacing="0.02em" fill="currentColor">GOOD HEALTH</text>
+        <text x="36" y="28" dominantBaseline="middle" textAnchor="start" fontFamily="sans-serif" fontWeight="700" fontSize="13" letterSpacing="0.02em" fill="currentColor">AND WELL-BEING</text>
+        <path d="M40 58 L72 58 L78 46 L84 72 L92 36 L100 68 L106 52 L112 58 L124 58" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+        <path d="M136 52 Q136 46 142 46 Q148 46 148 52 Q148 58 136 66 Q124 58 124 52 Q124 46 130 46 Q136 46 136 52Z" fill="currentColor" />
       </svg>
     ),
     description: "Ensuring healthy lives and promoting well-being for all at every age.",
@@ -29,12 +30,13 @@ const brands: Brand[] = [
   {
     name: "Education",
     logo: (
-      <svg className="w-full h-auto max-h-[75px] sm:max-h-[85px] md:max-h-[100px] fill-current text-[#f9f6f0]" viewBox="0 0 200 75">
-        <text x="50%" y="15" dominantBaseline="middle" textAnchor="middle" fontFamily="sans-serif" fontWeight="700" fontSize="14" letterSpacing="0.03em" fill="currentColor">QUALITY</text>
-        <text x="50%" y="30" dominantBaseline="middle" textAnchor="middle" fontFamily="sans-serif" fontWeight="700" fontSize="14" letterSpacing="0.03em" fill="currentColor">EDUCATION</text>
-        <rect x="90" y="47" width="12" height="14" rx="1" fill="none" stroke="currentColor" strokeWidth="1.4" />
-        <line x1="96" y1="47" x2="96" y2="61" stroke="currentColor" strokeWidth="1.1" />
-        <rect x="100" y="49" width="10" height="12" rx="1" fill="none" stroke="currentColor" strokeWidth="1.4" />
+      <svg className="w-full h-auto max-h-[95px] fill-current text-[#f9f6f0]" viewBox="0 0 200 90">
+        <text x="28" y="22" dominantBaseline="middle" textAnchor="end" fontFamily="sans-serif" fontWeight="900" fontSize="27" fill="currentColor">4</text>
+        <text x="36" y="15" dominantBaseline="middle" textAnchor="start" fontFamily="sans-serif" fontWeight="700" fontSize="13" letterSpacing="0.02em" fill="currentColor">QUALITY</text>
+        <text x="36" y="28" dominantBaseline="middle" textAnchor="start" fontFamily="sans-serif" fontWeight="700" fontSize="13" letterSpacing="0.02em" fill="currentColor">EDUCATION</text>
+        <path d="M80 46 Q95 50 100 56 Q105 50 120 46 L120 74 Q105 78 100 72 Q95 78 80 74 Z" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinejoin="round" />
+        <line x1="100" y1="56" x2="100" y2="72" stroke="currentColor" strokeWidth="2.2" />
+        <path d="M128 44 L134 50 L130 70 L126 70 L126 66 Z" fill="none" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
       </svg>
     ),
     description: "Inclusive and equitable quality education for lifelong learning.",
@@ -42,12 +44,17 @@ const brands: Brand[] = [
   {
     name: "Equality",
     logo: (
-      <svg className="w-full h-auto max-h-[75px] sm:max-h-[85px] md:max-h-[100px] fill-current text-[#f9f6f0]" viewBox="0 0 200 75">
-        <text x="50%" y="15" dominantBaseline="middle" textAnchor="middle" fontFamily="sans-serif" fontWeight="700" fontSize="14" letterSpacing="0.03em" fill="currentColor">GENDER</text>
-        <text x="50%" y="30" dominantBaseline="middle" textAnchor="middle" fontFamily="sans-serif" fontWeight="700" fontSize="14" letterSpacing="0.03em" fill="currentColor">EQUALITY</text>
-        <circle cx="100" cy="51" r="5" fill="none" stroke="currentColor" strokeWidth="1.6" />
-        <line x1="100" y1="56" x2="100" y2="64" stroke="currentColor" strokeWidth="1.6" />
-        <line x1="97" y1="59" x2="103" y2="59" stroke="currentColor" strokeWidth="1.6" />
+      <svg className="w-full h-auto max-h-[95px] fill-current text-[#f9f6f0]" viewBox="0 0 200 90">
+        <text x="28" y="22" dominantBaseline="middle" textAnchor="end" fontFamily="sans-serif" fontWeight="900" fontSize="27" fill="currentColor">5</text>
+        <text x="36" y="15" dominantBaseline="middle" textAnchor="start" fontFamily="sans-serif" fontWeight="700" fontSize="13" letterSpacing="0.02em" fill="currentColor">GENDER</text>
+        <text x="36" y="28" dominantBaseline="middle" textAnchor="start" fontFamily="sans-serif" fontWeight="700" fontSize="13" letterSpacing="0.02em" fill="currentColor">EQUALITY</text>
+        <circle cx="100" cy="54" r="11" fill="none" stroke="currentColor" strokeWidth="2.5" />
+        <line x1="94" y1="51" x2="106" y2="51" stroke="currentColor" strokeWidth="2.5" />
+        <line x1="94" y1="57" x2="106" y2="57" stroke="currentColor" strokeWidth="2.5" />
+        <line x1="100" y1="65" x2="100" y2="78" stroke="currentColor" strokeWidth="2.5" />
+        <line x1="93" y1="72" x2="107" y2="72" stroke="currentColor" strokeWidth="2.5" />
+        <line x1="108" y1="46" x2="116" y2="38" stroke="currentColor" strokeWidth="2.5" />
+        <polyline points="109,38 116,38 116,45" fill="none" stroke="currentColor" strokeWidth="2.5" />
       </svg>
     ),
     description: "Empowering all women and girls through equal opportunities.",
@@ -55,15 +62,20 @@ const brands: Brand[] = [
   {
     name: "Clean Energy",
     logo: (
-      <svg className="w-full h-auto max-h-[75px] sm:max-h-[85px] md:max-h-[100px] fill-current text-[#f9f6f0]" viewBox="0 0 200 75">
-        <text x="50%" y="15" dominantBaseline="middle" textAnchor="middle" fontFamily="sans-serif" fontWeight="700" fontSize="14" letterSpacing="0.03em" fill="currentColor">AFFORDABLE AND</text>
-        <text x="50%" y="30" dominantBaseline="middle" textAnchor="middle" fontFamily="sans-serif" fontWeight="700" fontSize="14" letterSpacing="0.03em" fill="currentColor">CLEAN ENERGY</text>
-        <circle cx="100" cy="53" r="6" fill="none" stroke="currentColor" strokeWidth="1.4" />
-        <circle cx="100" cy="53" r="2" fill="currentColor" />
-        <line x1="100" y1="45" x2="100" y2="47" stroke="currentColor" strokeWidth="1.3" />
-        <line x1="100" y1="59" x2="100" y2="61" stroke="currentColor" strokeWidth="1.3" />
-        <line x1="94" y1="53" x2="92" y2="53" stroke="currentColor" strokeWidth="1.3" />
-        <line x1="106" y1="53" x2="108" y2="53" stroke="currentColor" strokeWidth="1.3" />
+      <svg className="w-full h-auto max-h-[95px] fill-current text-[#f9f6f0]" viewBox="0 0 200 90">
+        <text x="28" y="22" dominantBaseline="middle" textAnchor="end" fontFamily="sans-serif" fontWeight="900" fontSize="27" fill="currentColor">7</text>
+        <text x="36" y="15" dominantBaseline="middle" textAnchor="start" fontFamily="sans-serif" fontWeight="700" fontSize="13" letterSpacing="0.02em" fill="currentColor">AFFORDABLE AND</text>
+        <text x="36" y="28" dominantBaseline="middle" textAnchor="start" fontFamily="sans-serif" fontWeight="700" fontSize="13" letterSpacing="0.02em" fill="currentColor">CLEAN ENERGY</text>
+        <circle cx="100" cy="58" r="9" fill="none" stroke="currentColor" strokeWidth="2.5" />
+        <line x1="100" y1="52" x2="100" y2="58" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
+        <line x1="100" y1="42" x2="100" y2="45" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" />
+        <line x1="100" y1="71" x2="100" y2="74" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" />
+        <line x1="84" y1="58" x2="87" y2="58" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" />
+        <line x1="113" y1="58" x2="116" y2="58" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" />
+        <line x1="89" y1="47" x2="91" y2="49" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" />
+        <line x1="109" y1="67" x2="111" y2="69" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" />
+        <line x1="89" y1="69" x2="91" y2="67" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" />
+        <line x1="109" y1="49" x2="111" y2="47" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" />
       </svg>
     ),
     description: "Affordable, reliable, sustainable and modern energy for all.",
@@ -71,14 +83,16 @@ const brands: Brand[] = [
   {
     name: "Decent Work",
     logo: (
-      <svg className="w-full h-auto max-h-[75px] sm:max-h-[85px] md:max-h-[100px] fill-current text-[#f9f6f0]" viewBox="0 0 200 75">
-        <text x="50%" y="15" dominantBaseline="middle" textAnchor="middle" fontFamily="sans-serif" fontWeight="700" fontSize="14" letterSpacing="0.03em" fill="currentColor">DECENT WORK AND</text>
-        <text x="50%" y="30" dominantBaseline="middle" textAnchor="middle" fontFamily="sans-serif" fontWeight="700" fontSize="14" letterSpacing="0.03em" fill="currentColor">ECONOMIC GROWTH</text>
-        <rect x="88" y="59" width="4" height="3" fill="currentColor" />
-        <rect x="93" y="56" width="4" height="6" fill="currentColor" />
-        <rect x="98" y="52" width="4" height="10" fill="currentColor" />
-        <rect x="103" y="48" width="4" height="14" fill="currentColor" />
-        <polyline points="88,51 95,48 101,45 108,43" fill="none" stroke="currentColor" strokeWidth="1.4" />
+      <svg className="w-full h-auto max-h-[95px] fill-current text-[#f9f6f0]" viewBox="0 0 200 90">
+        <text x="28" y="22" dominantBaseline="middle" textAnchor="end" fontFamily="sans-serif" fontWeight="900" fontSize="27" fill="currentColor">8</text>
+        <text x="36" y="15" dominantBaseline="middle" textAnchor="start" fontFamily="sans-serif" fontWeight="700" fontSize="13" letterSpacing="0.02em" fill="currentColor">DECENT WORK AND</text>
+        <text x="36" y="28" dominantBaseline="middle" textAnchor="start" fontFamily="sans-serif" fontWeight="700" fontSize="13" letterSpacing="0.02em" fill="currentColor">ECONOMIC GROWTH</text>
+        <rect x="84" y="66" width="6" height="10" fill="currentColor" />
+        <rect x="94" y="58" width="6" height="18" fill="currentColor" />
+        <rect x="104" y="50" width="6" height="26" fill="currentColor" />
+        <rect x="114" y="42" width="6" height="34" fill="currentColor" />
+        <polyline points="80,58 95,48 106,42 122,32" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+        <polyline points="112,32 122,32 122,42" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
       </svg>
     ),
     description: "Sustained, inclusive economic growth and decent work for all.",
@@ -86,11 +100,19 @@ const brands: Brand[] = [
   {
     name: "Innovation",
     logo: (
-      <svg className="w-full h-auto max-h-[75px] sm:max-h-[85px] md:max-h-[100px] fill-current text-[#f9f6f0]" viewBox="0 0 200 75">
-        <text x="50%" y="15" dominantBaseline="middle" textAnchor="middle" fontFamily="sans-serif" fontWeight="700" fontSize="14" letterSpacing="0.03em" fill="currentColor">INDUSTRY, INNOVATION</text>
-        <text x="50%" y="30" dominantBaseline="middle" textAnchor="middle" fontFamily="sans-serif" fontWeight="700" fontSize="14" letterSpacing="0.03em" fill="currentColor">AND INFRASTRUCTURE</text>
-        <path d="M90 61 L95 46 L100 61 Z" fill="none" stroke="currentColor" strokeWidth="1.4" />
-        <path d="M98 61 L103 46 L108 61 Z" fill="none" stroke="currentColor" strokeWidth="1.4" />
+      <svg className="w-full h-auto max-h-[95px] fill-current text-[#f9f6f0]" viewBox="0 0 200 90">
+        <text x="28" y="22" dominantBaseline="middle" textAnchor="end" fontFamily="sans-serif" fontWeight="900" fontSize="27" fill="currentColor">9</text>
+        <text x="36" y="15" dominantBaseline="middle" textAnchor="start" fontFamily="sans-serif" fontWeight="700" fontSize="13" letterSpacing="0.02em" fill="currentColor">INDUSTRY, INNOVATION</text>
+        <text x="36" y="28" dominantBaseline="middle" textAnchor="start" fontFamily="sans-serif" fontWeight="700" fontSize="13" letterSpacing="0.02em" fill="currentColor">AND INFRASTRUCTURE</text>
+        <polygon points="100,38 112,45 100,52 88,45" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinejoin="round" />
+        <path d="M88 45 L88 59 L100 66 L100 52" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinejoin="round" />
+        <path d="M112 45 L112 59 L100 66" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinejoin="round" />
+        <polygon points="88,59 76,66 88,73 100,66" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinejoin="round" />
+        <path d="M76 66 L76 80 L88 87 L88 73" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinejoin="round" />
+        <path d="M100 66 L100 80 L88 87" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinejoin="round" />
+        <polygon points="112,59 100,66 112,73 124,66" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinejoin="round" />
+        <path d="M100 66 L100 80 L112 87 L112 73" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinejoin="round" />
+        <path d="M124 66 L124 80 L112 87" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinejoin="round" />
       </svg>
     ),
     description: "Resilient infrastructure and inclusive industrialization.",
@@ -98,11 +120,16 @@ const brands: Brand[] = [
   {
     name: "Equality",
     logo: (
-      <svg className="w-full h-auto max-h-[75px] sm:max-h-[85px] md:max-h-[100px] fill-current text-[#f9f6f0]" viewBox="0 0 200 75">
-        <text x="50%" y="15" dominantBaseline="middle" textAnchor="middle" fontFamily="sans-serif" fontWeight="700" fontSize="14" letterSpacing="0.03em" fill="currentColor">REDUCED</text>
-        <text x="50%" y="30" dominantBaseline="middle" textAnchor="middle" fontFamily="sans-serif" fontWeight="700" fontSize="14" letterSpacing="0.03em" fill="currentColor">INEQUALITIES</text>
-        <polygon points="100,45 95,53 105,53" fill="none" stroke="currentColor" strokeWidth="1.4" />
-        <text x="100" y="62" fontFamily="sans-serif" fontWeight="700" fontSize="15" textAnchor="middle" fill="currentColor">=</text>
+      <svg className="w-full h-auto max-h-[95px] fill-current text-[#f9f6f0]" viewBox="0 0 200 90">
+        <text x="26" y="22" dominantBaseline="middle" textAnchor="end" fontFamily="sans-serif" fontWeight="900" fontSize="25" fill="currentColor">10</text>
+        <text x="34" y="15" dominantBaseline="middle" textAnchor="start" fontFamily="sans-serif" fontWeight="700" fontSize="13" letterSpacing="0.02em" fill="currentColor">REDUCED</text>
+        <text x="34" y="28" dominantBaseline="middle" textAnchor="start" fontFamily="sans-serif" fontWeight="700" fontSize="13" letterSpacing="0.02em" fill="currentColor">INEQUALITIES</text>
+        <rect x="94" y="54" width="12" height="3" fill="currentColor" />
+        <rect x="94" y="61" width="12" height="3" fill="currentColor" />
+        <polygon points="100,38 92,47 108,47" fill="currentColor" />
+        <polygon points="100,80 92,71 108,71" fill="currentColor" />
+        <polygon points="78,59 87,51 87,67" fill="currentColor" />
+        <polygon points="122,59 113,51 113,67" fill="currentColor" />
       </svg>
     ),
     description: "Reducing inequality within and among countries.",
@@ -110,12 +137,13 @@ const brands: Brand[] = [
   {
     name: "Climate",
     logo: (
-      <svg className="w-full h-auto max-h-[75px] sm:max-h-[85px] md:max-h-[100px] fill-current text-[#f9f6f0]" viewBox="0 0 200 75">
-        <text x="50%" y="15" dominantBaseline="middle" textAnchor="middle" fontFamily="sans-serif" fontWeight="700" fontSize="14" letterSpacing="0.03em" fill="currentColor">CLIMATE</text>
-        <text x="50%" y="30" dominantBaseline="middle" textAnchor="middle" fontFamily="sans-serif" fontWeight="700" fontSize="14" letterSpacing="0.03em" fill="currentColor">ACTION</text>
-        <circle cx="100" cy="53" r="7" fill="none" stroke="currentColor" strokeWidth="1.4" />
-        <ellipse cx="100" cy="53" rx="3" ry="7" fill="none" stroke="currentColor" strokeWidth="0.9" />
-        <line x1="93" y1="53" x2="107" y2="53" stroke="currentColor" strokeWidth="0.9" />
+      <svg className="w-full h-auto max-h-[95px] fill-current text-[#f9f6f0]" viewBox="0 0 200 90">
+        <text x="26" y="22" dominantBaseline="middle" textAnchor="end" fontFamily="sans-serif" fontWeight="900" fontSize="25" fill="currentColor">13</text>
+        <text x="34" y="15" dominantBaseline="middle" textAnchor="start" fontFamily="sans-serif" fontWeight="700" fontSize="13" letterSpacing="0.02em" fill="currentColor">CLIMATE</text>
+        <text x="34" y="28" dominantBaseline="middle" textAnchor="start" fontFamily="sans-serif" fontWeight="700" fontSize="13" letterSpacing="0.02em" fill="currentColor">ACTION</text>
+        <path d="M72 58 Q100 38 128 58 Q100 78 72 58 Z" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinejoin="round" />
+        <circle cx="100" cy="58" r="9" fill="currentColor" />
+        <path d="M96 52 Q100 50 102 54 Q98 58 95 56 Z M103 57 Q106 55 107 60 Q101 64 100 60 Z" fill="#000" />
       </svg>
     ),
     description: "Urgent action to combat climate change and its impacts.",
@@ -123,12 +151,19 @@ const brands: Brand[] = [
   {
     name: "Partnerships",
     logo: (
-      <svg className="w-full h-auto max-h-[75px] sm:max-h-[85px] md:max-h-[100px] fill-current text-[#f9f6f0]" viewBox="0 0 200 75">
-        <text x="50%" y="15" dominantBaseline="middle" textAnchor="middle" fontFamily="sans-serif" fontWeight="700" fontSize="14" letterSpacing="0.03em" fill="currentColor">PARTNERSHIPS</text>
-        <text x="50%" y="30" dominantBaseline="middle" textAnchor="middle" fontFamily="sans-serif" fontWeight="700" fontSize="14" letterSpacing="0.03em" fill="currentColor">FOR THE GOALS</text>
-        <circle cx="100" cy="53" r="7" fill="none" stroke="currentColor" strokeWidth="1.4" />
-        <circle cx="100" cy="53" r="4" fill="none" stroke="currentColor" strokeWidth="1.1" />
-        <circle cx="100" cy="53" r="1.5" fill="currentColor" />
+      <svg className="w-full h-auto max-h-[95px] fill-current text-[#f9f6f0]" viewBox="0 0 200 90">
+        <text x="26" y="22" dominantBaseline="middle" textAnchor="end" fontFamily="sans-serif" fontWeight="900" fontSize="25" fill="currentColor">17</text>
+        <text x="34" y="15" dominantBaseline="middle" textAnchor="start" fontFamily="sans-serif" fontWeight="700" fontSize="13" letterSpacing="0.02em" fill="currentColor">PARTNERSHIPS</text>
+        <text x="34" y="28" dominantBaseline="middle" textAnchor="start" fontFamily="sans-serif" fontWeight="700" fontSize="13" letterSpacing="0.02em" fill="currentColor">FOR THE GOALS</text>
+        <g stroke="currentColor" strokeWidth="2" fill="none" transform="translate(100,58)">
+          <circle cx="0" cy="0" r="10" />
+          <circle cx="0" cy="-6" r="10" />
+          <circle cx="5.2" cy="-3" r="10" />
+          <circle cx="5.2" cy="3" r="10" />
+          <circle cx="0" cy="6" r="10" />
+          <circle cx="-5.2" cy="3" r="10" />
+          <circle cx="-5.2" cy="-3" r="10" />
+        </g>
       </svg>
     ),
     description: "Global partnerships for sustainable development.",
@@ -394,7 +429,7 @@ export default function SdgComponent() {
           {/* Header */}
           <div className="flex items-center justify-center gap-2 font-serif italic text-base text-[#f9f6f0]/80 mb-3">
             <span>{brands.length}</span>
-            <span>—</span>
+            <span>-</span>
             <span>Sustainable Goals</span>
           </div>
 
@@ -409,7 +444,7 @@ export default function SdgComponent() {
                 key={idx}
                 className="w-full flex items-center justify-center p-1 text-[#f9f6f0]"
               >
-                <div className="w-full max-w-[145px] h-auto flex items-center justify-center">
+                <div className="w-full max-w-[165px] h-auto flex items-center justify-center">
                   {brand.logo}
                 </div>
               </div>

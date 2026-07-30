@@ -26,27 +26,52 @@ export default function SdgMarquee() {
   useGSAP(() => {
     if (!scrollWrapperRef.current) return;
 
-    // Shift the marquee horizontally as page scrolls to create a dynamic speed effect
-    gsap.fromTo(
-      scrollWrapperRef.current,
-      { x: "10%" },
-      {
-        x: "-30%",
-        ease: "none",
-        scrollTrigger: {
-          trigger: scrollWrapperRef.current,
-          start: "top bottom",
-          end: "bottom top",
-          scrub: 0.8,
-        },
-      }
-    );
+    const mm = gsap.matchMedia();
+    mm.add("(min-width: 768px)", () => {
+      gsap.fromTo(
+        scrollWrapperRef.current,
+        { x: "10%" },
+        {
+          x: "-30%",
+          ease: "none",
+          scrollTrigger: {
+            trigger: scrollWrapperRef.current,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: 0.8,
+          },
+        }
+      );
+    });
   }, { scope: scrollWrapperRef });
 
   return (
-    <div className="w-full py-10 md:py-14 select-none pointer-events-auto relative z-10 overflow-hidden">
-      {/* Scroll-driven wrapper */}
-      <div ref={scrollWrapperRef} className="w-full">
+    <div className="w-full py-4 md:py-14 select-none pointer-events-auto relative z-10 overflow-hidden">
+      {/* Mobile View: Static 3x3 Grid, no movement */}
+      <div className="block md:hidden w-full max-w-md mx-auto px-2 py-2">
+        <div className="grid grid-cols-3 gap-y-7 gap-x-3 items-center justify-items-center">
+          {SDG_IMAGES.map((item, idx) => (
+            <div
+              key={idx}
+              className="flex items-center justify-center p-1"
+            >
+              <img
+                src={item.src}
+                alt={item.alt}
+                width={90}
+                height={90}
+                className="h-[76px] sm:h-[88px] w-auto object-contain pointer-events-none"
+                draggable={false}
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Desktop View: Moving Marquee Track */}
+      <div ref={scrollWrapperRef} className="hidden md:block w-full">
         {/* Infinite scrolling track */}
         <div className="flex w-max animate-marquee hover:[animation-play-state:paused] cursor-pointer">
           <div className="flex items-center gap-16 md:gap-24 px-8 md:px-12">
