@@ -445,6 +445,13 @@ export default function FluidShaderBackground() {
       let currentPos = 0;
       let minPos = 0;
 
+      const isMobileView = window.innerWidth < 768;
+      const totalTimelineHeight = timelineSection
+        ? timelineSection.getBoundingClientRect().height
+        : isMobileView
+        ? 1680
+        : 5100;
+
       if (timelineSection) {
         const rect = timelineSection.getBoundingClientRect();
         const vh = window.innerHeight;
@@ -454,12 +461,11 @@ export default function FluidShaderBackground() {
         const containerTop = rect.top + window.scrollY;
         minPos = (vh / 2) - containerTop;
       } else {
-        currentPos = (window.scrollY / 5500) * 5500;
+        currentPos = (window.scrollY / totalTimelineHeight) * totalTimelineHeight;
         minPos = 0;
       }
 
       // Smooth horizontal sway calculation
-      const isMobileView = window.innerWidth < 768;
       const maxShiftVw = isMobileView ? 0 : 18;
       let xShiftVw = 0;
 
@@ -471,10 +477,12 @@ export default function FluidShaderBackground() {
         const startDist = 500 - minPos;
         const startProgress = startDist > 0 ? Math.min((currentPos - minPos) / startDist, 1) : 1;
         xShiftVw = (0.5 - 0.5 * Math.cos(startProgress * Math.PI)) * maxShiftVw;
-      } else if (currentPos <= 5500) {
-        xShiftVw = Math.cos((currentPos - 500) * (Math.PI / 1000)) * maxShiftVw;
+      } else if (currentPos <= totalTimelineHeight) {
+        const timelineDist = totalTimelineHeight - 500;
+        const progress = timelineDist > 0 ? (currentPos - 500) / timelineDist : 1;
+        xShiftVw = Math.cos(progress * 5 * Math.PI) * maxShiftVw;
       } else {
-        const exitProgress = Math.min((currentPos - 5500) / 500, 1);
+        const exitProgress = Math.min((currentPos - totalTimelineHeight) / 500, 1);
         xShiftVw = -maxShiftVw * (0.5 + 0.5 * Math.cos(exitProgress * Math.PI));
       }
 
@@ -482,11 +490,11 @@ export default function FluidShaderBackground() {
       let timelineProgress = 0;
       if (currentPos <= minPos) {
         timelineProgress = 0;
-      } else if (currentPos <= 5500) {
-        const totalTimelineDist = 5500 - minPos;
+      } else if (currentPos <= totalTimelineHeight) {
+        const totalTimelineDist = totalTimelineHeight - minPos;
         timelineProgress = totalTimelineDist > 0 ? Math.min(Math.max((currentPos - minPos) / totalTimelineDist, 0), 1) : 0;
       } else {
-        const exitProgress = Math.min((currentPos - 5500) / 500, 1);
+        const exitProgress = Math.min((currentPos - totalTimelineHeight) / 500, 1);
         timelineProgress = 1 - exitProgress;
       }
 
@@ -494,13 +502,13 @@ export default function FluidShaderBackground() {
       const logoScale = 1.25 / targetZoom;
 
       let targetColorTransition = 0;
-      if (currentPos > minPos && currentPos < 6000) {
-        const colorProgress = currentPos <= 5500 ? currentPos : 5500 - (currentPos - 5500);
+      if (currentPos > minPos && currentPos < totalTimelineHeight + 500) {
+        const colorProgress = currentPos <= totalTimelineHeight ? currentPos : totalTimelineHeight - (currentPos - totalTimelineHeight);
         const colorAngle = (colorProgress - 500) * (Math.PI / 1000);
         targetColorTransition = Math.min(Math.max(0.5 - 0.5 * Math.cos(colorAngle), 0), 1);
         if (currentPos <= minPos) targetColorTransition = 0;
-        if (currentPos > 5500) {
-          const exitProgress = Math.min((currentPos - 5500) / 500, 1);
+        if (currentPos > totalTimelineHeight) {
+          const exitProgress = Math.min((currentPos - totalTimelineHeight) / 500, 1);
           targetColorTransition *= (1 - exitProgress);
         }
       }

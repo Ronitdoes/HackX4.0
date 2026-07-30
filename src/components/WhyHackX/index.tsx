@@ -64,6 +64,7 @@ export default function WhyHackX() {
   const containerRef = useRef<HTMLDivElement>(null);
   const spacerRef = useRef<HTMLDivElement>(null);
   const progressLineRef = useRef<HTMLDivElement>(null);
+  const [isMobile, setIsMobile] = React.useState(false);
   
   // Refs to each item's wrapper for scroll entrance translations
   const itemRefs = useRef<(HTMLDivElement | null)[]>([]);
@@ -72,6 +73,15 @@ export default function WhyHackX() {
   const titleRefs = useRef<(HTMLHeadingElement | null)[]>([]);
   const descWrapRefs = useRef<(HTMLDivElement | null)[]>([]);
   const descTextRefs = useRef<(HTMLParagraphElement | null)[]>([]);
+
+  React.useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 769);
+    };
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
   // Entirely scroll-bound animations built into a single scrubbed GSAP timeline.
   // This removes React activeIndex state triggers, preventing snappy snaps or re-render flashes.
@@ -184,13 +194,17 @@ export default function WhyHackX() {
           }
         });
 
-        // Handle resize offset recalculation
-        ScrollTrigger.addEventListener("refresh", () => {
+        // Handle resize offset recalculation with proper listener teardown
+        const handleRefresh = () => {
           offsetPx = Math.max(
             window.innerHeight * ENTRANCE_OFFSET_VH_FRACTION,
             ENTRANCE_OFFSET_MIN_PX
           );
-        });
+        };
+        ScrollTrigger.addEventListener("refresh", handleRefresh);
+        return () => {
+          ScrollTrigger.removeEventListener("refresh", handleRefresh);
+        };
       });
 
       mm.add("(max-width: 768px)", () => {
@@ -203,16 +217,16 @@ export default function WhyHackX() {
           if (!el) return;
           gsap.fromTo(
             el,
-            { opacity: 0, y: 45 },
+            { opacity: 0, y: 30 },
             {
               opacity: 1,
               y: 0,
-              duration: 0.85,
+              duration: 0.7,
               ease: "power2.out",
               scrollTrigger: {
                 trigger: el,
                 start: "top 88%",
-                toggleActions: "play none none reverse",
+                once: true,
               },
             }
           );
@@ -252,7 +266,7 @@ export default function WhyHackX() {
         <div
           ref={spacerRef}
           className="relative w-full md:flex-grow md:max-w-[600px] flex-shrink-0 max-md:!h-auto"
-          style={{ height: `${TOTAL_VH}vh` }}
+          style={{ height: isMobile ? "auto" : `${TOTAL_VH}vh` }}
         >
           <div
             className="relative md:sticky md:top-0 md:h-screen w-full flex flex-col justify-start pt-0 md:pt-[25vh] items-start gap-5 md:gap-6 py-6 md:py-0"
@@ -264,7 +278,7 @@ export default function WhyHackX() {
                   ref={(el) => {
                     itemRefs.current[i] = el;
                   }}
-                  className="w-full translate-y-0 md:translate-y-[60vh] will-change-transform"
+                  className="w-full translate-y-0 md:translate-y-[60vh] md:will-change-transform"
                 >
                   <h3
                     ref={(el) => {
@@ -272,7 +286,7 @@ export default function WhyHackX() {
                     }}
                     className="font-sans font-semibold uppercase tracking-[-0.02em] text-xl md:text-2xl lg:text-[2rem] leading-snug cursor-default text-[#ff7695] max-md:!opacity-100"
                     style={{
-                      opacity: i === 0 ? 1 : 0.5,
+                      opacity: isMobile || i === 0 ? 1 : 0.5,
                       wordSpacing: "0.06em",
                     }}
                   >
@@ -285,7 +299,7 @@ export default function WhyHackX() {
                     }}
                     className="overflow-hidden max-md:!h-auto"
                     style={{
-                      height: i === 0 ? "auto" : 0,
+                      height: isMobile || i === 0 ? "auto" : 0,
                     }}
                   >
                     <div className="overflow-hidden min-h-0">
@@ -295,9 +309,9 @@ export default function WhyHackX() {
                         }}
                         className="pt-3 md:pt-4 font-sans font-normal text-white/90 text-base md:text-lg lg:text-xl leading-relaxed max-w-[600px] max-md:!opacity-100 max-md:!blur-none max-md:!transform-none"
                         style={{
-                          opacity: i === 0 ? 1 : 0,
-                          filter: i === 0 ? "none" : "blur(10px)",
-                          transform: i === 0 ? "none" : "translateY(10px)",
+                          opacity: isMobile || i === 0 ? 1 : 0,
+                          filter: isMobile || i === 0 ? "none" : "blur(10px)",
+                          transform: isMobile || i === 0 ? "none" : "translateY(10px)",
                         }}
                       >
                         {item.description}

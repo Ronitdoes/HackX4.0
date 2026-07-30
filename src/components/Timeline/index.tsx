@@ -59,7 +59,11 @@ export default function Timeline() {
   const containerRef = useRef<HTMLDivElement>(null);
   const scrollYProgress = useMotionValue(0);
 
-  const progressSpring = useSpring(scrollYProgress, {
+  const progressSpring = useSpring(scrollYProgress, isMobile ? {
+    stiffness: 300,
+    damping: 40,
+    restDelta: 0.001
+  } : {
     stiffness: 80,
     damping: 25,
     restDelta: 0.001
@@ -67,6 +71,8 @@ export default function Timeline() {
 
   useEffect(() => {
     if (!mounted) return;
+
+    let ticking = false;
 
     const handleScroll = () => {
       if (!containerRef.current) return;
@@ -81,23 +87,33 @@ export default function Timeline() {
       scrollYProgress.set(progress);
     };
 
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    window.addEventListener("resize", handleScroll, { passive: true });
+    const onScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          handleScroll();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll, { passive: true });
     handleScroll();
 
     const timer = setTimeout(handleScroll, 100);
 
     return () => {
-      window.removeEventListener("scroll", handleScroll);
-      window.removeEventListener("resize", handleScroll);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
       clearTimeout(timer);
     };
   }, [mounted, scrollYProgress]);
 
   // Dimension Constants
-  const DESKTOP_HEIGHT = 5400;
+  const DESKTOP_HEIGHT = 5100;
   const DESKTOP_STEP = 850;
-  const MOBILE_HEIGHT = 1800;
+  const MOBILE_HEIGHT = 1680;
   const MOBILE_STEP = 280;
 
   const totalHeight = isMobile ? MOBILE_HEIGHT : DESKTOP_HEIGHT;
@@ -136,7 +152,7 @@ export default function Timeline() {
       id="timeline-section"
       ref={containerRef}
       className={`relative w-full bg-transparent text-white select-none overflow-visible pt-16 pb-32 ${
-        isMobile ? "h-[1800px] mb-12" : "h-[5400px] mb-32"
+        isMobile ? "h-[1680px] mb-12" : "h-[5100px] mb-32"
       }`}
     >
       {/* Central SVG Timeline Line */}
@@ -148,6 +164,7 @@ export default function Timeline() {
             viewBox={isMobile ? `0 0 375 ${totalHeight}` : `0 0 1000 ${totalHeight}`}
             className="w-full h-full overflow-visible"
             preserveAspectRatio="none"
+            style={{ willChange: "transform", transform: "translateZ(0)" }}
           >
             <defs>
               <linearGradient id="line-gradient" x1="0%" y1="0%" x2="0%" y2="100%">
@@ -162,15 +179,6 @@ export default function Timeline() {
                 <stop offset="50%" stopColor="#FAF8F5" stopOpacity="0.75" />
                 <stop offset="100%" stopColor="#FAF8F5" stopOpacity="0.45" />
               </linearGradient>
-
-              <filter id="active-glow" x="-100%" y="-100%" width="300%" height="300%">
-                <feGaussianBlur stdDeviation="15" result="blur" />
-                <feMerge>
-                  <feMergeNode in="blur" />
-                  <feMergeNode in="blur" />
-                  <feMergeNode in="SourceGraphic" />
-                </feMerge>
-              </filter>
             </defs>
 
             {/* Background trace line */}
@@ -284,8 +292,8 @@ export default function Timeline() {
               <motion.div
                 initial={{ opacity: 0, x: isTextRight ? 20 : -20 }}
                 whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: false, margin: "-15% 0px -15% 0px" }}
-                transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                viewport={{ once: true, margin: "-10% 0px -10% 0px" }}
+                transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
                 className={`flex flex-col ${
                   isTextRight ? "items-end text-right" : "items-start text-left"
                 }`}

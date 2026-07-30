@@ -54,12 +54,14 @@ export default function AboutPage() {
             className="flex flex-col items-center justify-center font-sans font-black uppercase tracking-normal leading-[0.95] text-center"
             style={{
               fontSize: "clamp(2rem, 5.8vw, 6.2rem)",
+              transform: "translateZ(0)",
             }}
           >
             <div className="overflow-visible py-2 md:py-3 leading-normal px-4">
               <motion.span
                 variants={lineVariants}
                 className="block origin-bottom font-serif italic font-normal text-white/50 lowercase tracking-normal leading-normal"
+                style={{ transform: "translateZ(0)" }}
               >
                 why participate in
               </motion.span>
@@ -69,6 +71,7 @@ export default function AboutPage() {
               <motion.span
                 variants={lineVariants}
                 className="block origin-bottom text-white font-extrabold"
+                style={{ transform: "translateZ(0)" }}
               >
                 THE ARENA OF
               </motion.span>
@@ -78,6 +81,7 @@ export default function AboutPage() {
               <motion.span
                 variants={lineVariants}
                 className="block origin-bottom text-transparent bg-clip-text bg-gradient-to-r from-[#D242D7] via-[#B86EF9] to-white/95 font-black"
+                style={{ transform: "translateZ(0)" }}
               >
                 HACKX 4.0?
               </motion.span>
@@ -90,6 +94,7 @@ export default function AboutPage() {
             initial="hidden"
             animate="visible"
             className="mt-8 md:mt-10 max-w-2xl text-[#F9F6F0]/70 text-sm md:text-base lg:text-lg font-sans font-normal leading-relaxed"
+            style={{ transform: "translateZ(0)" }}
           >
             Step into a 36-hour sandbox of pure innovation. Turn your wildest ideas into reality, 
             collaborate with exceptional minds, and pitch to leading tech founders. This is where 
