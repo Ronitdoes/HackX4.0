@@ -197,6 +197,26 @@ export default function WhyHackX() {
         if (progressLineRef.current) {
           gsap.set(progressLineRef.current, { scaleY: 1 });
         }
+
+        // Add scroll-triggered fade-in animation from bottom for each card on mobile
+        itemRefs.current.forEach((el) => {
+          if (!el) return;
+          gsap.fromTo(
+            el,
+            { opacity: 0, y: 45 },
+            {
+              opacity: 1,
+              y: 0,
+              duration: 0.85,
+              ease: "power2.out",
+              scrollTrigger: {
+                trigger: el,
+                start: "top 88%",
+                toggleActions: "play none none reverse",
+              },
+            }
+          );
+        });
       });
     },
     { scope: containerRef }
@@ -205,9 +225,9 @@ export default function WhyHackX() {
   return (
     <section
       ref={containerRef}
-      className="relative w-full bg-transparent text-[#FAF8F5] py-20 md:py-0"
+      className="relative w-full bg-transparent text-[#FAF8F5] py-8 md:py-0"
     >
-      <div className="max-w-[1300px] mx-auto w-full flex flex-col md:flex-row items-start justify-center px-6 md:px-12 md:pl-24 lg:pl-36 gap-16 md:gap-24 lg:gap-32">
+      <div className="max-w-[1300px] mx-auto w-full flex flex-col md:flex-row items-start justify-center px-6 md:px-12 md:pl-24 lg:pl-36 gap-8 md:gap-24 lg:gap-32">
         {/* Left Column: Sticky Title */}
         <div className="w-full md:w-auto md:sticky md:top-0 md:h-screen flex items-center justify-start select-none flex-shrink-0">
           <div className="flex items-stretch gap-6 md:gap-8">
@@ -235,7 +255,7 @@ export default function WhyHackX() {
           style={{ height: `${TOTAL_VH}vh` }}
         >
           <div
-            className="relative md:sticky md:top-0 md:h-screen w-full flex flex-col justify-start pt-[12vh] md:pt-[25vh] items-start gap-5 md:gap-6 py-16 md:py-0"
+            className="relative md:sticky md:top-0 md:h-screen w-full flex flex-col justify-start pt-0 md:pt-[25vh] items-start gap-5 md:gap-6 py-6 md:py-0"
           >
             {ITEMS.map((item, i) => {
               return (
@@ -273,7 +293,7 @@ export default function WhyHackX() {
                         ref={(el) => {
                           descTextRefs.current[i] = el;
                         }}
-                        className="pt-3 md:pt-4 font-sans font-normal text-white/90 text-base md:text-lg lg:text-xl leading-relaxed max-w-[600px] opacity-0 blur-md translate-y-2 md:opacity-0 md:blur-md md:translate-y-2 max-md:!opacity-100 max-md:!blur-none max-md:!transform-none"
+                        className="pt-3 md:pt-4 font-sans font-normal text-white/90 text-base md:text-lg lg:text-xl leading-relaxed max-w-[600px] max-md:!opacity-100 max-md:!blur-none max-md:!transform-none"
                         style={{
                           opacity: i === 0 ? 1 : 0,
                           filter: i === 0 ? "none" : "blur(10px)",
