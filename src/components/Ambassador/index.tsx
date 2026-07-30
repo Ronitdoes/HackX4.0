@@ -74,7 +74,7 @@ export default function Ambassador() {
   };
 
   return (
-    <div className="relative w-full min-h-screen bg-transparent text-white flex flex-col">
+    <div className="relative w-full min-h-screen bg-transparent text-white flex flex-col overflow-x-hidden">
       {/* Background soft glows */}
       <div
         className="absolute top-[20%] left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full pointer-events-none select-none z-0 filter blur-[150px] opacity-20"
@@ -84,7 +84,7 @@ export default function Ambassador() {
       />
 
       {/* Hero Section */}
-      <section className="relative w-full h-screen flex flex-col items-center justify-center px-6 md:px-12 select-none z-10">
+      <section className="relative w-full min-h-fit md:h-screen flex flex-col items-center justify-center px-4 sm:px-6 md:px-12 select-none z-10 pt-24 pb-8 md:py-0 overflow-x-hidden">
         <div className="relative flex flex-col items-center justify-center max-w-[95vw] md:max-w-[85vw] lg:max-w-[75vw] text-center">
           <motion.h1
             variants={containerVariants}
@@ -92,21 +92,21 @@ export default function Ambassador() {
             animate="visible"
             className="flex flex-col items-center justify-center font-sans font-black uppercase tracking-normal leading-[0.9] text-center text-[#FAF8F5]"
             style={{
-              fontSize: "clamp(2rem, 6.2vw, 6.8rem)",
+              fontSize: "clamp(1.8rem, 6.2vw, 6.8rem)",
             }}
           >
             {/* Subtitle / First line */}
-            <div className="overflow-hidden py-1 md:py-2 mb-2 md:mb-4">
+            <div className="overflow-visible py-1 md:py-2 mb-1 md:mb-4 px-2">
               <motion.span
                 variants={lineVariants}
-                className="block origin-bottom font-serif italic font-normal text-white/60 tracking-normal text-2xl md:text-3xl lg:text-4xl normal-case"
+                className="block origin-bottom font-serif italic font-normal text-white/60 tracking-normal text-base sm:text-2xl md:text-3xl lg:text-4xl normal-case"
               >
                 Be the representative of your campus!
               </motion.span>
             </div>
 
             {/* Heading Line 1 */}
-            <div className="overflow-hidden py-1 md:py-2">
+            <div className="overflow-visible py-1 md:py-2 px-2">
               <motion.span
                 variants={lineVariants}
                 className="block origin-bottom font-extrabold text-[#FAF8F5]"
@@ -116,7 +116,7 @@ export default function Ambassador() {
             </div>
 
             {/* Heading Line 2 */}
-            <div className="overflow-hidden py-1 md:py-2">
+            <div className="overflow-visible py-1 md:py-2 px-2">
               <motion.span
                 variants={lineVariants}
                 className="block origin-bottom text-transparent bg-clip-text bg-gradient-to-r from-[#D242D7] via-[#B86EF9] to-white/95 font-black"
@@ -131,7 +131,7 @@ export default function Ambassador() {
             variants={buttonVariants}
             initial="hidden"
             animate="visible"
-            className="mt-12 pointer-events-auto"
+            className="mt-6 md:mt-12 pointer-events-auto"
           >
             <Link
               href="#apply"

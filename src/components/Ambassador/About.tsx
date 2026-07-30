@@ -38,7 +38,7 @@ export default function About() {
   );
 
   return (
-    <section className="relative w-full overflow-hidden py-16 md:py-24">
+    <section className="relative w-full overflow-hidden py-6 md:py-24">
       {/* Large outlined background text */}
       <div className="absolute inset-0 flex items-center justify-center z-[1] pointer-events-none select-none overflow-hidden">
         <span

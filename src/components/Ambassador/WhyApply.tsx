@@ -6,7 +6,7 @@ import Image from "next/image";
 
 export default function WhyApply() {
   return (
-    <section className="relative w-full overflow-hidden py-20 md:py-32 lg:py-40">
+    <section className="relative w-full overflow-hidden py-8 md:py-32 lg:py-40">
 
 
       {/* Large outlined background text */}

@@ -58,13 +58,13 @@ export default function FAQ({ data = faqData, heading }: FAQProps) {
   };
 
   return (
-    <section className="relative w-full py-24 bg-transparent text-white overflow-visible select-none">
+    <section className="relative w-full py-10 md:py-24 bg-transparent text-white overflow-visible select-none">
       {mounted && (
         <div className="max-w-[1200px] mx-auto px-6 md:px-12">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-20">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-20">
           
           {/* Left Column: FAQs Badge and Organizer Avatar Card */}
-          <div className="lg:col-span-4 lg:sticky lg:top-32 h-fit flex flex-col justify-start gap-16">
+          <div className="lg:col-span-4 lg:sticky lg:top-32 h-fit flex flex-col justify-start gap-4 lg:gap-16">
             
             {/* Top FAQs indicator */}
             <div className="flex items-center gap-2 text-xs md:text-sm font-sans tracking-widest uppercase text-white/50">

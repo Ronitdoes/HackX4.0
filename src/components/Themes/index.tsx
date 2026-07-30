@@ -129,8 +129,19 @@ export default function Themes() {
     const maxRotation = 13; // Max degrees of tilt
     const maxY = 90;        // Max downward drop (pixels)
     const maxZ = 120;       // Max depth push into 3D space
+    const isMobileView = vWidth < 768;
 
     const setCardState = (card: HTMLElement, index: number, progress: number) => {
+      if (isMobileView) {
+        gsap.set(card, {
+          rotation: 0,
+          y: 0,
+          z: 0,
+          transformPerspective: 1000,
+        });
+        return;
+      }
+
       // Linear offset of the card's center relative to screen center
       const dx = (index - progress * (N - 1)) * step;
       

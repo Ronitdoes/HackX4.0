@@ -34,12 +34,14 @@ export default function PuzzleJoin() {
     // Reset initial states to ensure clean dimensions
     gsap.set([leftPiece, rightPiece], { xPercent: 0, rotate: 0, opacity: 1 });
 
+    const isMobileSize = window.innerWidth < 768;
+
     // Create GSAP timeline for scroll scrubbing
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: container,
         start: "top top",
-        end: "+=120%", // Scroll height to trigger join
+        end: isMobileSize ? "+=40%" : "+=120%", // Scroll height to trigger join
         scrub: 1,      // Smooth scrubbing lag
         pin: true,     // Pin the section while scrolling
         invalidateOnRefresh: true,
@@ -77,7 +79,7 @@ export default function PuzzleJoin() {
   return (
     <div
       ref={containerRef}
-      className="relative min-h-screen w-full flex flex-col items-center justify-center overflow-hidden bg-transparent py-20 px-6 select-none"
+      className="relative min-h-fit md:min-h-screen w-full flex flex-col items-center justify-center overflow-hidden bg-transparent py-8 md:py-20 px-6 select-none"
     >
       {/* Background Soft Ambient Glows */}
       <div

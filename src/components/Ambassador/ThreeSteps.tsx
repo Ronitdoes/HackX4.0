@@ -64,25 +64,25 @@ export default function ThreeSteps() {
 
       const isMobileSize = window.innerWidth < 768;
 
-      // Final offset positions
-      const c1X = isMobileSize ? -25 : -50;
-      const c1Y = isMobileSize ? -20 : -35;
+      // Final offset positions (centered on mobile, staggered offset on desktop)
+      const c1X = isMobileSize ? 0 : -50;
+      const c1Y = isMobileSize ? -15 : -35;
       
       const c2X = 0;
       const c2Y = 0;
 
-      const c3X = isMobileSize ? 25 : 50;
-      const c3Y = isMobileSize ? 20 : 35;
+      const c3X = isMobileSize ? 0 : 50;
+      const c3Y = isMobileSize ? 15 : 35;
 
       // 1. Initial State Setup
       // Card 1 is already in its final position
       gsap.set(card1, { x: c1X, y: c1Y, rotation: 0, opacity: 1 });
 
       // Card 2 starts down & right (off-screen)
-      gsap.set(card2, { x: c2X + 150, y: 500, rotation: 0, opacity: 0 });
+      gsap.set(card2, { x: c2X + (isMobileSize ? 0 : 150), y: 500, rotation: 0, opacity: 0 });
 
       // Card 3 starts down & right (off-screen)
-      gsap.set(card3, { x: c3X + 150, y: 500, rotation: 0, opacity: 0 });
+      gsap.set(card3, { x: c3X + (isMobileSize ? 0 : 150), y: 500, rotation: 0, opacity: 0 });
 
       // 2. Create ScrollTrigger timeline
       const tl = gsap.timeline({
@@ -138,10 +138,10 @@ export default function ThreeSteps() {
         }}
       />
 
-      <div className="max-w-[1250px] mx-auto px-6 md:px-12 flex w-full flex-col-reverse md:flex-row items-start justify-between gap-20 md:gap-12 md:pt-16">
+      <div className="max-w-[1250px] mx-auto px-6 md:px-12 flex w-full flex-col-reverse md:flex-row items-center md:items-start justify-between gap-12 md:gap-12 md:pt-16">
         {/* Left Column: Stacked Interactive Cards */}
         <div 
-          className="relative w-[280px] h-[280px] sm:w-[320px] sm:h-[320px] md:w-[380px] md:h-[380px] flex items-center justify-center"
+          className="relative w-[280px] h-[280px] sm:w-[320px] sm:h-[320px] md:w-[380px] md:h-[380px] flex items-center justify-center mx-auto md:mx-0"
         >
           {steps.map((step, idx) => {
             return (
@@ -156,10 +156,12 @@ export default function ThreeSteps() {
                 }}
               >
                 <div
-                  className="w-full h-full p-6 md:p-8 border border-white/10 flex flex-col justify-between origin-center transition-colors "
+                  className="w-full h-full p-6 md:p-8 rounded-none border border-white/30 flex flex-col justify-between origin-center shadow-[0_20px_60px_rgba(0,0,0,0.6)] transition-all duration-300"
                   style={{
-                    background: "linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.01) 100%)",
-                    backdropFilter: "blur(20px)",
+                    background: "linear-gradient(135deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.08) 100%)",
+                    backgroundColor: "#16072b",
+                    backdropFilter: "blur(30px) saturate(140%)",
+                    WebkitBackdropFilter: "blur(30px) saturate(140%)",
                   }}
                 >
                   {/* Top of Card: Step Number */}
