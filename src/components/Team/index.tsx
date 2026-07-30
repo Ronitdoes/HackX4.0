@@ -12,6 +12,15 @@ export default function Team() {
   const [selectedYear, setSelectedYear] = useState<TeamYear>("2026");
   const [selectedCategory, setSelectedCategory] = useState<TeamCategory>("FACULTY");
 
+  const [isMobile, setIsMobile] = useState(false);
+
+  React.useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
   /* ── scroll progress through the hero container ── */
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -21,12 +30,14 @@ export default function Team() {
   // Hero curtain canvas opacity: visible → smoothly fades out
   const curtainOpacity = useTransform(scrollYProgress, [0.3, 0.7], [1, 0]);
 
-  // Scale: 1 → 45
-  const heroScale = useTransform(scrollYProgress, [0, 0.7], [1, 45]);
+  // Scale: 1 → 45 on desktop, 1 → 4 on mobile (prevents touch scroll blocking)
+  const heroScaleDesktop = useTransform(scrollYProgress, [0, 0.7], [1, 45]);
+  const heroScaleMobile = useTransform(scrollYProgress, [0, 0.7], [1, 4]);
+  const heroScale = isMobile ? heroScaleMobile : heroScaleDesktop;
+
   // Opacity: visible → gone
   const heroOpacity = useTransform(scrollYProgress, [0.35, 0.7], [1, 0]);
-  // Blur: 0px → 8px (kept light — blurring a heavily-scaled element every
-  // scroll frame is very GPU-expensive, so the range is small and late)
+  // Blur: 0px → 8px
   const heroBlur = useTransform(scrollYProgress, [0.45, 0.7], ["blur(0px)", "blur(8px)"]);
 
   /* ── Entry animations ── */
@@ -81,7 +92,7 @@ export default function Team() {
   }, [currentMembers]);
 
   return (
-    <div className="relative min-h-screen text-white bg-[#070312]">
+    <div className="relative min-h-screen text-white bg-[#070312] overflow-x-clip">
       {/* 1. Single Fixed Page-Wide Seamless Background Glow */}
       <div className="fixed inset-0 bg-[#070312] bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-[#1d0a3d] via-[#070312] to-[#030108] pointer-events-none z-0" />
 

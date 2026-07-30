@@ -419,7 +419,7 @@ export default function Navbar() {
           onClick={toggleMenu}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
-          className="pointer-events-auto relative z-10 group flex items-center gap-2.5 justify-center text-white hover:opacity-85 transition-opacity mix-blend-difference"
+          className="pointer-events-auto relative z-10 group flex items-center gap-2.5 justify-center text-white hover:opacity-85 transition-opacity mix-blend-difference outline-none focus:outline-none focus-visible:outline-none focus:ring-0 focus-visible:ring-0 select-none [-webkit-tap-highlight-color:transparent]"
           aria-label={isOpen ? "Close Menu" : "Open Menu"}
           aria-expanded={isOpen}
           aria-controls="site-navigation"
