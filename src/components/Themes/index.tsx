@@ -179,7 +179,7 @@ export default function Themes() {
       { x: endX, ease: "none" }
     );
 
-    // Bind timeline to ScrollTrigger
+    // Bind timeline to ScrollTrigger with priority 10 to ensure it calculates before downstream triggers
     ScrollTrigger.create({
       trigger: container,
       start: "top top",
@@ -188,7 +188,11 @@ export default function Themes() {
       pin: true,
       animation: timeline,
       invalidateOnRefresh: true,
+      refreshPriority: 10,
     });
+
+    ScrollTrigger.sort();
+    ScrollTrigger.refresh();
 
     // Fade in container after paint/measure delay
     gsap.to(container, { opacity: 1, duration: 0.4 });
@@ -197,11 +201,11 @@ export default function Themes() {
   return (
     <div
       ref={containerRef}
-      className="min-h-screen relative w-full overflow-hidden bg-transparent opacity-0"
+      className="h-screen min-h-[100dvh] relative w-full overflow-hidden bg-transparent opacity-0"
     >
 
       {/* Main image horizontal slider track - justify-start aligns the track left edge to 0 coordinates, allowing precise absolute x-translates */}
-      <div className="h-screen w-full flex items-center justify-start overflow-hidden absolute top-0 left-0">
+      <div className="h-full w-full flex items-center justify-start overflow-hidden absolute top-0 left-0">
         <div
           ref={trackRef}
           className="flex gap-[4vw] select-none pointer-events-auto py-16 will-change-transform pl-0 ml-0"

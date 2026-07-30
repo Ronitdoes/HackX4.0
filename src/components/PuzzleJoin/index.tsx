@@ -45,6 +45,7 @@ export default function PuzzleJoin() {
         scrub: 1,      // Smooth scrubbing lag
         pin: !isMobileSize, // Only pin on desktop view to avoid mobile navbar overlap and empty gaps
         invalidateOnRefresh: true,
+        refreshPriority: 1,
         onUpdate: (self) => {
           // Snap threshold: if scroll progress is near 100% (e.g., > 90%), mark as joined
           if (self.progress > 0.9) {

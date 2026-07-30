@@ -12,22 +12,31 @@ gsap.registerPlugin(ScrollTrigger);
 export default function ThreeSteps() {
   const [isMobile, setIsMobile] = useState(false);
   const [isReady, setIsReady] = useState(false);
+  const [resizeKey, setResizeKey] = useState(0);
   const sectionRef = useRef<HTMLDivElement>(null);
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   useEffect(() => {
+    let resizeTimeout: NodeJS.Timeout;
     const handleResize = () => {
       setIsMobile(window.innerWidth < 768);
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(() => {
+        setResizeKey((prev) => prev + 1);
+      }, 200);
     };
     handleResize();
     window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+    return () => {
+      clearTimeout(resizeTimeout);
+      window.removeEventListener("resize", handleResize);
+    };
   }, []);
 
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsReady(true);
-    }, 300); // 300ms ensures it mounts after Themes (150ms) to prevent ScrollTrigger race conditions
+    }, 200);
     return () => clearTimeout(timer);
   }, []);
 
@@ -74,17 +83,20 @@ export default function ThreeSteps() {
       const c3X = isMobileSize ? 0 : 50;
       const c3Y = isMobileSize ? 15 : 35;
 
+      // Initial card entrance distance (reduced on mobile for smooth viewport entry)
+      const enterY = isMobileSize ? 250 : 500;
+
       // 1. Initial State Setup
       // Card 1 is already in its final position
       gsap.set(card1, { x: c1X, y: c1Y, rotation: 0, opacity: 1 });
 
-      // Card 2 starts down & right (off-screen)
-      gsap.set(card2, { x: c2X + (isMobileSize ? 0 : 150), y: 500, rotation: 0, opacity: 0 });
+      // Card 2 starts down (off-screen)
+      gsap.set(card2, { x: c2X + (isMobileSize ? 0 : 150), y: enterY, rotation: 0, opacity: 0 });
 
-      // Card 3 starts down & right (off-screen)
-      gsap.set(card3, { x: c3X + (isMobileSize ? 0 : 150), y: 500, rotation: 0, opacity: 0 });
+      // Card 3 starts down (off-screen)
+      gsap.set(card3, { x: c3X + (isMobileSize ? 0 : 150), y: enterY, rotation: 0, opacity: 0 });
 
-      // 2. Create ScrollTrigger timeline
+      // 2. Create ScrollTrigger timeline with refreshPriority 5
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: sectionRef.current,
@@ -93,6 +105,7 @@ export default function ThreeSteps() {
           scrub: 1, // Smooth scrub matching the scroll position
           pin: true, // Pin the entire section
           invalidateOnRefresh: true,
+          refreshPriority: 5,
         },
       });
 
@@ -116,14 +129,15 @@ export default function ThreeSteps() {
         duration: 1,
       });
 
-      // Force ScrollTrigger to refresh after this trigger is created
+      // Sort and force ScrollTrigger to refresh after this trigger is created
+      ScrollTrigger.sort();
       ScrollTrigger.refresh();
     },
-    { scope: sectionRef, dependencies: [isReady] }
+    { scope: sectionRef, dependencies: [isReady, resizeKey] }
   );
 
   return (
-    <section ref={sectionRef} className="relative w-full h-screen bg-transparent overflow-hidden select-none flex items-center">
+    <section ref={sectionRef} className="relative w-full h-screen min-h-[100dvh] bg-transparent overflow-hidden select-none flex items-center">
       {/* Background Soft Glows */}
       <div
         className="absolute top-1/2 left-1/4 -translate-y-1/2 w-[280px] h-[280px] sm:w-[450px] sm:h-[450px] rounded-full pointer-events-none filter blur-[80px] sm:blur-[150px] opacity-20"
