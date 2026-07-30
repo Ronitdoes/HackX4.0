@@ -195,9 +195,7 @@ export default function FluidShaderBackground() {
   const grainOverlayRef = useRef<SVGSVGElement>(null);
   const shaderParams = useRef({ zoom: 1.25, colorTransition: 0.0 });
   const [isMobile, setIsMobile] = useState(false);
-  const defaultLogoTransform = pathname === "/ambassador" && isMobile
-    ? "translate(-10vw, -8vh) scale(1)"
-    : "scale(1)";
+  const defaultLogoTransform = "scale(1)";
 
   useEffect(() => {
     const checkMobile = () => {
