@@ -9,6 +9,8 @@ import { useGSAP } from "@gsap/react";
 
 gsap.registerPlugin(ScrollTrigger);
 
+ScrollTrigger.config({ ignoreMobileResize: true });
+
 export default function ThreeSteps() {
   const [isMobile, setIsMobile] = useState(false);
   const [isReady, setIsReady] = useState(false);
@@ -73,7 +75,12 @@ export default function ThreeSteps() {
 
       const c3X = isMobileSize ? 25 : 50;
       const c3Y = isMobileSize ? 20 : 35;
-
+      if (isMobileSize) {
+        gsap.set(card1, { x: c1X, y: c1Y, rotation: 0, opacity: 1 });
+        gsap.set(card2, { x: c2X, y: c2Y, rotation: 0, opacity: 1 });
+        gsap.set(card3, { x: c3X, y: c3Y, rotation: 0, opacity: 1 });
+        return;
+      }
       // 1. Initial State Setup
       // Card 1 is already in its final position
       gsap.set(card1, { x: c1X, y: c1Y, rotation: 0, opacity: 1 });
@@ -119,7 +126,7 @@ export default function ThreeSteps() {
       // Force ScrollTrigger to refresh after this trigger is created
       ScrollTrigger.refresh();
     },
-    { scope: sectionRef, dependencies: [isReady] }
+    { scope: sectionRef, dependencies: [isReady, isMobile] }
   );
 
   return (
