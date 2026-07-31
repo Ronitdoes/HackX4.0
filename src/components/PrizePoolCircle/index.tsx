@@ -44,7 +44,7 @@ const CircularText: React.FC<CircularTextProps> = ({
   return (
     <motion.div
       className={`absolute inset-0 h-full w-full ${className}`}
-      style={{ rotate: rotation }}
+      style={{ rotate: rotation, willChange: "transform", transform: "translateZ(0)" }}
       initial={{ rotate: 0 }}
       animate={controls}
     >

@@ -16,6 +16,7 @@ const FRAGMENT_SHADER_SOURCE = `
 
   uniform float uTime;
   uniform vec2 uResolution;
+  uniform float uIsMobile;
   varying vec2 vUv;
 
   // Simple 2D hash for the very subtle film grain.
@@ -94,41 +95,43 @@ const FRAGMENT_SHADER_SOURCE = `
     vec3 finalColor = vec3(0.0);
     vec3 glowColor = vec3(0.55, 0.22, 0.90);
 
-    // The emitter travels just outside the left edge in a bottom-to-top arc sweep.
-    float orbitRadius = aspect * 0.5 + 0.15;
-    vec2 orbitCenter = vec2(0.2, 0.0);
-    vec2 phaseAndAlpha = getPhaseAndAlpha(uTime);
-    float phase = phaseAndAlpha.x;
-    float lightAlpha = phaseAndAlpha.y;
-    float trailGlow = 0.0;
+    // The emitter travels just outside the left edge in a bottom-to-top arc sweep (desktop only).
+    if (uIsMobile < 0.5) {
+      float orbitRadius = aspect * 0.5 + 0.15;
+      vec2 orbitCenter = vec2(0.2, 0.0);
+      vec2 phaseAndAlpha = getPhaseAndAlpha(uTime);
+      float phase = phaseAndAlpha.x;
+      float lightAlpha = phaseAndAlpha.y;
+      float trailGlow = 0.0;
 
-    // Dense sampling makes the wake a continuous ribbon when sweeping the edge (increased to 40 samples).
-    for (int i = 0; i < 31; i++) {
-      float index = float(i);
-      float age = index / 30.0;
-      // Original tail calculation preserved as requested.
-      float trailPhase = phase - age * 2.85;
-      vec2 trailPoint = orbitCenter + vec2(cos(trailPhase), -sin(trailPhase)) * orbitRadius;
-      vec2 toTrail = uv - trailPoint;
+      // Dense sampling makes the wake a continuous ribbon when sweeping the edge (increased to 40 samples).
+      for (int i = 0; i < 31; i++) {
+        float index = float(i);
+        float age = index / 30.0;
+        // Original tail calculation preserved as requested.
+        float trailPhase = phase - age * 2.85;
+        vec2 trailPoint = orbitCenter + vec2(cos(trailPhase), -sin(trailPhase)) * orbitRadius;
+        vec2 toTrail = uv - trailPoint;
 
-      // Broad, vertically feathered ellipses create the soft edge bloom.
-      float horizontalCompression = mix(3.9, 1.45, age);
-      float verticalStretch = mix(1.60, 0.42, age);
-      vec2 ellipse = vec2(toTrail.x * horizontalCompression, toTrail.y * verticalStretch);
-      float width = mix(44.0, 5.0, age);
-      float fade = exp(-age * 1.65) * mix(0.78, 0.07, age) * 0.52 * (22.0 / 40.0);
-      trailGlow += exp(-dot(ellipse, ellipse) * width) * fade;
+        // Broad, vertically feathered ellipses create the soft edge bloom.
+        float horizontalCompression = mix(3.9, 1.45, age);
+        float verticalStretch = mix(1.60, 0.42, age);
+        vec2 ellipse = vec2(toTrail.x * horizontalCompression, toTrail.y * verticalStretch);
+        float width = mix(44.0, 5.0, age);
+        float fade = exp(-age * 1.65) * mix(0.78, 0.07, age) * 0.52 * (22.0 / 40.0);
+        trailGlow += exp(-dot(ellipse, ellipse) * width) * fade;
+      }
+
+      // A restrained broad bloom joins the individual trail samples together.
+      vec2 head = orbitCenter + vec2(cos(phase), -sin(phase)) * orbitRadius;
+      vec2 headOffset = uv - head;
+      headOffset.x *= 3.45;
+      headOffset.y *= 1.30;
+      float atmosphericBloom = exp(-dot(headOffset, headOffset) * 10.0) * 0.22;
+      float light = min(trailGlow * 0.36 + atmosphericBloom, 1.0);
+      // Intensity boost: slightly richer, more luminous purple sweep glow.
+      finalColor += glowColor * light * 2.40 * lightAlpha;
     }
-
-    // A restrained broad bloom joins the individual trail samples together.
-    vec2 head = orbitCenter + vec2(cos(phase), -sin(phase)) * orbitRadius;
-    vec2 headOffset = uv - head;
-    headOffset.x *= 3.45;
-    headOffset.y *= 1.30;
-    float atmosphericBloom = exp(-dot(headOffset, headOffset) * 10.0) * 0.22;
-    float light = min(trailGlow * 0.36 + atmosphericBloom, 1.0);
-    // Intensity boost: slightly richer, more luminous purple sweep glow.
-    finalColor += glowColor * light * 2.40 * lightAlpha;
 
     // Original pulsating nebula on the right.
     vec2 nebulaCenter = vec2(aspect * 0.5 + 0.07, 0.0);
@@ -245,6 +248,7 @@ export default function CircularNebulaShader({ active = true, animate = true }: 
 
     const timeLoc = gl.getUniformLocation(program, "uTime");
     const resolutionLoc = gl.getUniformLocation(program, "uResolution");
+    const isMobileLoc = gl.getUniformLocation(program, "uIsMobile");
 
     let animationFrameId: number | null = null;
     let isLoopRunning = false;
@@ -266,6 +270,9 @@ export default function CircularNebulaShader({ active = true, animate = true }: 
         if (resolutionLoc) {
           gl.uniform2f(resolutionLoc, canvas.width, canvas.height);
         }
+        if (isMobileLoc) {
+          gl.uniform1f(isMobileLoc, window.innerWidth < 768 ? 1.0 : 0.0);
+        }
         resizeFrame = undefined;
       });
     };
@@ -283,6 +290,9 @@ export default function CircularNebulaShader({ active = true, animate = true }: 
       const elapsedSeconds = (performance.now() - startTime) / 1000;
       if (timeLoc) {
         gl.uniform1f(timeLoc, elapsedSeconds);
+      }
+      if (isMobileLoc) {
+        gl.uniform1f(isMobileLoc, window.innerWidth < 768 ? 1.0 : 0.0);
       }
 
       gl.clearColor(0.0, 0.0, 0.0, 1.0);

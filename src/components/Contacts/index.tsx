@@ -314,7 +314,7 @@ export default function Contacts() {
           </div>
 
           {/* Right Column: Premium Image container */}
-          <div ref={heroRightRef} className="lg:col-span-5 w-full flex items-center justify-center lg:justify-end">
+          <div ref={heroRightRef} className="hidden lg:flex lg:col-span-5 w-full items-center justify-center lg:justify-end">
             <div
               onMouseMove={handleCardInteractionMove}
               className="relative aspect-[1.5] w-full max-w-[460px] lg:max-w-[480px] rounded-none overflow-hidden border border-white/10 shadow-2xl group lg:ml-auto"
@@ -429,12 +429,12 @@ export default function Contacts() {
           <h2 className="text-3xl md:text-5xl font-black font-sans uppercase tracking-wide text-white">STUDENT CONVENERS</h2>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 mb-16">
           {CONVENERS.map((c, idx) => (
             <div
               key={idx}
               onMouseMove={handleCardInteractionMove}
-              className="convener-card relative border border-white/10 bg-white/[0.01] backdrop-blur-xl rounded-2xl p-6 flex flex-col items-center justify-between hover:bg-white/[0.03] transition-all duration-300 text-center min-h-[300px] overflow-hidden group"
+              className="convener-card relative border border-white/10 bg-white/[0.01] backdrop-blur-xl rounded-2xl p-4 sm:p-6 flex flex-col items-center justify-between hover:bg-white/[0.03] transition-all duration-300 text-center min-h-[260px] sm:min-h-[300px] overflow-hidden group"
             >
               <div
                 className="pointer-events-none absolute -inset-px rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
@@ -446,16 +446,16 @@ export default function Contacts() {
 
               <div className="flex flex-col items-center relative z-10 w-full">
                 {/* Initials Avatar Bubble */}
-                <div className="w-16 h-16 rounded-full bg-purple-950/40 border border-purple-500/20 flex items-center justify-center text-lg font-bold text-purple-300 mb-4 group-hover:scale-105 group-hover:border-purple-500/50 transition-all duration-300">
+                <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-purple-950/40 border border-purple-500/20 flex items-center justify-center text-sm sm:text-lg font-bold text-purple-300 mb-3 sm:mb-4 group-hover:scale-105 group-hover:border-purple-500/50 transition-all duration-300">
                   {c.name.split(" ").map(n => n[0]).join("")}
                 </div>
 
-                <h3 className="text-lg md:text-xl font-bold font-sans text-white">{c.name}</h3>
-                <span className="text-[10px] tracking-widest text-purple-400/80 font-semibold uppercase block mt-1.5 mb-6">
+                <h3 className="text-sm sm:text-lg md:text-xl font-bold font-sans text-white">{c.name}</h3>
+                <span className="text-[9px] sm:text-[10px] tracking-widest text-purple-400/80 font-semibold uppercase block mt-1 mb-3 sm:mb-6">
                   {c.role}
                 </span>
-                <p className="text-white/60 text-xs md:text-sm font-light select-all">{c.phone}</p>
-                <a href={`mailto:${c.email}`} className="text-white/40 hover:text-white/70 transition-colors text-xs font-light block mt-1 select-all hover:underline">
+                <p className="text-white/60 text-[11px] sm:text-xs md:text-sm font-light select-all truncate max-w-full px-1">{c.phone}</p>
+                <a href={`mailto:${c.email}`} className="text-white/40 hover:text-white/70 transition-colors text-[10px] sm:text-xs font-light block mt-0.5 select-all hover:underline truncate max-w-full px-1">
                   {c.email}
                 </a>
               </div>
@@ -465,10 +465,10 @@ export default function Contacts() {
                 href={`tel:${c.phone}`}
                 onMouseMove={handleMagneticMove}
                 onMouseLeave={handleMagneticLeave}
-                className="mt-8 flex items-center justify-center w-12 h-12 rounded-full border border-white/15 bg-white/5 hover:bg-white hover:text-black text-white transition-all duration-300 ease-out relative z-10"
+                className="mt-4 sm:mt-8 flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-full border border-white/15 bg-white/5 hover:bg-white hover:text-black text-white transition-all duration-300 ease-out relative z-10"
                 aria-label={`Call ${c.name}`}
               >
-                <i className="fa-solid fa-phone text-[16px] pointer-events-none"></i>
+                <i className="fa-solid fa-phone text-[14px] sm:text-[16px] pointer-events-none"></i>
               </a>
             </div>
           ))}

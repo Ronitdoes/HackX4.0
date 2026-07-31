@@ -309,7 +309,7 @@ const GalleryCard = memo(function GalleryCard({
   onLeave: () => void;
 }) {
   return (
-    <article className="mb-2 break-inside-avoid [contain:paint]">
+    <article className="mb-4 md:mb-2 break-inside-avoid [contain:paint]">
       <motion.div
         aria-label={project.title}
         className="overflow-hidden bg-transparent transition-opacity duration-500 relative"
@@ -325,6 +325,10 @@ const GalleryCard = memo(function GalleryCard({
       >
         <WaterRippleImage imageUrl={project.image} isActive={isActive} priority={priority} />
       </motion.div>
+      {/* Mobile-only title below image matching reference design */}
+      <h4 className="mt-2 text-xs sm:text-sm font-semibold tracking-wide text-[#faebac]/90 md:hidden leading-snug">
+        {project.title}
+      </h4>
     </article>
   );
 });
@@ -438,8 +442,8 @@ export default function Home() {
         )}
       </AnimatePresence>
 
-      <section className="relative z-20 mx-auto w-full max-w-[1100px] px-6 pb-28 pt-48 sm:px-10 lg:px-0">
-        <div className="columns-1 gap-2 md:columns-2">
+      <section className="relative z-20 mx-auto w-full max-w-[1100px] px-3 sm:px-10 lg:px-0 pb-28 pt-24 sm:pt-48">
+        <div className="grid grid-cols-2 gap-3 md:block md:columns-2 md:gap-2">
           {PROJECTS.map((project, index) => (
             <GalleryCard
               key={project.id}

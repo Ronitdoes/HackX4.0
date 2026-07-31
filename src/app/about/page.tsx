@@ -42,8 +42,8 @@ export default function AboutPage() {
 
   return (
     <div className="w-full min-h-screen bg-transparent flex flex-col">
-      {/* Full-Height Hero Section */}
-      <div className="w-full h-[100vh] flex flex-col items-center justify-center text-center px-6 md:px-12 select-none relative overflow-hidden">
+      {/* Hero Section */}
+      <div className="w-full min-h-fit md:h-[100vh] flex flex-col items-center justify-center text-center px-6 md:px-12 select-none relative overflow-hidden pt-24 pb-8 md:py-0">
         
         {/* Centered Hero Typography */}
         <div className="relative flex flex-col items-center justify-center max-w-[90vw] md:max-w-[75vw]">
@@ -51,33 +51,37 @@ export default function AboutPage() {
             variants={containerVariants}
             initial="hidden"
             animate="visible"
-            className="flex flex-col items-center justify-center font-sans font-black uppercase tracking-normal leading-[0.82] text-center"
+            className="flex flex-col items-center justify-center font-sans font-black uppercase tracking-normal leading-[0.95] text-center"
             style={{
               fontSize: "clamp(2rem, 5.8vw, 6.2rem)",
+              transform: "translateZ(0)",
             }}
           >
-            <div className="overflow-hidden py-1 md:py-2 leading-normal px-4">
+            <div className="overflow-visible py-2 md:py-3 leading-normal px-4">
               <motion.span
                 variants={lineVariants}
                 className="block origin-bottom font-serif italic font-normal text-white/50 lowercase tracking-normal leading-normal"
+                style={{ transform: "translateZ(0)" }}
               >
                 why participate in
               </motion.span>
             </div>
             
-            <div className="overflow-hidden py-1 md:py-2 px-4">
+            <div className="overflow-visible py-2 md:py-3 px-4">
               <motion.span
                 variants={lineVariants}
                 className="block origin-bottom text-white font-extrabold"
+                style={{ transform: "translateZ(0)" }}
               >
                 THE ARENA OF
               </motion.span>
             </div>
 
-            <div className="overflow-hidden py-1 md:py-2 px-4">
+            <div className="overflow-visible py-2 md:py-3 px-4">
               <motion.span
                 variants={lineVariants}
                 className="block origin-bottom text-transparent bg-clip-text bg-gradient-to-r from-[#D242D7] via-[#B86EF9] to-white/95 font-black"
+                style={{ transform: "translateZ(0)" }}
               >
                 HACKX 4.0?
               </motion.span>
@@ -90,6 +94,7 @@ export default function AboutPage() {
             initial="hidden"
             animate="visible"
             className="mt-8 md:mt-10 max-w-2xl text-[#F9F6F0]/70 text-sm md:text-base lg:text-lg font-sans font-normal leading-relaxed"
+            style={{ transform: "translateZ(0)" }}
           >
             Step into a 36-hour sandbox of pure innovation. Turn your wildest ideas into reality, 
             collaborate with exceptional minds, and pitch to leading tech founders. This is where 

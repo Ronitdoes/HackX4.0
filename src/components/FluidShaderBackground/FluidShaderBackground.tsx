@@ -1,7 +1,7 @@
 // src/components/FluidShaderBackground/FluidShaderBackground.tsx
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -194,9 +194,20 @@ export default function FluidShaderBackground() {
   const blurOverlayRef = useRef<HTMLDivElement>(null);
   const grainOverlayRef = useRef<SVGSVGElement>(null);
   const shaderParams = useRef({ zoom: 1.25, colorTransition: 0.0 });
+  const [isMobile, setIsMobile] = useState(false);
+  const defaultLogoTransform = "scale(1)";
 
   useEffect(() => {
-    if (pathname === "/team" || pathname === "/gallery") return;
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
+  useEffect(() => {
+    if (pathname === "/team" || pathname === "/gallery" || isMobile) return;
     const canvas = canvasRef.current;
     if (!canvas) return;
 
@@ -354,7 +365,7 @@ export default function FluidShaderBackground() {
       gl.deleteShader(vertexShader);
       gl.deleteShader(fragmentShader);
     };
-  }, [pathname]); // Re-initialize WebGL when pathname changes
+  }, [pathname, isMobile]); // Re-initialize WebGL when pathname or isMobile changes
 
   /* Scroll zoom for team page - optimized using direct DOM manipulation to bypass React render passes */
   useEffect(() => {
@@ -366,11 +377,11 @@ export default function FluidShaderBackground() {
     if (pathname !== "/team") {
       container.style.opacity = "1";
       if (logoContainer) {
-        logoContainer.style.transform = "scale(1)";
+        logoContainer.style.transform = defaultLogoTransform;
         logoContainer.style.opacity = pathname === "/gallery" ? "0" : "1";
       }
       if (canvas) {
-        canvas.style.opacity = pathname === "/gallery" ? "0" : pathname === "/timeline" ? "0.65" : "0.45";
+        canvas.style.opacity = isMobile ? "0" : pathname === "/gallery" ? "0" : pathname === "/timeline" ? "0.65" : "0.45";
       }
       return;
     }
@@ -406,7 +417,7 @@ export default function FluidShaderBackground() {
     window.addEventListener("scroll", handleScroll, { passive: true });
     handleScroll(); // initial
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [pathname]);
+  }, [defaultLogoTransform, pathname]);
 
   /* Scroll transition for Timeline page *//////////////
   useEffect(() => {
@@ -434,6 +445,13 @@ export default function FluidShaderBackground() {
       let currentPos = 0;
       let minPos = 0;
 
+      const isMobileView = window.innerWidth < 768;
+      const totalTimelineHeight = timelineSection
+        ? timelineSection.getBoundingClientRect().height
+        : isMobileView
+        ? 1680
+        : 5100;
+
       if (timelineSection) {
         const rect = timelineSection.getBoundingClientRect();
         const vh = window.innerHeight;
@@ -443,24 +461,28 @@ export default function FluidShaderBackground() {
         const containerTop = rect.top + window.scrollY;
         minPos = (vh / 2) - containerTop;
       } else {
-        currentPos = (window.scrollY / 5500) * 5500;
+        currentPos = (window.scrollY / totalTimelineHeight) * totalTimelineHeight;
         minPos = 0;
       }
 
       // Smooth horizontal sway calculation
-      const maxShiftVw = 18;
+      const maxShiftVw = isMobileView ? 0 : 18;
       let xShiftVw = 0;
 
-      if (currentPos <= minPos) {
+      if (isMobileView) {
+        xShiftVw = 0;
+      } else if (currentPos <= minPos) {
         xShiftVw = 0;
       } else if (currentPos < 500) {
         const startDist = 500 - minPos;
         const startProgress = startDist > 0 ? Math.min((currentPos - minPos) / startDist, 1) : 1;
         xShiftVw = (0.5 - 0.5 * Math.cos(startProgress * Math.PI)) * maxShiftVw;
-      } else if (currentPos <= 5500) {
-        xShiftVw = Math.cos((currentPos - 500) * (Math.PI / 1000)) * maxShiftVw;
+      } else if (currentPos <= totalTimelineHeight) {
+        const timelineDist = totalTimelineHeight - 500;
+        const progress = timelineDist > 0 ? (currentPos - 500) / timelineDist : 1;
+        xShiftVw = Math.cos(progress * 5 * Math.PI) * maxShiftVw;
       } else {
-        const exitProgress = Math.min((currentPos - 5500) / 500, 1);
+        const exitProgress = Math.min((currentPos - totalTimelineHeight) / 500, 1);
         xShiftVw = -maxShiftVw * (0.5 + 0.5 * Math.cos(exitProgress * Math.PI));
       }
 
@@ -468,11 +490,11 @@ export default function FluidShaderBackground() {
       let timelineProgress = 0;
       if (currentPos <= minPos) {
         timelineProgress = 0;
-      } else if (currentPos <= 5500) {
-        const totalTimelineDist = 5500 - minPos;
+      } else if (currentPos <= totalTimelineHeight) {
+        const totalTimelineDist = totalTimelineHeight - minPos;
         timelineProgress = totalTimelineDist > 0 ? Math.min(Math.max((currentPos - minPos) / totalTimelineDist, 0), 1) : 0;
       } else {
-        const exitProgress = Math.min((currentPos - 5500) / 500, 1);
+        const exitProgress = Math.min((currentPos - totalTimelineHeight) / 500, 1);
         timelineProgress = 1 - exitProgress;
       }
 
@@ -480,13 +502,13 @@ export default function FluidShaderBackground() {
       const logoScale = 1.25 / targetZoom;
 
       let targetColorTransition = 0;
-      if (currentPos > minPos && currentPos < 6000) {
-        const colorProgress = currentPos <= 5500 ? currentPos : 5500 - (currentPos - 5500);
+      if (currentPos > minPos && currentPos < totalTimelineHeight + 500) {
+        const colorProgress = currentPos <= totalTimelineHeight ? currentPos : totalTimelineHeight - (currentPos - totalTimelineHeight);
         const colorAngle = (colorProgress - 500) * (Math.PI / 1000);
         targetColorTransition = Math.min(Math.max(0.5 - 0.5 * Math.cos(colorAngle), 0), 1);
         if (currentPos <= minPos) targetColorTransition = 0;
-        if (currentPos > 5500) {
-          const exitProgress = Math.min((currentPos - 5500) / 500, 1);
+        if (currentPos > totalTimelineHeight) {
+          const exitProgress = Math.min((currentPos - totalTimelineHeight) / 500, 1);
           targetColorTransition *= (1 - exitProgress);
         }
       }
@@ -494,9 +516,9 @@ export default function FluidShaderBackground() {
       shaderParams.current.zoom = targetZoom;
       shaderParams.current.colorTransition = targetColorTransition;
 
-      // 1. Shift WebGL Canvas horizontally and ramp opacity
+      // 1. Shift WebGL Canvas horizontally and ramp opacity (desktop only)
       const canvas = canvasRef.current;
-      if (canvas) {
+      if (canvas && !isMobileView) {
         canvas.style.transform = `translateX(${xShiftVw}vw)`;
         canvas.style.opacity = `${0.45 + timelineProgress * 0.20}`;
       }
@@ -505,7 +527,9 @@ export default function FluidShaderBackground() {
       const logoContainer = logoContainerRef.current;
       if (logoContainer) {
         const xBlur = timelineProgress * 5;
-        logoContainer.style.transform = `translate(${xShiftVw}vw, 0px) scale(${logoScale})`;
+        logoContainer.style.transform = isMobileView
+          ? `scale(${logoScale})`
+          : `translate(${xShiftVw}vw, 0px) scale(${logoScale})`;
         logoContainer.style.filter = `blur(${xBlur}px)`;
 
         const logoStop0 = interpolateHex("#5200c7", "#005035", targetColorTransition);
@@ -582,10 +606,10 @@ export default function FluidShaderBackground() {
       }
       if (canvasRef.current) {
         canvasRef.current.style.transform = "none";
-        canvasRef.current.style.opacity = "0.45";
+        canvasRef.current.style.opacity = isMobile ? "0" : "0.45";
       }
       if (logoContainerRef.current) {
-        logoContainerRef.current.style.transform = "scale(1)";
+        logoContainerRef.current.style.transform = defaultLogoTransform;
         logoContainerRef.current.style.filter = "blur(0px)";
       }
       if (blurOverlayRef.current) {
@@ -600,7 +624,7 @@ export default function FluidShaderBackground() {
       document.documentElement.style.setProperty("--bg-gradient-via", "#090416");
       document.documentElement.style.setProperty("--bg-gradient-to", "#04020a");
     };
-  }, [pathname]);
+  }, [defaultLogoTransform, pathname]);
 
   /* Scroll transition for SDG section on homepage */
   useEffect(() => {
@@ -630,6 +654,8 @@ export default function FluidShaderBackground() {
       const grainOverlay = grainOverlayRef.current;
       const canvas = canvasRef.current;
 
+      const isMobileView = window.innerWidth < 768;
+
       if (logoContainer) {
         gsap.set(logoContainer, { scale: 1.0, filter: "blur(0px)" });
         logoContainer.style.setProperty("--x-color-stop-0", "#5200c7");
@@ -648,7 +674,7 @@ export default function FluidShaderBackground() {
         gsap.set(grainOverlay, { opacity: 0.09 });
       }
       if (canvas) {
-        gsap.set(canvas, { opacity: 0.45 });
+        gsap.set(canvas, { opacity: isMobileView ? 0 : 0.45 });
       }
 
       // Animatable objects to handle precise color, degree, blur, and grain interpolation natively in GSAP
@@ -682,12 +708,20 @@ export default function FluidShaderBackground() {
       });
 
       // Transition IN (0.0 to 1.0)
-      tl.to(shaderParams.current, {
-        zoom: 0.65, // 0.75 of previous zoom delta (1/4th lesser zoom)
-        colorTransition: 1.0,
-        duration: 1,
-        ease: "power1.out"
-      }, 0);
+      if (!isMobileView) {
+        tl.to(shaderParams.current, {
+          zoom: 0.65, // 0.75 of previous zoom delta (1/4th lesser zoom)
+          colorTransition: 1.0,
+          duration: 1,
+          ease: "power1.out"
+        }, 0);
+      } else {
+        tl.to(shaderParams.current, {
+          colorTransition: 1.0,
+          duration: 1,
+          ease: "power1.out"
+        }, 0);
+      }
 
       tl.to(logoHue, {
         rotate: 140,
@@ -711,6 +745,8 @@ export default function FluidShaderBackground() {
         }
       }, 0);
 
+      let lastBlur = -1;
+      let lastSat = -1;
       if (blurOverlay) {
         tl.to(blurParams, {
           blur: 28,
@@ -718,8 +754,12 @@ export default function FluidShaderBackground() {
           duration: 1,
           ease: "power1.out",
           onUpdate: () => {
-            blurOverlay.style.backdropFilter = `blur(${blurParams.blur}px) saturate(${blurParams.sat}) contrast(1.02)`;
-            blurOverlay.style.setProperty("-webkit-backdrop-filter", `blur(${blurParams.blur}px) saturate(${blurParams.sat}) contrast(1.02)`);
+            if (Math.abs(blurParams.blur - lastBlur) >= 0.2 || Math.abs(blurParams.sat - lastSat) >= 0.03) {
+              lastBlur = blurParams.blur;
+              lastSat = blurParams.sat;
+              blurOverlay.style.backdropFilter = `blur(${blurParams.blur.toFixed(1)}px) saturate(${blurParams.sat.toFixed(2)}) contrast(1.02)`;
+              blurOverlay.style.setProperty("-webkit-backdrop-filter", `blur(${blurParams.blur.toFixed(1)}px) saturate(${blurParams.sat.toFixed(2)}) contrast(1.02)`);
+            }
           }
         }, 0);
       }
@@ -732,7 +772,7 @@ export default function FluidShaderBackground() {
         }, 0);
       }
 
-      if (canvas) {
+      if (canvas && !isMobileView) {
         tl.to(canvas, {
           opacity: 0.70,
           duration: 1,
@@ -760,21 +800,31 @@ export default function FluidShaderBackground() {
           }
         }, 0);
 
-        tl.to(logoContainer, {
-          scale: 1.9,
-          filter: "blur(1px)",
-          duration: 1,
-          ease: "power1.out"
-        }, 0);
+        if (!isMobileView) {
+          tl.to(logoContainer, {
+            scale: 1.9,
+            filter: "blur(1px)",
+            duration: 1,
+            ease: "power1.out"
+          }, 0);
+        }
       }
 
       // Transition OUT (4.6 to 5.6)
-      tl.to(shaderParams.current, {
-        zoom: 1.25,
-        colorTransition: 0.0,
-        duration: 1,
-        ease: "power1.in"
-      }, 4.6);
+      if (!isMobileView) {
+        tl.to(shaderParams.current, {
+          zoom: 1.25,
+          colorTransition: 0.0,
+          duration: 1,
+          ease: "power1.in"
+        }, 4.6);
+      } else {
+        tl.to(shaderParams.current, {
+          colorTransition: 0.0,
+          duration: 1,
+          ease: "power1.in"
+        }, 4.6);
+      }
 
       tl.to(logoHue, {
         rotate: 0,
@@ -805,8 +855,12 @@ export default function FluidShaderBackground() {
           duration: 1,
           ease: "power1.in",
           onUpdate: () => {
-            blurOverlay.style.backdropFilter = `blur(${blurParams.blur}px) saturate(${blurParams.sat}) contrast(1.02)`;
-            blurOverlay.style.setProperty("-webkit-backdrop-filter", `blur(${blurParams.blur}px) saturate(${blurParams.sat}) contrast(1.02)`);
+            if (Math.abs(blurParams.blur - lastBlur) >= 0.2 || Math.abs(blurParams.sat - lastSat) >= 0.03) {
+              lastBlur = blurParams.blur;
+              lastSat = blurParams.sat;
+              blurOverlay.style.backdropFilter = `blur(${blurParams.blur.toFixed(1)}px) saturate(${blurParams.sat.toFixed(2)}) contrast(1.02)`;
+              blurOverlay.style.setProperty("-webkit-backdrop-filter", `blur(${blurParams.blur.toFixed(1)}px) saturate(${blurParams.sat.toFixed(2)}) contrast(1.02)`);
+            }
           }
         }, 4.6);
       }
@@ -819,7 +873,7 @@ export default function FluidShaderBackground() {
         }, 4.6);
       }
 
-      if (canvas) {
+      if (canvas && !isMobileView) {
         tl.to(canvas, {
           opacity: 0.45,
           duration: 1,
@@ -847,12 +901,14 @@ export default function FluidShaderBackground() {
           }
         }, 4.6);
 
-        tl.to(logoContainer, {
-          scale: 1.0,
-          filter: "blur(0px)",
-          duration: 1,
-          ease: "power1.in"
-        }, 4.6);
+        if (!isMobileView) {
+          tl.to(logoContainer, {
+            scale: 1.0,
+            filter: "blur(0px)",
+            duration: 1,
+            ease: "power1.in"
+          }, 4.6);
+        }
       }
     };
 
@@ -884,7 +940,8 @@ export default function FluidShaderBackground() {
         style={{
           zIndex: -4,
           transformOrigin: "center center",
-          willChange: "transform",
+          transform: "translateZ(0)",
+          willChange: "transform, opacity",
           "--x-color-stop-0": "#5200c7",
           "--x-color-stop-33": "#ae73f2",
           "--x-color-stop-66": "#7801ff",
@@ -902,6 +959,8 @@ export default function FluidShaderBackground() {
             height: "28vh",
             width: "25.06vh",
             opacity: 0.55,
+            transform: "translateZ(0)",
+            willChange: "transform",
             filter: "blur(2px) drop-shadow(0 0 25px var(--x-shadow-1, rgba(174, 115, 242, 0.80))) drop-shadow(0 0 50px var(--x-shadow-2, rgba(82, 0, 199, 0.70))) drop-shadow(0 0 15px rgba(255, 255, 255, 0.50))",
           }}
         >
@@ -936,7 +995,7 @@ export default function FluidShaderBackground() {
       <canvas
         ref={canvasRef}
         className="pointer-events-none fixed inset-0 w-full h-full opacity-45"
-        style={{ zIndex: -15, filter: "blur(16px)" }}
+        style={{ zIndex: -15, filter: "blur(16px)", display: isMobile ? "none" : "block" }}
       />
 
       {/* 4. The canvas is blurred directly above. A fullscreen backdrop-filter here
@@ -946,6 +1005,8 @@ export default function FluidShaderBackground() {
         className="pointer-events-none fixed inset-0"
         style={{
           zIndex: -5,
+          transform: "translateZ(0)",
+          willChange: "transform, opacity",
           background: "linear-gradient(115deg, rgba(24, 8, 54, 0.08), rgba(5, 2, 13, 0.02) 55%, rgba(0, 0, 0, 0.08))",
         }}
       />

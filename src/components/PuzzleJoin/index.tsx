@@ -34,15 +34,18 @@ export default function PuzzleJoin() {
     // Reset initial states to ensure clean dimensions
     gsap.set([leftPiece, rightPiece], { xPercent: 0, rotate: 0, opacity: 1 });
 
+    const isMobileSize = window.innerWidth < 768;
+
     // Create GSAP timeline for scroll scrubbing
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: container,
-        start: "top top",
-        end: "+=120%", // Scroll height to trigger join
+        start: isMobileSize ? "top 85%" : "top top",
+        end: isMobileSize ? "top 30%" : "+=120%", // Scroll height to trigger join
         scrub: 1,      // Smooth scrubbing lag
-        pin: true,     // Pin the section while scrolling
+        pin: !isMobileSize, // Only pin on desktop view to avoid mobile navbar overlap and empty gaps
         invalidateOnRefresh: true,
+        refreshPriority: 1,
         onUpdate: (self) => {
           // Snap threshold: if scroll progress is near 100% (e.g., > 90%), mark as joined
           if (self.progress > 0.9) {
@@ -77,19 +80,21 @@ export default function PuzzleJoin() {
   return (
     <div
       ref={containerRef}
-      className="relative min-h-screen w-full flex flex-col items-center justify-center overflow-hidden bg-transparent py-20 px-6 select-none"
+      className="relative w-full flex flex-col items-center justify-center overflow-hidden bg-transparent pt-24 pb-12 md:py-20 px-6 select-none"
     >
       {/* Background Soft Ambient Glows */}
       <div
-        className="absolute top-1/2 left-1/4 -translate-y-1/2 w-[350px] h-[350px] rounded-full pointer-events-none filter blur-[120px] opacity-25"
+        className="absolute top-1/2 left-1/4 -translate-y-1/2 w-[240px] h-[240px] sm:w-[350px] sm:h-[350px] rounded-full pointer-events-none filter blur-[70px] sm:blur-[120px] opacity-25"
         style={{
           background: "radial-gradient(circle, var(--color-violet) 0%, transparent 70%)",
+          transform: "translate3d(-25%, -50%, 0)",
         }}
       />
       <div
-        className="absolute top-1/2 right-1/4 -translate-y-1/2 w-[350px] h-[350px] rounded-full pointer-events-none filter blur-[120px] opacity-25"
+        className="absolute top-1/2 right-1/4 -translate-y-1/2 w-[240px] h-[240px] sm:w-[350px] sm:h-[350px] rounded-full pointer-events-none filter blur-[70px] sm:blur-[120px] opacity-25"
         style={{
           background: "radial-gradient(circle, var(--color-magenta) 0%, transparent 70%)",
+          transform: "translate3d(25%, -50%, 0)",
         }}
       />
 
@@ -108,7 +113,7 @@ export default function PuzzleJoin() {
           className="absolute left-0 top-0 w-[57.14%] h-full will-change-transform cursor-pointer group"
           style={{
             transformStyle: "preserve-3d",
-            transform: !isReady ? "translateX(-150%)" : undefined,
+            transform: !isReady ? "translateX(-150%) translateZ(0)" : "translateZ(0)",
           }}
         >
           {/* SVG Shape */}
@@ -150,7 +155,7 @@ export default function PuzzleJoin() {
           className="absolute right-0 top-0 w-[57.14%] h-full will-change-transform cursor-pointer group"
           style={{
             transformStyle: "preserve-3d",
-            transform: !isReady ? "translateX(150%)" : undefined,
+            transform: !isReady ? "translateX(150%) translateZ(0)" : "translateZ(0)",
           }}
         >
           {/* SVG Shape */}

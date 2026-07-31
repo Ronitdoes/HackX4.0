@@ -14,22 +14,31 @@ ScrollTrigger.config({ ignoreMobileResize: true });
 export default function ThreeSteps() {
   const [isMobile, setIsMobile] = useState(false);
   const [isReady, setIsReady] = useState(false);
+  const [resizeKey, setResizeKey] = useState(0);
   const sectionRef = useRef<HTMLDivElement>(null);
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   useEffect(() => {
+    let resizeTimeout: NodeJS.Timeout;
     const handleResize = () => {
       setIsMobile(window.innerWidth < 768);
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(() => {
+        setResizeKey((prev) => prev + 1);
+      }, 200);
     };
     handleResize();
     window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+    return () => {
+      clearTimeout(resizeTimeout);
+      window.removeEventListener("resize", handleResize);
+    };
   }, []);
 
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsReady(true);
-    }, 300); // 300ms ensures it mounts after Themes (150ms) to prevent ScrollTrigger race conditions
+    }, 200);
     return () => clearTimeout(timer);
   }, []);
 
@@ -66,32 +75,30 @@ export default function ThreeSteps() {
 
       const isMobileSize = window.innerWidth < 768;
 
-      // Final offset positions
-      const c1X = isMobileSize ? -25 : -50;
-      const c1Y = isMobileSize ? -20 : -35;
+      // Final offset positions (centered on mobile, staggered offset on desktop)
+      const c1X = isMobileSize ? 0 : -50;
+      const c1Y = isMobileSize ? -15 : -35;
       
       const c2X = 0;
       const c2Y = 0;
 
       const c3X = isMobileSize ? 25 : 50;
       const c3Y = isMobileSize ? 20 : 35;
-      if (isMobileSize) {
-        gsap.set(card1, { x: c1X, y: c1Y, rotation: 0, opacity: 1 });
-        gsap.set(card2, { x: c2X, y: c2Y, rotation: 0, opacity: 1 });
-        gsap.set(card3, { x: c3X, y: c3Y, rotation: 0, opacity: 1 });
-        return;
-      }
+
+      // Initial card entrance distance (reduced on mobile for smooth viewport entry)
+      const enterY = isMobileSize ? 250 : 500;
+
       // 1. Initial State Setup
       // Card 1 is already in its final position
       gsap.set(card1, { x: c1X, y: c1Y, rotation: 0, opacity: 1 });
 
-      // Card 2 starts down & right (off-screen)
-      gsap.set(card2, { x: c2X + 150, y: 500, rotation: 0, opacity: 0 });
+      // Card 2 starts down (off-screen)
+      gsap.set(card2, { x: c2X + (isMobileSize ? 0 : 150), y: enterY, rotation: 0, opacity: 0 });
 
-      // Card 3 starts down & right (off-screen)
-      gsap.set(card3, { x: c3X + 150, y: 500, rotation: 0, opacity: 0 });
+      // Card 3 starts down (off-screen)
+      gsap.set(card3, { x: c3X + (isMobileSize ? 0 : 150), y: enterY, rotation: 0, opacity: 0 });
 
-      // 2. Create ScrollTrigger timeline
+      // 2. Create ScrollTrigger timeline with refreshPriority 5
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: sectionRef.current,
@@ -100,6 +107,7 @@ export default function ThreeSteps() {
           scrub: 1, // Smooth scrub matching the scroll position
           pin: true, // Pin the entire section
           invalidateOnRefresh: true,
+          refreshPriority: 5,
         },
       });
 
@@ -123,32 +131,35 @@ export default function ThreeSteps() {
         duration: 1,
       });
 
-      // Force ScrollTrigger to refresh after this trigger is created
+      // Sort and force ScrollTrigger to refresh after this trigger is created
+      ScrollTrigger.sort();
       ScrollTrigger.refresh();
     },
     { scope: sectionRef, dependencies: [isReady, isMobile] }
   );
 
   return (
-    <section ref={sectionRef} className="relative w-full h-screen bg-transparent overflow-hidden select-none flex items-center">
+    <section ref={sectionRef} className="relative w-full h-screen min-h-[100dvh] bg-transparent overflow-hidden select-none flex items-center">
       {/* Background Soft Glows */}
       <div
-        className="absolute top-1/2 left-1/4 -translate-y-1/2 w-[450px] h-[450px] rounded-full pointer-events-none filter blur-[150px] opacity-20"
+        className="absolute top-1/2 left-1/4 -translate-y-1/2 w-[280px] h-[280px] sm:w-[450px] sm:h-[450px] rounded-full pointer-events-none filter blur-[80px] sm:blur-[150px] opacity-20"
         style={{
           background: "radial-gradient(circle, var(--color-violet, #7801FF) 0%, transparent 70%)",
+          transform: "translate3d(-25%, -50%, 0)",
         }}
       />
       <div
-        className="absolute top-1/2 right-1/4 -translate-y-1/2 w-[450px] h-[450px] rounded-full pointer-events-none filter blur-[150px] opacity-15"
+        className="absolute top-1/2 right-1/4 -translate-y-1/2 w-[280px] h-[280px] sm:w-[450px] sm:h-[450px] rounded-full pointer-events-none filter blur-[80px] sm:blur-[150px] opacity-15"
         style={{
           background: "radial-gradient(circle, var(--color-magenta, #D242D7) 0%, transparent 70%)",
+          transform: "translate3d(25%, -50%, 0)",
         }}
       />
 
-      <div className="max-w-[1250px] mx-auto px-6 md:px-12 flex w-full flex-col-reverse md:flex-row items-start justify-between gap-20 md:gap-12 md:pt-16">
+      <div className="max-w-[1250px] mx-auto px-6 md:px-12 flex w-full flex-col-reverse md:flex-row items-center md:items-start justify-between gap-12 md:gap-12 md:pt-16">
         {/* Left Column: Stacked Interactive Cards */}
         <div 
-          className="relative w-[280px] h-[280px] sm:w-[320px] sm:h-[320px] md:w-[380px] md:h-[380px] flex items-center justify-center"
+          className="relative w-[280px] h-[280px] sm:w-[320px] sm:h-[320px] md:w-[380px] md:h-[380px] flex items-center justify-center mx-auto md:mx-0"
         >
           {steps.map((step, idx) => {
             return (
@@ -157,16 +168,19 @@ export default function ThreeSteps() {
                 ref={(el) => {
                   cardRefs.current[idx] = el;
                 }}
-                className="absolute inset-0 cursor-pointer"
+                className="absolute inset-0 cursor-pointer will-change-transform"
                 style={{
                   zIndex: 10 + idx,
                 }}
               >
                 <div
-                  className="w-full h-full p-6 md:p-8 border border-white/10 flex flex-col justify-between origin-center transition-colors "
+                  className="w-full h-full p-6 md:p-8 rounded-none border border-white/20 flex flex-col justify-between origin-center shadow-[0_20px_50px_rgba(0,0,0,0.5)] transition-all duration-300"
                   style={{
-                    background: "linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.01) 100%)",
-                    backdropFilter: "blur(20px)",
+                    background: "linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.03) 100%)",
+                    backgroundColor: isMobile ? "#16072b" : "rgba(18, 5, 38, 0.88)",
+                    backdropFilter: isMobile ? "none" : "blur(25px) saturate(140%)",
+                    WebkitBackdropFilter: isMobile ? "none" : "blur(25px) saturate(140%)",
+                    transform: "translateZ(0)",
                   }}
                 >
                   {/* Top of Card: Step Number */}
