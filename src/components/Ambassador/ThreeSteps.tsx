@@ -82,8 +82,8 @@ export default function ThreeSteps() {
       const c2X = 0;
       const c2Y = 0;
 
-      const c3X = isMobileSize ? 25 : 50;
-      const c3Y = isMobileSize ? 20 : 35;
+      const c3X = isMobileSize ? 0 : 50;
+      const c3Y = isMobileSize ? 15 : 35;
 
       // Initial card entrance distance (reduced on mobile for smooth viewport entry)
       const enterY = isMobileSize ? 250 : 500;
@@ -96,44 +96,39 @@ export default function ThreeSteps() {
         scrollTrigger: {
           trigger: sectionRef.current,
           start: "top top",
-          end: "+=700%",
-          scrub: 6,
+          end: "+=280%",
+          scrub: 1.5,
           pin: true,
           pinSpacing: true,
-          anticipatePin: 1,
-          invalidateOnRefresh: true,
           refreshPriority: 5,
         },
       });
 
-      tl.to({}, { duration: 2 });
+      tl.to({}, { duration: 1 });
       tl.to(card2, {
         x: c2X,
         y: c2Y,
         rotation: 0,
         opacity: 1,
         ease: "power3.out",
-        duration: 3,
+        duration: 1.8,
       });
-      tl.to({}, { duration: 2 });
+      tl.to({}, { duration: 1 });
       tl.to(card3, {
         x: c3X,
         y: c3Y,
         rotation: 0,
         opacity: 1,
         ease: "power3.out",
-        duration: 3,
+        duration: 1.8,
       });
-      tl.to({}, { duration: 2 });
-
-      ScrollTrigger.sort();
-      ScrollTrigger.refresh();
+      tl.to({}, { duration: 1 });
     },
     { scope: sectionRef, dependencies: [isReady, isMobile] }
   );
 
   return (
-    <section ref={sectionRef} className="relative w-full h-screen min-h-[100dvh] bg-transparent overflow-hidden select-none flex items-center">
+    <section ref={sectionRef} className="relative w-full h-screen min-h-[100dvh] bg-transparent select-none flex items-center z-50">
       {/* Background Soft Glows */}
       <div
         className="absolute top-1/2 left-1/4 -translate-y-1/2 w-[280px] h-[280px] sm:w-[450px] sm:h-[450px] rounded-full pointer-events-none filter blur-[80px] sm:blur-[150px] opacity-20"
