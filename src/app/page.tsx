@@ -49,7 +49,7 @@ export default function Home() {
   return (
     <>
       <div className="relative w-full min-h-screen md:h-[100vh] flex flex-col items-center justify-center bg-transparent overflow-x-hidden overflow-y-auto md:overflow-hidden px-4 sm:px-6 md:px-12 select-none pt-24 pb-12 md:py-0">
-        
+
         {/* Relative container to keep typography and its side accents grouped and close */}
         <div className="relative flex flex-col items-center justify-center max-w-[85vw] md:max-w-[70vw] mt-4 md:mt-0 md:-translate-y-14">
           {/* Main Center Typography Group */}
@@ -116,7 +116,6 @@ export default function Home() {
             animate="visible"
             className="mt-6 md:mt-8 max-w-xl text-center font-sans font-bold uppercase text-xs sm:text-sm md:text-base leading-relaxed tracking-wider text-white/90 px-4"
           >
-            JOIN THE ULTIMATE TECH SHOWDOWN A HACKATHON WHERE YOUR IDEAS IGNITE, YOUR CODE TRANSFORMS, AND YOUR INNOVATIONS SHINE!
           </motion.p>
 
           {/* REGISTER NOW Button (Mobile View Only) */}
@@ -143,7 +142,7 @@ export default function Home() {
             animate="visible"
             className="absolute left-[-1.5vw] bottom-[0.5vh] md:left-[-4vw] md:bottom-[0.5vh] font-serif italic text-xs md:text-sm text-white hover:opacity-80 transition-opacity pointer-events-auto cursor-default whitespace-nowrap"
           >
-          
+
           </motion.div>
 
           {/* Middle/Bottom Right Accent (corresponds to VN | CN | FR) */}
