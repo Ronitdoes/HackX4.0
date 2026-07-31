@@ -88,50 +88,44 @@ export default function ThreeSteps() {
       // Initial card entrance distance (reduced on mobile for smooth viewport entry)
       const enterY = isMobileSize ? 250 : 500;
 
-      // 1. Initial State Setup
-      // Card 1 is already in its final position
       gsap.set(card1, { x: c1X, y: c1Y, rotation: 0, opacity: 1 });
-
-      // Card 2 starts down (off-screen)
       gsap.set(card2, { x: c2X + (isMobileSize ? 0 : 150), y: enterY, rotation: 0, opacity: 0 });
-
-      // Card 3 starts down (off-screen)
       gsap.set(card3, { x: c3X + (isMobileSize ? 0 : 150), y: enterY, rotation: 0, opacity: 0 });
 
-      // 2. Create ScrollTrigger timeline with refreshPriority 5
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: sectionRef.current,
           start: "top top",
-          end: "+=150%", // How long to pin and scroll
-          scrub: 1, // Smooth scrub matching the scroll position
-          pin: true, // Pin the entire section
+          end: "+=700%",
+          scrub: 6,
+          pin: true,
+          pinSpacing: true,
+          anticipatePin: 1,
           invalidateOnRefresh: true,
           refreshPriority: 5,
         },
       });
 
-      // Animate Card 2 entering
+      tl.to({}, { duration: 2 });
       tl.to(card2, {
         x: c2X,
         y: c2Y,
         rotation: 0,
         opacity: 1,
-        ease: "power2.out",
-        duration: 1,
+        ease: "power3.out",
+        duration: 3,
       });
-
-      // Animate Card 3 entering
+      tl.to({}, { duration: 2 });
       tl.to(card3, {
         x: c3X,
         y: c3Y,
         rotation: 0,
         opacity: 1,
-        ease: "power2.out",
-        duration: 1,
+        ease: "power3.out",
+        duration: 3,
       });
+      tl.to({}, { duration: 2 });
 
-      // Sort and force ScrollTrigger to refresh after this trigger is created
       ScrollTrigger.sort();
       ScrollTrigger.refresh();
     },

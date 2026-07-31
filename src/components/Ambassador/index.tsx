@@ -55,7 +55,7 @@ export default function Ambassador() {
       opacity: 1,
       transition: {
         duration: 0.95,
-        ease: [0.16, 1, 0.3, 1], // easeOutExponential
+        ease: [0.16, 1, 0.3, 1],
       },
     },
   };
@@ -74,7 +74,7 @@ export default function Ambassador() {
   };
 
   return (
-    <div className="relative w-full min-h-screen bg-transparent text-white flex flex-col overflow-x-clip">
+    <div className="relative w-full min-h-screen bg-transparent text-white flex flex-col">
       {/* Background soft glows */}
       <div
         className="absolute top-[20%] left-1/2 -translate-x-1/2 w-[300px] h-[300px] sm:w-[600px] sm:h-[600px] rounded-full pointer-events-none select-none z-0 filter blur-[80px] sm:blur-[150px] opacity-20"
