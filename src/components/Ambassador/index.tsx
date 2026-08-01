@@ -74,7 +74,7 @@ export default function Ambassador() {
   };
 
   return (
-    <div className="relative w-full min-h-screen bg-transparent text-white flex flex-col">
+    <div className="relative w-full min-h-screen-stable bg-transparent text-white flex flex-col">
       {/* Background soft glows */}
       <div
         className="absolute top-[20%] left-1/2 -translate-x-1/2 w-[300px] h-[300px] sm:w-[600px] sm:h-[600px] rounded-full pointer-events-none select-none z-0 filter blur-[80px] sm:blur-[150px] opacity-20"
@@ -85,7 +85,7 @@ export default function Ambassador() {
       />
 
       {/* Hero Section */}
-      <section className="relative w-full min-h-fit md:h-screen flex flex-col items-center justify-center px-4 sm:px-6 md:px-12 select-none z-10 pt-24 pb-8 md:py-0 overflow-x-hidden">
+      <section className="relative w-full min-h-fit md:h-screen-stable flex flex-col items-center justify-center px-4 sm:px-6 md:px-12 select-none z-10 pt-24 pb-8 md:py-0 overflow-x-hidden">
         <div className="relative flex flex-col items-center justify-center max-w-[95vw] md:max-w-[85vw] lg:max-w-[75vw] text-center">
           <motion.h1
             variants={containerVariants}

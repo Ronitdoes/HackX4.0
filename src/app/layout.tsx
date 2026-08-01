@@ -5,6 +5,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import FluidShaderBackground from "@/components/FluidShaderBackground/FluidShaderBackground";
 import LenisProvider from "@/components/LenisProvider";
+import ViewportFix from "@/components/ViewportFix";
 
 const oskariG2Sans = localFont({
   src: "../../public/assets/fonts/OskariG2Medium.otf",
@@ -42,7 +43,8 @@ export default function RootLayout({
           referrerPolicy="no-referrer"
         />
       </head>
-      <body className="antialiased flex flex-col min-h-screen justify-between bg-transparent text-white relative">
+      <body className="antialiased flex flex-col min-h-screen-stable justify-between bg-transparent text-white relative">
+        <ViewportFix />
         <LenisProvider>
           <FluidShaderBackground />
           <Navbar />

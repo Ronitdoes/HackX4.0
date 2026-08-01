@@ -201,7 +201,7 @@ export default function Themes() {
   return (
     <div
       ref={containerRef}
-      className="h-screen min-h-[100dvh] relative w-full overflow-hidden bg-transparent opacity-0"
+      className="h-screen-stable min-h-screen-stable relative w-full overflow-hidden bg-transparent opacity-0"
     >
 
       {/* Main image horizontal slider track - justify-start aligns the track left edge to 0 coordinates, allowing precise absolute x-translates */}

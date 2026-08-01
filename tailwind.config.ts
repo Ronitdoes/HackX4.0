@@ -24,6 +24,15 @@ const config: Config = {
         serif: ["var(--font-serif)", "serif"],
         anton: ["var(--font-anton)", "sans-serif"],
       },
+      height: {
+        "screen-stable": "calc(var(--vh, 1vh) * 100)",
+      },
+      minHeight: {
+        "screen-stable": "calc(var(--vh, 1vh) * 100)",
+      },
+      maxHeight: {
+        "screen-stable": "calc(var(--vh, 1vh) * 100)",
+      },
     },
   },
   plugins: [],

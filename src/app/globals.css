@@ -3,6 +3,7 @@
 @tailwind utilities;
 
 :root {
+  --vh: 1vh;
   --color-violet: #7801FF;
   --color-purple: #B86EF9;
   --color-magenta: #D242D7;
@@ -34,7 +35,7 @@
 
 html {
   background-color: #090416;
-  min-height: 100vh;
+  min-height: calc(var(--vh, 1vh) * 100);
 }
 
 html.lenis,
@@ -53,7 +54,7 @@ html.lenis body {
 body {
   background-color: transparent;
   color: var(--color-white);
-  min-height: 100vh;
+  min-height: calc(var(--vh, 1vh) * 100);
   overflow-x: hidden;
 }
 

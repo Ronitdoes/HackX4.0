@@ -361,7 +361,7 @@ export default function SdgComponent() {
       {/* Desktop View: Pinned Arc Conveyor */}
       <div
         ref={sectionRef}
-        className="hidden md:flex w-full h-screen relative items-center opacity-0"
+        className="hidden md:flex w-full h-screen-stable relative items-center opacity-0"
       >
         {/* Brand Stack (Arc Motion Area) */}
         <div className="absolute left-[24vw] top-0 h-full w-[50vw] flex items-start pt-[48vh] justify-start z-20 pointer-events-none">

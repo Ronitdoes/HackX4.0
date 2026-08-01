@@ -41,9 +41,9 @@ export default function AboutPage() {
   };
 
   return (
-    <div className="w-full min-h-screen bg-transparent flex flex-col">
+    <div className="w-full min-h-screen-stable bg-transparent flex flex-col">
       {/* Hero Section */}
-      <div className="w-full min-h-fit md:h-[100vh] flex flex-col items-center justify-center text-center px-6 md:px-12 select-none relative overflow-hidden pt-24 pb-8 md:py-0">
+      <div className="w-full min-h-fit md:h-screen-stable flex flex-col items-center justify-center text-center px-6 md:px-12 select-none relative overflow-hidden pt-24 pb-8 md:py-0">
         
         {/* Centered Hero Typography */}
         <div className="relative flex flex-col items-center justify-center max-w-[90vw] md:max-w-[75vw]">

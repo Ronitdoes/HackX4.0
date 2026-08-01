@@ -464,7 +464,7 @@ export default function Navbar() {
             style={{
               backgroundColor: "#08010F",
             }}
-            className="fixed inset-0 z-[90] flex h-screen w-screen flex-col justify-between overflow-hidden px-6 py-8 select-none md:px-12 md:py-12"
+            className="fixed inset-0 z-[90] flex h-screen-stable w-screen flex-col justify-between overflow-hidden px-6 py-8 select-none md:px-12 md:py-12"
             id="site-navigation"
             role="dialog"
             aria-modal="true"

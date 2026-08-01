@@ -128,7 +128,7 @@ export default function ThreeSteps() {
   );
 
   return (
-    <section ref={sectionRef} className="relative w-full h-screen min-h-[100dvh] bg-transparent select-none flex items-center z-50">
+    <section ref={sectionRef} className="relative w-full h-screen-stable min-h-screen-stable bg-transparent select-none flex items-center z-50">
       {/* Background Soft Glows */}
       <div
         className="absolute top-1/2 left-1/4 -translate-y-1/2 w-[280px] h-[280px] sm:w-[450px] sm:h-[450px] rounded-full pointer-events-none filter blur-[80px] sm:blur-[150px] opacity-20"

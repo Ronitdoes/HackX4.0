@@ -48,7 +48,7 @@ export default function Home() {
 
   return (
     <>
-      <div className="relative w-full min-h-screen md:h-[100vh] flex flex-col items-center justify-center bg-transparent overflow-x-hidden overflow-y-auto md:overflow-hidden px-4 sm:px-6 md:px-12 select-none pt-24 pb-12 md:py-0">
+      <div className="relative w-full min-h-screen-stable md:h-screen-stable flex flex-col items-center justify-center bg-transparent overflow-x-hidden overflow-y-auto md:overflow-hidden px-4 sm:px-6 md:px-12 select-none pt-24 pb-12 md:py-0">
 
         {/* Relative container to keep typography and its side accents grouped and close */}
         <div className="relative flex flex-col items-center justify-center max-w-[85vw] md:max-w-[70vw] mt-4 md:mt-0 md:-translate-y-14">

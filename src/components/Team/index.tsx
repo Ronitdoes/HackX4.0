@@ -92,7 +92,7 @@ export default function Team() {
   }, [currentMembers]);
 
   return (
-    <div className="relative min-h-screen text-white bg-[#070312] overflow-x-clip">
+    <div className="relative min-h-screen-stable text-white bg-[#070312] overflow-x-clip">
       {/* 1. Single Fixed Page-Wide Seamless Background Glow */}
       <div className="fixed inset-0 bg-[#070312] bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-[#1d0a3d] via-[#070312] to-[#030108] pointer-events-none z-0" />
 
@@ -106,7 +106,7 @@ export default function Team() {
 
       {/* 3. Hero Zoom Text Section */}
       <div ref={containerRef} className="relative h-[220vh] z-20">
-        <div className="sticky top-0 w-full h-screen flex items-center justify-center pointer-events-none">
+        <div className="sticky top-0 w-full h-screen-stable flex items-center justify-center pointer-events-none">
           <motion.div
             className="flex flex-col items-center justify-center text-center px-6 md:px-12 select-none"
             style={{
