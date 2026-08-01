@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useRef } from "react";
-import { motion } from "framer-motion";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
@@ -9,6 +8,7 @@ import { useGSAP } from "@gsap/react";
 gsap.registerPlugin(ScrollTrigger);
 
 export default function About() {
+  const cardOuterRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
   const paragraph1 =
@@ -22,6 +22,24 @@ export default function About() {
 
   useGSAP(
     () => {
+      if (cardOuterRef.current) {
+        gsap.fromTo(
+          cardOuterRef.current,
+          { opacity: 0, y: 30 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: cardOuterRef.current,
+              start: "top 85%",
+              toggleActions: "play none none none",
+            },
+          }
+        );
+      }
+
       gsap.to(".about-word", {
         opacity: 1,
         stagger: 0.02,
@@ -34,7 +52,7 @@ export default function About() {
         },
       });
     },
-    { scope: containerRef }
+    { scope: cardOuterRef }
   );
 
   return (
@@ -57,12 +75,9 @@ export default function About() {
 
       {/* Main Container */}
       <div className="relative z-10 flex items-center justify-center px-6 md:px-12">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="relative max-w-4xl w-full"
+        <div
+          ref={cardOuterRef}
+          className="relative max-w-4xl w-full opacity-0"
         >
           {/* Section Header */}
           <div className="text-center mb-8">
@@ -74,10 +89,8 @@ export default function About() {
           {/* Main Card with Glassmorphism */}
           <div
             ref={containerRef}
-            className="relative rounded-3xl p-8 md:p-12 overflow-hidden border border-white/10 will-change-transform"
+            className="relative rounded-3xl p-8 md:p-12 overflow-hidden border border-white/10 bg-black/45 backdrop-blur-md"
             style={{
-              background: "rgba(0, 0, 0, 0.45)",
-              backdropFilter: "blur(20px)",
               boxShadow:
                 "0 25px 60px rgba(0,0,0,0.2), 0 8px 20px rgba(0,0,0,0.15)",
               transform: "translateZ(0)",
@@ -85,13 +98,13 @@ export default function About() {
           >
             {/* Ambient Background Glow inside Card */}
             <div 
-              className="absolute -top-24 -left-24 w-48 h-48 rounded-full pointer-events-none select-none z-0 filter blur-[80px] opacity-25"
+              className="absolute -top-24 -left-24 w-48 h-48 rounded-full pointer-events-none select-none z-0 filter blur-[50px] opacity-25"
               style={{
                 background: "var(--color-magenta, #D242D7)",
               }}
             />
             <div 
-              className="absolute -bottom-24 -right-24 w-48 h-48 rounded-full pointer-events-none select-none z-0 filter blur-[80px] opacity-20"
+              className="absolute -bottom-24 -right-24 w-48 h-48 rounded-full pointer-events-none select-none z-0 filter blur-[50px] opacity-20"
               style={{
                 background: "var(--color-violet, #7801FF)",
               }}
@@ -127,7 +140,7 @@ export default function About() {
               </p>
             </div>
           </div>
-        </motion.div>
+        </div>
       </div>
     </section>
   );

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const faqData = [
@@ -45,12 +45,6 @@ interface FAQProps {
 }
 
 export default function FAQ({ data = faqData, heading }: FAQProps) {
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
   const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
 
   const toggleExpand = (idx: number) => {
@@ -59,8 +53,7 @@ export default function FAQ({ data = faqData, heading }: FAQProps) {
 
   return (
     <section className="relative w-full py-10 md:py-24 bg-transparent text-white overflow-visible select-none">
-      {mounted && (
-        <div className="max-w-[1200px] mx-auto px-6 md:px-12">
+      <div className="max-w-[1200px] mx-auto px-6 md:px-12">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-20">
           
           {/* Left Column: FAQs Badge and Organizer Avatar Card */}
@@ -155,7 +148,6 @@ export default function FAQ({ data = faqData, heading }: FAQProps) {
 
         </div>
       </div>
-      )}
     </section>
   );
 }

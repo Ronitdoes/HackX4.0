@@ -14,6 +14,8 @@ export default function PuzzleJoin() {
   const rightPieceRef = useRef<HTMLDivElement>(null);
   const [isJoined, setIsJoined] = useState(false);
 
+  const isJoinedRef = useRef(false);
+
   useGSAP(() => {
     const leftPiece = leftPieceRef.current;
     const rightPiece = rightPieceRef.current;
@@ -38,10 +40,10 @@ export default function PuzzleJoin() {
         refreshPriority: 1,
         onUpdate: (self) => {
           // Snap threshold: if scroll progress is near 100% (e.g., > 90%), mark as joined
-          if (self.progress > 0.9) {
-            setIsJoined(true);
-          } else {
-            setIsJoined(false);
+          const shouldBeJoined = self.progress > 0.9;
+          if (shouldBeJoined !== isJoinedRef.current) {
+            isJoinedRef.current = shouldBeJoined;
+            setIsJoined(shouldBeJoined);
           }
         },
       },
@@ -61,9 +63,6 @@ export default function PuzzleJoin() {
       { xPercent: 0, opacity: 1, rotate: 0, ease: "power1.out" },
       0
     );
-
-    // Force ScrollTrigger to refresh after trigger creation
-    ScrollTrigger.refresh();
   }, { scope: containerRef });
 
   return (
@@ -129,9 +128,8 @@ export default function PuzzleJoin() {
           {/* Centered HTML Text overlay */}
           <div className="absolute top-[50%] left-[50%] -translate-x-[50%] -translate-y-[50%] text-center pointer-events-none select-none">
             <h3
-              className={`font-sans font-black text-2xl sm:text-3xl md:text-4xl uppercase tracking-widest transition-all duration-500 text-[#7801FF] ${
-                isJoined ? "scale-110" : ""
-              }`}
+              className={`font-sans font-black text-2xl sm:text-3xl md:text-4xl uppercase tracking-widest transition-all duration-500 text-[#7801FF] ${isJoined ? "scale-110" : ""
+                }`}
             >
               JOIN
             </h3>
@@ -171,9 +169,8 @@ export default function PuzzleJoin() {
           {/* Centered HTML Text overlay */}
           <div className="absolute top-[50%] left-[50%] -translate-x-[50%] -translate-y-[50%] text-center pointer-events-none select-none">
             <h3
-              className={`font-sans font-black text-2xl sm:text-3xl md:text-4xl uppercase tracking-widest transition-all duration-500 text-[#D242D7] ${
-                isJoined ? "scale-110" : ""
-              }`}
+              className={`font-sans font-black text-2xl sm:text-3xl md:text-4xl uppercase tracking-widest transition-all duration-500 text-[#D242D7] ${isJoined ? "scale-110" : ""
+                }`}
             >
               NOW
             </h3>
@@ -184,9 +181,8 @@ export default function PuzzleJoin() {
 
       {/* CTA Button that appears when joined */}
       <div
-        className={`relative z-20 mt-12 transition-all duration-700 transform ${
-          isJoined ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6 pointer-events-none"
-        }`}
+        className={`relative z-20 mt-12 transition-all duration-700 transform ${isJoined ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6 pointer-events-none"
+          }`}
       >
         <Link
           href="#apply"

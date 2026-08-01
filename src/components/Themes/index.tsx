@@ -109,7 +109,7 @@ export default function Themes() {
 
       // Linear offset of the card's center relative to screen center
       const dx = (index - progress * (N - 1)) * step;
-      
+
       // Normalize offset against 65% of viewport width
       const normDx = dx / (vWidth * 0.65);
       const absNorm = Math.min(Math.abs(normDx), 1.5);
@@ -136,36 +136,30 @@ export default function Themes() {
       cards.forEach((card, i) => setCardState(card, i, 0));
     }
 
-    // Build main GSAP Timeline using fromTo and bind an onUpdate to sync card bend
+    // Build main GSAP Timeline with ScrollTrigger directly attached
     const timeline = gsap.timeline({
+      scrollTrigger: {
+        trigger: container,
+        start: isMobileView ? "top 80%" : "top top",
+        end: isMobileView ? "bottom 20%" : () => `+=${vWidth * 2.2}`,
+        scrub: 0.8,
+        pin: !isMobileView,
+        invalidateOnRefresh: true,
+        refreshPriority: 10,
+      },
       onUpdate: function () {
         if (isMobileView) return;
         const p = this.progress();
         cards.forEach((card, i) => {
           setCardState(card, i, p);
         });
-      }
+      },
     });
 
     timeline.fromTo(track,
       { x: startX },
       { x: endX, ease: "none" }
     );
-
-    // Bind timeline to ScrollTrigger with priority 10 to ensure it calculates before downstream triggers
-    ScrollTrigger.create({
-      trigger: container,
-      start: "top top",
-      end: () => `+=${vWidth * 2.2}`, // Total scroll duration
-      scrub: 0.8,                     // Smooth catch-up lag
-      pin: true,
-      animation: timeline,
-      invalidateOnRefresh: true,
-      refreshPriority: 10,
-    });
-
-    ScrollTrigger.sort();
-    ScrollTrigger.refresh();
 
     // Fade in container after paint/measure delay
     gsap.to(container, { opacity: 1, duration: 0.4 });
@@ -174,7 +168,7 @@ export default function Themes() {
   return (
     <div
       ref={containerRef}
-      className="h-screen-stable min-h-screen-stable relative w-full overflow-hidden bg-transparent opacity-0"
+      className="h-auto min-h-fit md:h-screen-stable md:min-h-screen-stable relative w-full overflow-hidden bg-transparent opacity-0 py-12 md:py-0"
     >
 
       {/* Main image horizontal slider track - justify-start aligns the track left edge to 0 coordinates, allowing precise absolute x-translates */}

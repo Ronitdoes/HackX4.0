@@ -1,7 +1,6 @@
 "use client";
 
-import React, { useEffect, useState, useRef } from "react";
-import { motion } from "framer-motion";
+import React, { useRef } from "react";
 import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -9,23 +8,10 @@ import { useGSAP } from "@gsap/react";
 
 gsap.registerPlugin(ScrollTrigger);
 
-ScrollTrigger.config({ ignoreMobileResize: true });
-
 export default function ThreeSteps() {
-  const [isMobile, setIsMobile] = useState(false);
   const sectionRef = useRef<HTMLDivElement>(null);
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
-
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
+  const rightColRef = useRef<HTMLDivElement>(null);
 
   const steps = [
     {
@@ -50,78 +36,117 @@ export default function ThreeSteps() {
 
   useGSAP(
     () => {
+      if (rightColRef.current) {
+        gsap.fromTo(
+          rightColRef.current,
+          { opacity: 0, x: 50 },
+          {
+            opacity: 1,
+            x: 0,
+            duration: 0.8,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: rightColRef.current,
+              start: "top 85%",
+              toggleActions: "play none none none",
+            },
+          }
+        );
+      }
+
       const card1 = cardRefs.current[0];
       const card2 = cardRefs.current[1];
       const card3 = cardRefs.current[2];
 
-      if (!card1 || !card2 || !card3) return;
+      if (!card1 || !card2 || !card3 || !sectionRef.current) return;
 
-      const isMobileSize = window.innerWidth < 768;
+      const mm = gsap.matchMedia();
 
-      // Final offset positions (centered on mobile, staggered offset on desktop)
-      const c1X = isMobileSize ? 0 : -50;
-      const c1Y = isMobileSize ? -15 : -35;
-      
-      const c2X = 0;
-      const c2Y = 0;
-
-      const c3X = isMobileSize ? 0 : 50;
-      const c3Y = isMobileSize ? 15 : 35;
-
-      // Initial card entrance distance (reduced on mobile for smooth viewport entry)
-      const enterY = isMobileSize ? 250 : 500;
-
-      gsap.set(card1, { x: c1X, y: c1Y, rotation: 0, opacity: 1 });
-      gsap.set(card2, { x: c2X + (isMobileSize ? 0 : 150), y: enterY, rotation: 0, opacity: 0 });
-      gsap.set(card3, { x: c3X + (isMobileSize ? 0 : 150), y: enterY, rotation: 0, opacity: 0 });
-
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top top",
-          end: "+=170%",
-          scrub: 1.2,
-          pin: true,
-          pinSpacing: true,
-          refreshPriority: 5,
+      mm.add(
+        {
+          isMobile: "(max-width: 767px)",
+          isDesktop: "(min-width: 768px)",
         },
-      });
+        (context) => {
+          const { isMobile: isMobileSize } = context.conditions as {
+            isMobile: boolean;
+            isDesktop: boolean;
+          };
 
-      tl.to({}, { duration: 0.5 });
-      tl.to(card2, {
-        x: c2X,
-        y: c2Y,
-        rotation: 0,
-        opacity: 1,
-        ease: "power3.out",
-        duration: 1.5,
-      });
-      tl.to({}, { duration: 0.5 });
-      tl.to(card3, {
-        x: c3X,
-        y: c3Y,
-        rotation: 0,
-        opacity: 1,
-        ease: "power3.out",
-        duration: 1.5,
-      });
-      tl.to({}, { duration: 0.5 });
+          // Final offset positions (centered on mobile, staggered offset on desktop)
+          const c1X = isMobileSize ? 0 : -50;
+          const c1Y = isMobileSize ? -15 : -35;
+
+          const c2X = 0;
+          const c2Y = 0;
+
+          const c3X = isMobileSize ? 0 : 50;
+          const c3Y = isMobileSize ? 15 : 35;
+
+          // Initial card entrance distance (reduced on mobile for smooth viewport entry)
+          const enterY = isMobileSize ? 100 : 500;
+
+          gsap.set(card1, { x: c1X, y: c1Y, rotation: 0, opacity: 1 });
+          gsap.set(card2, {
+            x: c2X + (isMobileSize ? 0 : 150),
+            y: enterY,
+            rotation: 0,
+            opacity: isMobileSize ? 0.3 : 0,
+          });
+          gsap.set(card3, {
+            x: c3X + (isMobileSize ? 0 : 150),
+            y: enterY,
+            rotation: 0,
+            opacity: isMobileSize ? 0.3 : 0,
+          });
+
+          const tl = gsap.timeline({
+            scrollTrigger: {
+              trigger: sectionRef.current,
+              start: isMobileSize ? "top 80%" : "top top",
+              end: isMobileSize ? "bottom 20%" : "+=170%",
+              scrub: 1.2,
+              pin: !isMobileSize,
+              pinSpacing: !isMobileSize,
+              refreshPriority: 5,
+            },
+          });
+
+          tl.to(card2, {
+            x: c2X,
+            y: c2Y,
+            rotation: 0,
+            opacity: 1,
+            ease: "power3.out",
+            duration: 1.5,
+          }, "+=0.5")
+          .to(card3, {
+            x: c3X,
+            y: c3Y,
+            rotation: 0,
+            opacity: 1,
+            ease: "power3.out",
+            duration: 1.5,
+          }, "+=0.5");
+        }
+      );
+
     },
-    { scope: sectionRef, dependencies: [isMobile] }
+    { scope: sectionRef }
   );
 
   return (
-    <section ref={sectionRef} className="relative w-full h-screen-stable min-h-screen-stable bg-transparent select-none flex items-center z-50">
+    <section ref={sectionRef} className="relative w-full h-auto min-h-fit md:h-screen-stable md:min-h-screen-stable bg-transparent select-none flex items-center z-10 py-16 md:py-0">
       {/* Background Soft Glows */}
       <div
-        className="absolute top-1/2 left-1/4 -translate-y-1/2 w-[280px] h-[280px] sm:w-[450px] sm:h-[450px] rounded-full pointer-events-none filter blur-[80px] sm:blur-[150px] opacity-20"
+        className="absolute top-1/2 left-1/4 -translate-y-1/2 w-[280px] h-[280px] sm:w-[450px] sm:h-[450px] rounded-full pointer-events-none filter blur-[80px] sm:blur-[120px] opacity-20"
         style={{
           background: "radial-gradient(circle, var(--color-violet, #7801FF) 0%, transparent 70%)",
           transform: "translate3d(-25%, -50%, 0)",
         }}
       />
       <div
-        className="absolute top-1/2 right-1/4 -translate-y-1/2 w-[280px] h-[280px] sm:w-[450px] sm:h-[450px] rounded-full pointer-events-none filter blur-[80px] sm:blur-[150px] opacity-15"
+        className="absolute top-1/2 right-1/4 -translate-y-1/2 w-[280px] h-[280px] sm:w-[450px] sm:h-[450px] rounded-full pointer-events-none filter blur-[80px] sm:blur-[120px] opacity-15"
         style={{
           background: "radial-gradient(circle, var(--color-magenta, #D242D7) 0%, transparent 70%)",
           transform: "translate3d(25%, -50%, 0)",
@@ -130,7 +155,7 @@ export default function ThreeSteps() {
 
       <div className="max-w-[1250px] mx-auto px-6 md:px-12 flex w-full flex-col-reverse md:flex-row items-center md:items-start justify-between gap-12 md:gap-12 md:pt-16">
         {/* Left Column: Stacked Interactive Cards */}
-        <div 
+        <div
           className="relative w-[280px] h-[280px] sm:w-[320px] sm:h-[320px] md:w-[380px] md:h-[380px] flex items-center justify-center mx-auto md:mx-0"
         >
           {steps.map((step, idx) => {
@@ -140,18 +165,15 @@ export default function ThreeSteps() {
                 ref={(el) => {
                   cardRefs.current[idx] = el;
                 }}
-                className="absolute inset-0 cursor-pointer will-change-transform"
+                className="absolute inset-0 cursor-pointer"
                 style={{
                   zIndex: 10 + idx,
                 }}
               >
                 <div
-                  className="w-full h-full p-6 md:p-8 rounded-none border border-white/20 flex flex-col justify-between origin-center shadow-[0_20px_50px_rgba(0,0,0,0.5)] transition-all duration-300"
+                  className="w-full h-full p-6 md:p-8 rounded-none border border-white/20 flex flex-col justify-between origin-center shadow-[0_20px_50px_rgba(0,0,0,0.5)] transition-all duration-300 bg-[#16072b] md:bg-[rgba(18,5,38,0.88)] md:backdrop-blur-xl md:backdrop-saturate-150"
                   style={{
                     background: "linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.03) 100%)",
-                    backgroundColor: isMobile ? "#16072b" : "rgba(18, 5, 38, 0.88)",
-                    backdropFilter: isMobile ? "none" : "blur(25px) saturate(140%)",
-                    WebkitBackdropFilter: isMobile ? "none" : "blur(25px) saturate(140%)",
                     transform: "translateZ(0)",
                   }}
                 >
@@ -160,13 +182,14 @@ export default function ThreeSteps() {
                     <span className={`font-sans font-black text-5xl md:text-6xl text-transparent bg-clip-text bg-gradient-to-r ${step.color} select-none`}>
                       {step.num}
                     </span>
-                    
+
                     {/* Subtle HackX Logo Watermark */}
                     <div className="opacity-10 w-12 h-12 relative pointer-events-none select-none">
                       <Image
                         src="/assets/logos/HACKX White@2x.png"
                         alt="HackX watermark"
                         fill
+                        sizes="48px"
                         className="object-contain"
                       />
                     </div>
@@ -189,12 +212,9 @@ export default function ThreeSteps() {
 
         {/* Right Column: Heading Text */}
         <div className="flex-1 max-w-[600px] text-center md:text-right md:-translate-y-8">
-          <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            className="flex flex-col gap-4"
+          <div
+            ref={rightColRef}
+            className="flex flex-col gap-4 opacity-0"
           >
             <h2 className="font-sans font-black uppercase text-4xl sm:text-5xl md:text-6xl text-white tracking-normal leading-[1.0] flex flex-col gap-2 items-center md:items-end">
               <span>CAMPUS</span>
@@ -206,7 +226,7 @@ export default function ThreeSteps() {
             <p className="font-sans text-white/60 text-sm md:text-base mt-4 max-w-[480px] leading-relaxed md:ml-auto text-center md:text-left">
               As a Campus Ambassador, you will be responsible for promoting our brand on campus, organizing and hosting events and workshops, engaging with students and gathering feedback, and representing our company at campus fairs and events.
             </p>
-          </motion.div>
+          </div>
         </div>
       </div>
     </section>
