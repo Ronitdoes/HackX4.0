@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
@@ -64,34 +64,7 @@ export default function Themes() {
   const trackRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
 
-  const [isReady, setIsReady] = useState(false);
-  const [resizeKey, setResizeKey] = useState(0);
-
-  // Delay initialization to guarantee layout painting is completed
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsReady(true);
-    }, 150);
-
-    let resizeTimeout: NodeJS.Timeout;
-    const handleResize = () => {
-      clearTimeout(resizeTimeout);
-      resizeTimeout = setTimeout(() => {
-        setResizeKey((prev) => prev + 1);
-      }, 200);
-    };
-    window.addEventListener("resize", handleResize);
-
-    return () => {
-      clearTimeout(timer);
-      clearTimeout(resizeTimeout);
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
-
   useGSAP(() => {
-    if (!isReady) return;
-
     const track = trackRef.current;
     const cards = cardsRef.current.filter(Boolean) as HTMLElement[];
     const container = containerRef.current;
@@ -99,6 +72,7 @@ export default function Themes() {
     if (!track || cards.length === 0 || !container) return;
 
     const vWidth = window.innerWidth;
+    const isMobileView = vWidth < 768;
 
     // Reset card styles to calculate clean base dimensions
     gsap.set(cards, { rotation: 0, y: 0, z: 0, scale: 1 });
@@ -107,7 +81,7 @@ export default function Themes() {
     const cardWidth = cardRect.width;
 
     // Extract gap from computed style to avoid rotated bounding rect issues
-    let gap = vWidth * 0.04; // fallback to 4vw
+    let gap = vWidth * (isMobileView ? 0.06 : 0.04); // fallback to 6vw / 4vw
     const style = window.getComputedStyle(track);
     const gapVal = style.gap;
     if (gapVal && gapVal.includes("px")) {
@@ -126,17 +100,14 @@ export default function Themes() {
     gsap.set(track, { x: startX });
 
     // Curved bend parameters
-    const maxRotation = 13; // Max degrees of tilt
-    const maxY = 90;        // Max downward drop (pixels)
-    const maxZ = 120;       // Max depth push into 3D space
-    const isMobileView = vWidth < 768;
+    const maxRotation = isMobileView ? 6 : 13; // Max degrees of tilt
+    const maxY = isMobileView ? 35 : 90;        // Max downward drop (pixels)
+    const maxZ = isMobileView ? 50 : 120;       // Max depth push into 3D space
 
     const setCardState = (card: HTMLElement, index: number, progress: number) => {
-      if (isMobileView) return;
-
       // Linear offset of the card's center relative to screen center
       const dx = (index - progress * (N - 1)) * step;
-      
+
       // Normalize offset against 65% of viewport width
       const normDx = dx / (vWidth * 0.65);
       const absNorm = Math.min(Math.abs(normDx), 1.5);
@@ -155,23 +126,27 @@ export default function Themes() {
     };
 
     // Apply start state immediately
-    if (isMobileView) {
-      cards.forEach((card) => {
-        gsap.set(card, { rotation: 0, y: 0, z: 0, transformPerspective: 1000 });
-      });
-    } else {
-      cards.forEach((card, i) => setCardState(card, i, 0));
-    }
+    cards.forEach((card, i) => setCardState(card, i, 0));
 
-    // Build main GSAP Timeline using fromTo and bind an onUpdate to sync card bend
+    // Build main GSAP Timeline with ScrollTrigger pinned on all viewports
     const timeline = gsap.timeline({
+      scrollTrigger: {
+        trigger: container,
+        start: "top top",
+        end: () => `+=${vWidth * (isMobileView ? 10.0 : 2.2)}`,
+        scrub: isMobileView ? 1.0 : 0.8,
+        pin: true,
+        invalidateOnRefresh: true,
+        refreshPriority: 10,
+        fastScrollEnd: true,
+        preventOverlaps: "ambassador-themes",
+      },
       onUpdate: function () {
-        if (isMobileView) return;
         const p = this.progress();
         cards.forEach((card, i) => {
           setCardState(card, i, p);
         });
-      }
+      },
     });
 
     timeline.fromTo(track,
@@ -179,36 +154,20 @@ export default function Themes() {
       { x: endX, ease: "none" }
     );
 
-    // Bind timeline to ScrollTrigger with priority 10 to ensure it calculates before downstream triggers
-    ScrollTrigger.create({
-      trigger: container,
-      start: "top top",
-      end: () => `+=${vWidth * 2.2}`, // Total scroll duration
-      scrub: 0.8,                     // Smooth catch-up lag
-      pin: true,
-      animation: timeline,
-      invalidateOnRefresh: true,
-      refreshPriority: 10,
-    });
-
-    ScrollTrigger.sort();
-    ScrollTrigger.refresh();
-
     // Fade in container after paint/measure delay
     gsap.to(container, { opacity: 1, duration: 0.4 });
-  }, { scope: containerRef, dependencies: [isReady, resizeKey], revertOnUpdate: true });
+  }, { scope: containerRef });
 
   return (
     <div
       ref={containerRef}
-      className="h-screen min-h-[100dvh] relative w-full overflow-hidden bg-transparent opacity-0"
+      className="h-screen-stable min-h-screen-stable relative w-full overflow-hidden bg-transparent opacity-0 flex items-center touch-pan-y overscroll-y-contain"
     >
-
-      {/* Main image horizontal slider track - justify-start aligns the track left edge to 0 coordinates, allowing precise absolute x-translates */}
+      {/* Main image horizontal slider track */}
       <div className="h-full w-full flex items-center justify-start overflow-hidden absolute top-0 left-0">
         <div
           ref={trackRef}
-          className="flex gap-[4vw] select-none pointer-events-auto py-16 will-change-transform pl-0 ml-0"
+          className="flex gap-[6vw] md:gap-[4vw] select-none pointer-events-auto py-8 md:py-16 will-change-transform pl-0 ml-0"
           style={{ transformStyle: "preserve-3d" }}
         >
           {THEME_CARDS.map((card, index) => (
@@ -225,7 +184,6 @@ export default function Themes() {
           ))}
         </div>
       </div>
-
     </div>
   );
 }

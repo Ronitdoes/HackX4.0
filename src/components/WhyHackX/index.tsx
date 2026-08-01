@@ -243,7 +243,7 @@ export default function WhyHackX() {
     >
       <div className="max-w-[1300px] mx-auto w-full flex flex-col md:flex-row items-start justify-center px-6 md:px-12 md:pl-24 lg:pl-36 gap-8 md:gap-24 lg:gap-32">
         {/* Left Column: Sticky Title */}
-        <div className="w-full md:w-auto md:sticky md:top-0 md:h-screen flex items-center justify-start select-none flex-shrink-0">
+        <div className="w-full md:w-auto md:sticky md:top-0 md:h-screen-stable flex items-center justify-start select-none flex-shrink-0">
           <div className="flex items-stretch gap-6 md:gap-8">
             <div className="w-[3px] bg-white/10 rounded-full relative overflow-hidden flex-shrink-0 my-[-24px]">
               <div
@@ -269,7 +269,7 @@ export default function WhyHackX() {
           style={{ height: isMobile ? "auto" : `${TOTAL_VH}vh` }}
         >
           <div
-            className="relative md:sticky md:top-0 md:h-screen w-full flex flex-col justify-start pt-0 md:pt-[25vh] items-start gap-5 md:gap-6 py-6 md:py-0"
+            className="relative md:sticky md:top-0 md:h-screen-stable w-full flex flex-col justify-start pt-0 md:pt-[25vh] items-start gap-5 md:gap-6 py-6 md:py-0"
           >
             {ITEMS.map((item, i) => {
               return (

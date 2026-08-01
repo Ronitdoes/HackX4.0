@@ -378,7 +378,7 @@ export default function Home() {
   }, []);
 
   return (
-    <main className="min-h-screen overflow-x-clip bg-transparent text-[#f3f0e6] relative">
+    <main className="min-h-screen-stable overflow-x-clip bg-transparent text-[#f3f0e6] relative">
       {/* Static Purple Nebula Background */}
       <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden bg-[#070210]">
         {/* Deep Cosmic Purple & Indigo Nebula Glows */}

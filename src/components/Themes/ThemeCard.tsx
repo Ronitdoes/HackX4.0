@@ -284,7 +284,7 @@ export default function ThemeCard({ card }: ThemeCardProps) {
   };
 
   return (
-    <div className="w-[280px] sm:w-[320px] md:w-[350px] aspect-[1/1.4] flex-shrink-0 relative transition-transform duration-300 hover:scale-[1.03] cursor-pointer">
+    <div className="w-[260px] sm:w-[320px] md:w-[350px] aspect-[1/1.4] flex-shrink-0 relative transition-transform duration-300 hover:scale-[1.03] cursor-pointer">
       {renderCardContent()}
     </div>
   );

@@ -13,45 +13,39 @@ export default function PuzzleJoin() {
   const leftPieceRef = useRef<HTMLDivElement>(null);
   const rightPieceRef = useRef<HTMLDivElement>(null);
   const [isJoined, setIsJoined] = useState(false);
-  const [isReady, setIsReady] = useState(false);
 
-  React.useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsReady(true);
-    }, 800);
-    return () => clearTimeout(timer);
-  }, []);
+  const isJoinedRef = useRef(false);
 
   useGSAP(() => {
-    if (!isReady) return;
-
     const leftPiece = leftPieceRef.current;
     const rightPiece = rightPieceRef.current;
     const container = containerRef.current;
 
     if (!leftPiece || !rightPiece || !container) return;
 
+    const isMobileSize = window.innerWidth < 768;
+
     // Reset initial states to ensure clean dimensions
     gsap.set([leftPiece, rightPiece], { xPercent: 0, rotate: 0, opacity: 1 });
-
-    const isMobileSize = window.innerWidth < 768;
 
     // Create GSAP timeline for scroll scrubbing
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: container,
         start: isMobileSize ? "top 85%" : "top top",
-        end: isMobileSize ? "top 30%" : "+=120%", // Scroll height to trigger join
-        scrub: 1,      // Smooth scrubbing lag
-        pin: !isMobileSize, // Only pin on desktop view to avoid mobile navbar overlap and empty gaps
+        end: isMobileSize ? "center 40%" : "+=120%", // Complete joining while container is in view
+        scrub: isMobileSize ? 0.5 : 0.8,            // Smooth scrubbing lag
+        pin: !isMobileSize,                          // Pin on desktop view
         invalidateOnRefresh: true,
         refreshPriority: 1,
+        fastScrollEnd: true,
+        preventOverlaps: "ambassador-puzzle",
         onUpdate: (self) => {
-          // Snap threshold: if scroll progress is near 100% (e.g., > 90%), mark as joined
-          if (self.progress > 0.9) {
-            setIsJoined(true);
-          } else {
-            setIsJoined(false);
+          // Snap threshold: if scroll progress is near completion (> 80%), mark as joined
+          const shouldBeJoined = self.progress > 0.8;
+          if (shouldBeJoined !== isJoinedRef.current) {
+            isJoinedRef.current = shouldBeJoined;
+            setIsJoined(shouldBeJoined);
           }
         },
       },
@@ -60,27 +54,23 @@ export default function PuzzleJoin() {
     // Animate puzzle pieces coming together from left and right using relative percentage translation
     tl.fromTo(
       leftPiece,
-      { xPercent: -150, opacity: 0.4, rotate: -8 },
+      { xPercent: -100, opacity: 0.4, rotate: -8 },
       { xPercent: 0, opacity: 1, rotate: 0, ease: "power1.out" },
       0
     );
 
     tl.fromTo(
       rightPiece,
-      { xPercent: 150, opacity: 0.4, rotate: 8 },
+      { xPercent: 100, opacity: 0.4, rotate: 8 },
       { xPercent: 0, opacity: 1, rotate: 0, ease: "power1.out" },
       0
     );
-
-    // Force ScrollTrigger to refresh *after* this trigger is created,
-    // ensuring the heights and offsets of preceding pinned containers are accounted for.
-    ScrollTrigger.refresh();
-  }, { scope: containerRef, dependencies: [isReady] });
+  }, { scope: containerRef });
 
   return (
     <div
       ref={containerRef}
-      className="relative w-full flex flex-col items-center justify-center overflow-hidden bg-transparent pt-24 pb-12 md:py-20 px-6 select-none"
+      className="relative w-full flex flex-col items-center justify-center overflow-hidden bg-transparent pt-24 pb-12 md:py-20 px-6 select-none touch-pan-y overscroll-y-contain"
     >
       {/* Background Soft Ambient Glows */}
       <div
@@ -110,10 +100,10 @@ export default function PuzzleJoin() {
         {/* Left Puzzle Piece Container */}
         <div
           ref={leftPieceRef}
-          className="absolute left-0 top-0 w-[57.14%] h-full will-change-transform cursor-pointer group"
+          className="absolute left-0 top-0 w-[57.14%] h-full cursor-pointer group"
           style={{
             transformStyle: "preserve-3d",
-            transform: !isReady ? "translateX(-150%) translateZ(0)" : "translateZ(0)",
+            transform: "translateZ(0)",
           }}
         >
           {/* SVG Shape */}
@@ -140,9 +130,8 @@ export default function PuzzleJoin() {
           {/* Centered HTML Text overlay */}
           <div className="absolute top-[50%] left-[50%] -translate-x-[50%] -translate-y-[50%] text-center pointer-events-none select-none">
             <h3
-              className={`font-sans font-black text-2xl sm:text-3xl md:text-4xl uppercase tracking-widest transition-all duration-500 text-[#7801FF] ${
-                isJoined ? "scale-110" : ""
-              }`}
+              className={`font-sans font-black text-2xl sm:text-3xl md:text-4xl uppercase tracking-widest transition-all duration-500 text-[#7801FF] ${isJoined ? "scale-110" : ""
+                }`}
             >
               JOIN
             </h3>
@@ -152,10 +141,10 @@ export default function PuzzleJoin() {
         {/* Right Puzzle Piece Container */}
         <div
           ref={rightPieceRef}
-          className="absolute right-0 top-0 w-[57.14%] h-full will-change-transform cursor-pointer group"
+          className="absolute right-0 top-0 w-[57.14%] h-full cursor-pointer group"
           style={{
             transformStyle: "preserve-3d",
-            transform: !isReady ? "translateX(150%) translateZ(0)" : "translateZ(0)",
+            transform: "translateZ(0)",
           }}
         >
           {/* SVG Shape */}
@@ -182,9 +171,8 @@ export default function PuzzleJoin() {
           {/* Centered HTML Text overlay */}
           <div className="absolute top-[50%] left-[50%] -translate-x-[50%] -translate-y-[50%] text-center pointer-events-none select-none">
             <h3
-              className={`font-sans font-black text-2xl sm:text-3xl md:text-4xl uppercase tracking-widest transition-all duration-500 text-[#D242D7] ${
-                isJoined ? "scale-110" : ""
-              }`}
+              className={`font-sans font-black text-2xl sm:text-3xl md:text-4xl uppercase tracking-widest transition-all duration-500 text-[#D242D7] ${isJoined ? "scale-110" : ""
+                }`}
             >
               NOW
             </h3>
@@ -195,9 +183,8 @@ export default function PuzzleJoin() {
 
       {/* CTA Button that appears when joined */}
       <div
-        className={`relative z-20 mt-12 transition-all duration-700 transform ${
-          isJoined ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6 pointer-events-none"
-        }`}
+        className={`relative z-20 mt-12 transition-all duration-700 transform ${isJoined ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6 pointer-events-none"
+          }`}
       >
         <Link
           href="#apply"

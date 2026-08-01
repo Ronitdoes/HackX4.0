@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useRef } from "react";
-import { motion } from "framer-motion";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
@@ -9,6 +8,7 @@ import { useGSAP } from "@gsap/react";
 gsap.registerPlugin(ScrollTrigger);
 
 export default function About() {
+  const cardOuterRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
   const paragraph1 =
@@ -22,62 +22,72 @@ export default function About() {
 
   useGSAP(
     () => {
-      gsap.to(".about-word", {
-        opacity: 1,
-        stagger: 0.02,
-        ease: "power1.out",
-        scrollTrigger: {
-          trigger: containerRef.current,
-          start: "top 75%",
-          end: "bottom 55%",
-          scrub: 0.5,
-        },
-      });
+      if (cardOuterRef.current) {
+        gsap.fromTo(
+          cardOuterRef.current,
+          { opacity: 0, y: 30 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: cardOuterRef.current,
+              start: "top 85%",
+              toggleActions: "play none none none",
+            },
+          }
+        );
+      }
+
+      const words = gsap.utils.toArray<HTMLElement>(".about-word", containerRef.current);
+      if (words.length > 0) {
+        gsap.to(words, {
+          opacity: 1,
+          stagger: 0.03,
+          ease: "power1.out",
+          scrollTrigger: {
+            trigger: containerRef.current,
+            start: "top 80%",
+            end: "bottom 30%",
+            scrub: 0.8,
+            refreshPriority: 2,
+          },
+        });
+      }
     },
-    { scope: containerRef }
+    { scope: cardOuterRef }
   );
 
   return (
-    <section className="relative w-full overflow-hidden py-6 md:py-24">
-      {/* Large outlined background text */}
-      <div className="absolute inset-0 flex items-center justify-center z-[1] pointer-events-none select-none overflow-hidden">
-        <span
-          className="block font-sans font-black uppercase text-center tracking-wider"
-          style={{
-            fontSize: "clamp(3.5rem, 14vw, 16rem)",
-            WebkitTextStroke: "1px rgba(255,255,255,0.15)",
-            color: "transparent",
-            opacity: 0.8,
-            letterSpacing: "0.05em",
-          }}
-        >
-          ABOUT
-        </span>
-      </div>
-
+    <section className="relative w-full overflow-hidden py-16 sm:py-24 md:py-36 lg:py-48 select-none touch-pan-y overscroll-y-contain z-10">
       {/* Main Container */}
-      <div className="relative z-10 flex items-center justify-center px-6 md:px-12">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="relative max-w-4xl w-full"
+      <div className="relative z-10 flex items-center justify-center px-6 md:px-12 w-full">
+        <div
+          ref={cardOuterRef}
+          className="relative max-w-4xl w-full opacity-0 will-change-transform"
         >
           {/* Section Header */}
-          <div className="text-center mb-8">
-            <h2 className="font-sans font-extrabold uppercase text-[39px] md:text-[51px] lg:text-[63px] tracking-wide text-white">
-              About
+          <div className="text-center mb-6 md:mb-12 pointer-events-none select-none">
+            <h2
+              className="font-sans font-black uppercase tracking-wider text-center"
+              style={{
+                fontSize: "clamp(3.2rem, 13vw, 8rem)",
+                WebkitTextStroke: "2px rgba(255,255,255,0.70)",
+                color: "transparent",
+                letterSpacing: "0.05em",
+                lineHeight: 1,
+              }}
+            >
+              ABOUT
             </h2>
           </div>
 
           {/* Main Card with Glassmorphism */}
           <div
             ref={containerRef}
-            className="relative rounded-3xl p-8 md:p-12 overflow-hidden border border-white/10 will-change-transform"
+            className="relative rounded-3xl p-8 md:p-14 overflow-hidden border border-white/10 bg-black/45 backdrop-blur-md"
             style={{
-              background: "rgba(0, 0, 0, 0.45)",
-              backdropFilter: "blur(20px)",
               boxShadow:
                 "0 25px 60px rgba(0,0,0,0.2), 0 8px 20px rgba(0,0,0,0.15)",
               transform: "translateZ(0)",
@@ -85,13 +95,13 @@ export default function About() {
           >
             {/* Ambient Background Glow inside Card */}
             <div 
-              className="absolute -top-24 -left-24 w-48 h-48 rounded-full pointer-events-none select-none z-0 filter blur-[80px] opacity-25"
+              className="absolute -top-24 -left-24 w-48 h-48 rounded-full pointer-events-none select-none z-0 filter blur-[50px] opacity-25 will-change-transform"
               style={{
                 background: "var(--color-magenta, #D242D7)",
               }}
             />
             <div 
-              className="absolute -bottom-24 -right-24 w-48 h-48 rounded-full pointer-events-none select-none z-0 filter blur-[80px] opacity-20"
+              className="absolute -bottom-24 -right-24 w-48 h-48 rounded-full pointer-events-none select-none z-0 filter blur-[50px] opacity-20 will-change-transform"
               style={{
                 background: "var(--color-violet, #7801FF)",
               }}
@@ -105,8 +115,7 @@ export default function About() {
                 {words1.map((word, idx) => (
                   <span
                     key={idx}
-                    className="about-word opacity-[0.20] inline-block mr-[0.25em]"
-                    style={{ willChange: "opacity", transform: "translateZ(0)" }}
+                    className="about-word opacity-[0.20] inline-block mr-[0.25em] will-change-[opacity]"
                   >
                     {word}
                   </span>
@@ -120,8 +129,7 @@ export default function About() {
                 {words2.map((word, idx) => (
                   <span
                     key={idx}
-                    className="about-word opacity-[0.20] inline-block mr-[0.25em]"
-                    style={{ willChange: "opacity", transform: "translateZ(0)" }}
+                    className="about-word opacity-[0.20] inline-block mr-[0.25em] will-change-[opacity]"
                   >
                     {word}
                   </span>
@@ -129,7 +137,7 @@ export default function About() {
               </p>
             </div>
           </div>
-        </motion.div>
+        </div>
       </div>
     </section>
   );

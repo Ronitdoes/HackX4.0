@@ -278,7 +278,7 @@ export default function Stats() {
       {/* Desktop view with GSAP scroll animation */}
       <div
         ref={containerRef}
-        className="hidden md:block relative w-full h-screen overflow-hidden opacity-0"
+        className="hidden md:block relative w-full h-screen-stable overflow-hidden opacity-0"
       >
         {/* Giant active section number background */}
         <div className="absolute left-16 md:left-28 lg:left-40 bottom-[2vh] md:bottom-[3vh] lg:bottom-[4vh] z-30 hidden sm:flex items-end pointer-events-none select-none text-cream/90">

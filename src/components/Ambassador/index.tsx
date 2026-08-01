@@ -1,14 +1,19 @@
 "use client";
 
-import React from "react";
-import { motion } from "framer-motion";
+import React, { useRef } from "react";
 import Link from "next/link";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react";
+
+import About from "@/components/Ambassador/About";
+import WhyApply from "@/components/Ambassador/WhyApply";
 import Themes from "@/components/Themes";
+import ThreeSteps from "@/components/Ambassador/ThreeSteps";
 import PuzzleJoin from "@/components/PuzzleJoin";
 import FAQ from "@/components/FAQ";
-import WhyApply from "@/components/Ambassador/WhyApply";
-import About from "@/components/Ambassador/About";
-import ThreeSteps from "@/components/Ambassador/ThreeSteps";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const AMBASSADOR_FAQ_DATA = [
   {
@@ -38,43 +43,46 @@ const AMBASSADOR_FAQ_DATA = [
 ];
 
 export default function Ambassador() {
-  const containerVariants = {
-    hidden: {},
-    visible: {
-      transition: {
-        staggerChildren: 0.15,
-        delayChildren: 0.2,
-      },
-    },
-  };
+  const heroRef = useRef<HTMLDivElement>(null);
 
-  const lineVariants = {
-    hidden: { y: "100%", opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: {
-        duration: 0.95,
-        ease: [0.16, 1, 0.3, 1],
-      },
-    },
-  };
+  useGSAP(() => {
+    // Normalize scroll behavior on mobile viewports to prevent aggressive hard-scroll skipping
+    const mm = gsap.matchMedia();
+    mm.add("(max-width: 767px)", () => {
+      ScrollTrigger.normalizeScroll({ allowNestedScroll: true });
+    });
 
-  const buttonVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
+    const lines = gsap.utils.toArray<HTMLElement>(".hero-line", heroRef.current);
+    if (lines.length > 0) {
+      gsap.fromTo(
+        lines,
+        { y: "100%", opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.95,
+          stagger: 0.15,
+          delay: 0.2,
+          ease: "power3.out",
+        }
+      );
+    }
+
+    gsap.fromTo(
+      ".hero-btn",
+      { y: 20, opacity: 0 },
+      {
+        y: 0,
+        opacity: 1,
         duration: 0.85,
         delay: 0.8,
-        ease: "easeOut",
-      },
-    },
-  };
+        ease: "power2.out",
+      }
+    );
+  }, { scope: heroRef });
 
   return (
-    <div className="relative w-full min-h-screen bg-transparent text-white flex flex-col">
+    <div className="relative w-full min-h-screen-stable bg-transparent text-white flex flex-col touch-pan-y overscroll-y-contain">
       {/* Background soft glows */}
       <div
         className="absolute top-[20%] left-1/2 -translate-x-1/2 w-[300px] h-[300px] sm:w-[600px] sm:h-[600px] rounded-full pointer-events-none select-none z-0 filter blur-[80px] sm:blur-[150px] opacity-20"
@@ -85,12 +93,9 @@ export default function Ambassador() {
       />
 
       {/* Hero Section */}
-      <section className="relative w-full min-h-fit md:h-screen flex flex-col items-center justify-center px-4 sm:px-6 md:px-12 select-none z-10 pt-24 pb-8 md:py-0 overflow-x-hidden">
+      <section ref={heroRef} className="relative w-full min-h-fit md:h-screen-stable flex flex-col items-center justify-center px-4 sm:px-6 md:px-12 select-none z-10 pt-24 pb-8 md:py-0 overflow-x-hidden">
         <div className="relative flex flex-col items-center justify-center max-w-[95vw] md:max-w-[85vw] lg:max-w-[75vw] text-center">
-          <motion.h1
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
+          <h1
             className="flex flex-col items-center justify-center font-sans font-black uppercase tracking-normal leading-[0.9] text-center text-[#FAF8F5]"
             style={{
               fontSize: "clamp(1.8rem, 6.2vw, 6.8rem)",
@@ -98,41 +103,35 @@ export default function Ambassador() {
           >
             {/* Subtitle / First line */}
             <div className="overflow-visible py-1 md:py-2 mb-1 md:mb-4 px-2">
-              <motion.span
-                variants={lineVariants}
-                className="block origin-bottom font-serif italic font-normal text-white/60 tracking-normal text-base sm:text-2xl md:text-3xl lg:text-4xl normal-case"
+              <span
+                className="hero-line block origin-bottom font-serif italic font-normal text-white/60 tracking-normal text-base sm:text-2xl md:text-3xl lg:text-4xl normal-case"
               >
                 Be the representative of your campus!
-              </motion.span>
+              </span>
             </div>
 
             {/* Heading Line 1 */}
             <div className="overflow-visible py-1 md:py-2 px-2">
-              <motion.span
-                variants={lineVariants}
-                className="block origin-bottom font-extrabold text-[#FAF8F5]"
+              <span
+                className="hero-line block origin-bottom font-extrabold text-[#FAF8F5]"
               >
                 CAMPUS AMBASSADOR
-              </motion.span>
+              </span>
             </div>
 
             {/* Heading Line 2 */}
             <div className="overflow-visible py-1 md:py-2 px-2">
-              <motion.span
-                variants={lineVariants}
-                className="block origin-bottom text-transparent bg-clip-text bg-gradient-to-r from-[#D242D7] via-[#B86EF9] to-white/95 font-black"
+              <span
+                className="hero-line block origin-bottom text-transparent bg-clip-text bg-gradient-to-r from-[#D242D7] via-[#B86EF9] to-white/95 font-black"
               >
                 OF MUJ HACKX 4.0!
-              </motion.span>
+              </span>
             </div>
-          </motion.h1>
+          </h1>
 
           {/* Apply Now Button */}
-          <motion.div
-            variants={buttonVariants}
-            initial="hidden"
-            animate="visible"
-            className="mt-6 md:mt-12 pointer-events-auto"
+          <div
+            className="hero-btn mt-6 md:mt-12 pointer-events-auto"
           >
             <Link
               href="#apply"
@@ -146,7 +145,7 @@ export default function Ambassador() {
                 </span>
               </span>
             </Link>
-          </motion.div>
+          </div>
         </div>
       </section>
 
