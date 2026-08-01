@@ -40,17 +40,21 @@ export default function About() {
         );
       }
 
-      gsap.to(".about-word", {
-        opacity: 1,
-        stagger: 0.02,
-        ease: "power1.out",
-        scrollTrigger: {
-          trigger: containerRef.current,
-          start: "top 75%",
-          end: "bottom 55%",
-          scrub: 0.5,
-        },
-      });
+      const words = gsap.utils.toArray<HTMLElement>(".about-word", containerRef.current);
+      if (words.length > 0) {
+        gsap.to(words, {
+          opacity: 1,
+          stagger: 0.02,
+          ease: "power1.out",
+          scrollTrigger: {
+            trigger: containerRef.current,
+            start: "top 80%",
+            end: "+=120%",
+            scrub: 0.5,
+            refreshPriority: 2,
+          },
+        });
+      }
     },
     { scope: cardOuterRef }
   );
@@ -61,7 +65,7 @@ export default function About() {
       <div className="relative z-10 flex items-center justify-center px-6 md:px-12">
         <div
           ref={cardOuterRef}
-          className="relative max-w-4xl w-full opacity-0"
+          className="relative max-w-4xl w-full opacity-0 will-change-transform"
         >
           {/* Section Header */}
           <div className="text-center mb-4 md:mb-8 pointer-events-none select-none">
@@ -90,14 +94,14 @@ export default function About() {
             }}
           >
             {/* Ambient Background Glow inside Card */}
-            <div
-              className="absolute -top-24 -left-24 w-48 h-48 rounded-full pointer-events-none select-none z-0 filter blur-[50px] opacity-25"
+            <div 
+              className="absolute -top-24 -left-24 w-48 h-48 rounded-full pointer-events-none select-none z-0 filter blur-[50px] opacity-25 will-change-transform"
               style={{
                 background: "var(--color-magenta, #D242D7)",
               }}
             />
-            <div
-              className="absolute -bottom-24 -right-24 w-48 h-48 rounded-full pointer-events-none select-none z-0 filter blur-[50px] opacity-20"
+            <div 
+              className="absolute -bottom-24 -right-24 w-48 h-48 rounded-full pointer-events-none select-none z-0 filter blur-[50px] opacity-20 will-change-transform"
               style={{
                 background: "var(--color-violet, #7801FF)",
               }}
@@ -111,13 +115,13 @@ export default function About() {
                 {words1.map((word, idx) => (
                   <span
                     key={idx}
-                    className="about-word opacity-[0.20] inline-block mr-[0.25em]"
+                    className="about-word opacity-[0.20] inline-block mr-[0.25em] will-change-[opacity]"
                   >
                     {word}
                   </span>
                 ))}
               </p>
-
+              
               <p
                 className="font-sans text-white text-lg md:text-xl lg:text-2xl leading-relaxed font-medium text-center"
                 style={{ letterSpacing: "0.01em" }}
@@ -125,7 +129,7 @@ export default function About() {
                 {words2.map((word, idx) => (
                   <span
                     key={idx}
-                    className="about-word opacity-[0.20] inline-block mr-[0.25em]"
+                    className="about-word opacity-[0.20] inline-block mr-[0.25em] will-change-[opacity]"
                   >
                     {word}
                   </span>

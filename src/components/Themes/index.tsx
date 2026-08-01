@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
@@ -133,11 +133,13 @@ export default function Themes() {
       scrollTrigger: {
         trigger: container,
         start: "top top",
-        end: () => `+=${vWidth * (isMobileView ? 2.6 : 2.2)}`,
-        scrub: 0.8,
+        end: () => `+=${vWidth * (isMobileView ? 3.5 : 4.5)}`,
+        scrub: isMobileView ? 0.6 : 0.8,
         pin: true,
         invalidateOnRefresh: true,
         refreshPriority: 10,
+        fastScrollEnd: true,
+        preventOverlaps: "ambassador-themes",
       },
       onUpdate: function () {
         const p = this.progress();
@@ -159,7 +161,7 @@ export default function Themes() {
   return (
     <div
       ref={containerRef}
-      className="h-screen-stable min-h-screen-stable relative w-full overflow-hidden bg-transparent opacity-0 flex items-center"
+      className="h-screen-stable min-h-screen-stable relative w-full overflow-hidden bg-transparent opacity-0 flex items-center touch-pan-y overscroll-y-contain"
     >
       {/* Main image horizontal slider track */}
       <div className="h-full w-full flex items-center justify-start overflow-hidden absolute top-0 left-0">

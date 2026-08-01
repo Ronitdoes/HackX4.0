@@ -3,6 +3,7 @@
 import React, { useRef } from "react";
 import Link from "next/link";
 import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 
 import About from "@/components/Ambassador/About";
@@ -11,6 +12,8 @@ import Themes from "@/components/Themes";
 import ThreeSteps from "@/components/Ambassador/ThreeSteps";
 import PuzzleJoin from "@/components/PuzzleJoin";
 import FAQ from "@/components/FAQ";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const AMBASSADOR_FAQ_DATA = [
   {
@@ -43,6 +46,12 @@ export default function Ambassador() {
   const heroRef = useRef<HTMLDivElement>(null);
 
   useGSAP(() => {
+    // Normalize scroll behavior on mobile viewports to prevent aggressive hard-scroll skipping
+    const mm = gsap.matchMedia();
+    mm.add("(max-width: 767px)", () => {
+      ScrollTrigger.normalizeScroll({ allowNestedScroll: true });
+    });
+
     const lines = gsap.utils.toArray<HTMLElement>(".hero-line", heroRef.current);
     if (lines.length > 0) {
       gsap.fromTo(
@@ -73,7 +82,7 @@ export default function Ambassador() {
   }, { scope: heroRef });
 
   return (
-    <div className="relative w-full min-h-screen-stable bg-transparent text-white flex flex-col">
+    <div className="relative w-full min-h-screen-stable bg-transparent text-white flex flex-col touch-pan-y overscroll-y-contain">
       {/* Background soft glows */}
       <div
         className="absolute top-[20%] left-1/2 -translate-x-1/2 w-[300px] h-[300px] sm:w-[600px] sm:h-[600px] rounded-full pointer-events-none select-none z-0 filter blur-[80px] sm:blur-[150px] opacity-20"

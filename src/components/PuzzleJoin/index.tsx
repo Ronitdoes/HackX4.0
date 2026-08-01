@@ -33,11 +33,13 @@ export default function PuzzleJoin() {
       scrollTrigger: {
         trigger: container,
         start: isMobileSize ? "top 85%" : "top top",
-        end: isMobileSize ? "top 30%" : "+=120%", // Scroll height to trigger join
-        scrub: 1,      // Smooth scrubbing lag
+        end: isMobileSize ? "+=160%" : "+=240%", // Scroll height to trigger join
+        scrub: isMobileSize ? 0.6 : 1,      // Smooth scrubbing lag
         pin: !isMobileSize, // Only pin on desktop view to avoid mobile navbar overlap and empty gaps
         invalidateOnRefresh: true,
         refreshPriority: 1,
+        fastScrollEnd: true,
+        preventOverlaps: "ambassador-puzzle",
         onUpdate: (self) => {
           // Snap threshold: if scroll progress is near 100% (e.g., > 90%), mark as joined
           const shouldBeJoined = self.progress > 0.9;
@@ -68,7 +70,7 @@ export default function PuzzleJoin() {
   return (
     <div
       ref={containerRef}
-      className="relative w-full flex flex-col items-center justify-center overflow-hidden bg-transparent pt-24 pb-12 md:py-20 px-6 select-none"
+      className="relative w-full flex flex-col items-center justify-center overflow-hidden bg-transparent pt-24 pb-12 md:py-20 px-6 select-none touch-pan-y overscroll-y-contain"
     >
       {/* Background Soft Ambient Glows */}
       <div
@@ -98,7 +100,7 @@ export default function PuzzleJoin() {
         {/* Left Puzzle Piece Container */}
         <div
           ref={leftPieceRef}
-          className="absolute left-0 top-0 w-[57.14%] h-full will-change-transform cursor-pointer group"
+          className="absolute left-0 top-0 w-[57.14%] h-full cursor-pointer group"
           style={{
             transformStyle: "preserve-3d",
             transform: "translateZ(0)",
@@ -139,7 +141,7 @@ export default function PuzzleJoin() {
         {/* Right Puzzle Piece Container */}
         <div
           ref={rightPieceRef}
-          className="absolute right-0 top-0 w-[57.14%] h-full will-change-transform cursor-pointer group"
+          className="absolute right-0 top-0 w-[57.14%] h-full cursor-pointer group"
           style={{
             transformStyle: "preserve-3d",
             transform: "translateZ(0)",
