@@ -90,13 +90,13 @@ export default function About() {
             }}
           >
             {/* Ambient Background Glow inside Card */}
-            <div 
+            <div
               className="absolute -top-24 -left-24 w-48 h-48 rounded-full pointer-events-none select-none z-0 filter blur-[50px] opacity-25"
               style={{
                 background: "var(--color-magenta, #D242D7)",
               }}
             />
-            <div 
+            <div
               className="absolute -bottom-24 -right-24 w-48 h-48 rounded-full pointer-events-none select-none z-0 filter blur-[50px] opacity-20"
               style={{
                 background: "var(--color-violet, #7801FF)",
@@ -117,7 +117,7 @@ export default function About() {
                   </span>
                 ))}
               </p>
-              
+
               <p
                 className="font-sans text-white text-lg md:text-xl lg:text-2xl leading-relaxed font-medium text-center"
                 style={{ letterSpacing: "0.01em" }}
