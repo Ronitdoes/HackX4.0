@@ -13,33 +13,18 @@ ScrollTrigger.config({ ignoreMobileResize: true });
 
 export default function ThreeSteps() {
   const [isMobile, setIsMobile] = useState(false);
-  const [isReady, setIsReady] = useState(false);
-  const [resizeKey, setResizeKey] = useState(0);
   const sectionRef = useRef<HTMLDivElement>(null);
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   useEffect(() => {
-    let resizeTimeout: NodeJS.Timeout;
     const handleResize = () => {
       setIsMobile(window.innerWidth < 768);
-      clearTimeout(resizeTimeout);
-      resizeTimeout = setTimeout(() => {
-        setResizeKey((prev) => prev + 1);
-      }, 200);
     };
     handleResize();
     window.addEventListener("resize", handleResize);
     return () => {
-      clearTimeout(resizeTimeout);
       window.removeEventListener("resize", handleResize);
     };
-  }, []);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsReady(true);
-    }, 200);
-    return () => clearTimeout(timer);
   }, []);
 
   const steps = [
@@ -65,8 +50,6 @@ export default function ThreeSteps() {
 
   useGSAP(
     () => {
-      if (!isReady) return;
-
       const card1 = cardRefs.current[0];
       const card2 = cardRefs.current[1];
       const card3 = cardRefs.current[2];
@@ -96,35 +79,35 @@ export default function ThreeSteps() {
         scrollTrigger: {
           trigger: sectionRef.current,
           start: "top top",
-          end: "+=280%",
-          scrub: 1.5,
+          end: "+=170%",
+          scrub: 1.2,
           pin: true,
           pinSpacing: true,
           refreshPriority: 5,
         },
       });
 
-      tl.to({}, { duration: 1 });
+      tl.to({}, { duration: 0.5 });
       tl.to(card2, {
         x: c2X,
         y: c2Y,
         rotation: 0,
         opacity: 1,
         ease: "power3.out",
-        duration: 1.8,
+        duration: 1.5,
       });
-      tl.to({}, { duration: 1 });
+      tl.to({}, { duration: 0.5 });
       tl.to(card3, {
         x: c3X,
         y: c3Y,
         rotation: 0,
         opacity: 1,
         ease: "power3.out",
-        duration: 1.8,
+        duration: 1.5,
       });
-      tl.to({}, { duration: 1 });
+      tl.to({}, { duration: 0.5 });
     },
-    { scope: sectionRef, dependencies: [isReady, isMobile] }
+    { scope: sectionRef, dependencies: [isMobile] }
   );
 
   return (

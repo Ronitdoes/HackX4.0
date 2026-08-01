@@ -11,7 +11,7 @@ export default function WhyApply() {
 
       {/* Large outlined background text */}
       <div className="absolute inset-0 flex items-center justify-center z-[1] pointer-events-none select-none overflow-hidden">
-        <div className="flex flex-col items-center justify-center leading-[0.85] w-full">
+        <div className="flex flex-col items-center justify-center leading-[0.85] w-full gap-32 md:gap-40 lg:gap-44">
           <span
             className="block font-sans font-black uppercase text-center"
             style={{
@@ -24,9 +24,8 @@ export default function WhyApply() {
           >
             WHY SHOULD
           </span>
-          <div className="h-60 md:h-80 lg:h-[200px]" />
           <span
-            className="block font-sans font-black uppercase text-center translate-y-3 md:translate-y-11"
+            className="block font-sans font-black uppercase text-center"
             style={{
               fontSize: "clamp(3rem, 12vw, 14rem)",
               WebkitTextStroke: "2px rgba(255,255,255,0.70)",

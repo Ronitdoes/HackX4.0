@@ -64,34 +64,7 @@ export default function Themes() {
   const trackRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
 
-  const [isReady, setIsReady] = useState(false);
-  const [resizeKey, setResizeKey] = useState(0);
-
-  // Delay initialization to guarantee layout painting is completed
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsReady(true);
-    }, 150);
-
-    let resizeTimeout: NodeJS.Timeout;
-    const handleResize = () => {
-      clearTimeout(resizeTimeout);
-      resizeTimeout = setTimeout(() => {
-        setResizeKey((prev) => prev + 1);
-      }, 200);
-    };
-    window.addEventListener("resize", handleResize);
-
-    return () => {
-      clearTimeout(timer);
-      clearTimeout(resizeTimeout);
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
-
   useGSAP(() => {
-    if (!isReady) return;
-
     const track = trackRef.current;
     const cards = cardsRef.current.filter(Boolean) as HTMLElement[];
     const container = containerRef.current;
@@ -196,7 +169,7 @@ export default function Themes() {
 
     // Fade in container after paint/measure delay
     gsap.to(container, { opacity: 1, duration: 0.4 });
-  }, { scope: containerRef, dependencies: [isReady, resizeKey], revertOnUpdate: true });
+  }, { scope: containerRef });
 
   return (
     <div

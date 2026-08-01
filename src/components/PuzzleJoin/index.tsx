@@ -13,18 +13,8 @@ export default function PuzzleJoin() {
   const leftPieceRef = useRef<HTMLDivElement>(null);
   const rightPieceRef = useRef<HTMLDivElement>(null);
   const [isJoined, setIsJoined] = useState(false);
-  const [isReady, setIsReady] = useState(false);
-
-  React.useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsReady(true);
-    }, 800);
-    return () => clearTimeout(timer);
-  }, []);
 
   useGSAP(() => {
-    if (!isReady) return;
-
     const leftPiece = leftPieceRef.current;
     const rightPiece = rightPieceRef.current;
     const container = containerRef.current;
@@ -72,10 +62,9 @@ export default function PuzzleJoin() {
       0
     );
 
-    // Force ScrollTrigger to refresh *after* this trigger is created,
-    // ensuring the heights and offsets of preceding pinned containers are accounted for.
+    // Force ScrollTrigger to refresh after trigger creation
     ScrollTrigger.refresh();
-  }, { scope: containerRef, dependencies: [isReady] });
+  }, { scope: containerRef });
 
   return (
     <div
@@ -113,7 +102,7 @@ export default function PuzzleJoin() {
           className="absolute left-0 top-0 w-[57.14%] h-full will-change-transform cursor-pointer group"
           style={{
             transformStyle: "preserve-3d",
-            transform: !isReady ? "translateX(-150%) translateZ(0)" : "translateZ(0)",
+            transform: "translateZ(0)",
           }}
         >
           {/* SVG Shape */}
@@ -155,7 +144,7 @@ export default function PuzzleJoin() {
           className="absolute right-0 top-0 w-[57.14%] h-full will-change-transform cursor-pointer group"
           style={{
             transformStyle: "preserve-3d",
-            transform: !isReady ? "translateX(150%) translateZ(0)" : "translateZ(0)",
+            transform: "translateZ(0)",
           }}
         >
           {/* SVG Shape */}

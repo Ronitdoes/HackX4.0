@@ -106,7 +106,6 @@ export default function About() {
                   <span
                     key={idx}
                     className="about-word opacity-[0.20] inline-block mr-[0.25em]"
-                    style={{ willChange: "opacity", transform: "translateZ(0)" }}
                   >
                     {word}
                   </span>
@@ -121,7 +120,6 @@ export default function About() {
                   <span
                     key={idx}
                     className="about-word opacity-[0.20] inline-block mr-[0.25em]"
-                    style={{ willChange: "opacity", transform: "translateZ(0)" }}
                   >
                     {word}
                   </span>

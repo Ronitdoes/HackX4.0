@@ -3,12 +3,14 @@
 import React from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import Themes from "@/components/Themes";
-import PuzzleJoin from "@/components/PuzzleJoin";
-import FAQ from "@/components/FAQ";
-import WhyApply from "@/components/Ambassador/WhyApply";
-import About from "@/components/Ambassador/About";
-import ThreeSteps from "@/components/Ambassador/ThreeSteps";
+import dynamic from "next/dynamic";
+
+const DynamicAbout = dynamic(() => import("@/components/Ambassador/About"));
+const DynamicWhyApply = dynamic(() => import("@/components/Ambassador/WhyApply"));
+const DynamicThemes = dynamic(() => import("@/components/Themes"));
+const DynamicThreeSteps = dynamic(() => import("@/components/Ambassador/ThreeSteps"));
+const DynamicPuzzleJoin = dynamic(() => import("@/components/PuzzleJoin"));
+const DynamicFAQ = dynamic(() => import("@/components/FAQ"));
 
 const AMBASSADOR_FAQ_DATA = [
   {
@@ -152,32 +154,32 @@ export default function Ambassador() {
 
       {/* About Section */}
       <section id="about" className="relative w-full z-10">
-        <About />
+        <DynamicAbout />
       </section>
 
       {/* Why Should You Apply Section */}
       <section id="why-apply" className="relative w-full z-10">
-        <WhyApply />
+        <DynamicWhyApply />
       </section>
 
       {/* Themes Component Section */}
       <section id="themes" className="relative w-full z-10">
-        <Themes />
+        <DynamicThemes />
       </section>
 
       {/* Three Steps Section */}
       <section id="steps" className="relative w-full z-10">
-        <ThreeSteps />
+        <DynamicThreeSteps />
       </section>
 
       {/* Puzzle Component Section */}
       <section id="puzzle" className="relative w-full z-10">
-        <PuzzleJoin />
+        <DynamicPuzzleJoin />
       </section>
 
       {/* FAQ Component Section */}
       <section id="faq" className="relative w-full z-10">
-        <FAQ
+        <DynamicFAQ
           data={AMBASSADOR_FAQ_DATA}
           heading={
             <>
