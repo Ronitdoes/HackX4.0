@@ -133,8 +133,8 @@ export default function Themes() {
       scrollTrigger: {
         trigger: container,
         start: "top top",
-        end: () => `+=${vWidth * (isMobileView ? 3.5 : 4.5)}`,
-        scrub: isMobileView ? 0.6 : 0.8,
+        end: () => `+=${vWidth * (isMobileView ? 10.0 : 2.2)}`,
+        scrub: isMobileView ? 1.0 : 0.8,
         pin: true,
         invalidateOnRefresh: true,
         refreshPriority: 10,

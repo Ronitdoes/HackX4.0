@@ -44,13 +44,13 @@ export default function About() {
       if (words.length > 0) {
         gsap.to(words, {
           opacity: 1,
-          stagger: 0.02,
+          stagger: 0.03,
           ease: "power1.out",
           scrollTrigger: {
             trigger: containerRef.current,
             start: "top 80%",
-            end: "+=120%",
-            scrub: 0.5,
+            end: "bottom 30%",
+            scrub: 0.8,
             refreshPriority: 2,
           },
         });
@@ -60,15 +60,15 @@ export default function About() {
   );
 
   return (
-    <section className="relative w-full overflow-hidden py-6 md:py-24">
+    <section className="relative w-full overflow-hidden py-16 sm:py-24 md:py-36 lg:py-48 select-none touch-pan-y overscroll-y-contain z-10">
       {/* Main Container */}
-      <div className="relative z-10 flex items-center justify-center px-6 md:px-12">
+      <div className="relative z-10 flex items-center justify-center px-6 md:px-12 w-full">
         <div
           ref={cardOuterRef}
           className="relative max-w-4xl w-full opacity-0 will-change-transform"
         >
           {/* Section Header */}
-          <div className="text-center mb-4 md:mb-8 pointer-events-none select-none">
+          <div className="text-center mb-6 md:mb-12 pointer-events-none select-none">
             <h2
               className="font-sans font-black uppercase tracking-wider text-center"
               style={{
@@ -86,7 +86,7 @@ export default function About() {
           {/* Main Card with Glassmorphism */}
           <div
             ref={containerRef}
-            className="relative rounded-3xl p-8 md:p-12 overflow-hidden border border-white/10 bg-black/45 backdrop-blur-md"
+            className="relative rounded-3xl p-8 md:p-14 overflow-hidden border border-white/10 bg-black/45 backdrop-blur-md"
             style={{
               boxShadow:
                 "0 25px 60px rgba(0,0,0,0.2), 0 8px 20px rgba(0,0,0,0.15)",

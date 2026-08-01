@@ -23,26 +23,26 @@ export default function PuzzleJoin() {
 
     if (!leftPiece || !rightPiece || !container) return;
 
+    const isMobileSize = window.innerWidth < 768;
+
     // Reset initial states to ensure clean dimensions
     gsap.set([leftPiece, rightPiece], { xPercent: 0, rotate: 0, opacity: 1 });
-
-    const isMobileSize = window.innerWidth < 768;
 
     // Create GSAP timeline for scroll scrubbing
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: container,
         start: isMobileSize ? "top 85%" : "top top",
-        end: isMobileSize ? "+=160%" : "+=240%", // Scroll height to trigger join
-        scrub: isMobileSize ? 0.6 : 1,      // Smooth scrubbing lag
-        pin: !isMobileSize, // Only pin on desktop view to avoid mobile navbar overlap and empty gaps
+        end: isMobileSize ? "center 40%" : "+=120%", // Complete joining while container is in view
+        scrub: isMobileSize ? 0.5 : 0.8,            // Smooth scrubbing lag
+        pin: !isMobileSize,                          // Pin on desktop view
         invalidateOnRefresh: true,
         refreshPriority: 1,
         fastScrollEnd: true,
         preventOverlaps: "ambassador-puzzle",
         onUpdate: (self) => {
-          // Snap threshold: if scroll progress is near 100% (e.g., > 90%), mark as joined
-          const shouldBeJoined = self.progress > 0.9;
+          // Snap threshold: if scroll progress is near completion (> 80%), mark as joined
+          const shouldBeJoined = self.progress > 0.8;
           if (shouldBeJoined !== isJoinedRef.current) {
             isJoinedRef.current = shouldBeJoined;
             setIsJoined(shouldBeJoined);
@@ -54,14 +54,14 @@ export default function PuzzleJoin() {
     // Animate puzzle pieces coming together from left and right using relative percentage translation
     tl.fromTo(
       leftPiece,
-      { xPercent: -150, opacity: 0.4, rotate: -8 },
+      { xPercent: -100, opacity: 0.4, rotate: -8 },
       { xPercent: 0, opacity: 1, rotate: 0, ease: "power1.out" },
       0
     );
 
     tl.fromTo(
       rightPiece,
-      { xPercent: 150, opacity: 0.4, rotate: 8 },
+      { xPercent: 100, opacity: 0.4, rotate: 8 },
       { xPercent: 0, opacity: 1, rotate: 0, ease: "power1.out" },
       0
     );
