@@ -454,7 +454,7 @@ export default function FluidShaderBackground() {
 
       if (timelineSection) {
         const rect = timelineSection.getBoundingClientRect();
-        const vh = window.innerHeight;
+        const vh = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--vh')) * 100 || window.innerHeight;
         currentPos = (vh / 2) - rect.top;
 
         // minPos is currentPos when top of document is at window.scrollY = 0
@@ -926,9 +926,10 @@ export default function FluidShaderBackground() {
     <>
       {/* 1. Deep premium CSS gradient background layer */}
       <div
-        className="pointer-events-none fixed inset-0"
+        className="pointer-events-none fixed top-0 left-0 w-full h-screen-stable"
         style={{
           zIndex: -20,
+          height: "calc(var(--vh, 1vh) * 100)",
           background: "radial-gradient(ellipse at center, var(--bg-gradient-from, #1f093f) 0%, var(--bg-gradient-via, #090416) 60%, var(--bg-gradient-to, #04020a) 100%)",
         }}
       />
@@ -936,9 +937,10 @@ export default function FluidShaderBackground() {
       {/* 2. SVG Logo in the middle. Filled with an animated electric gradient stop-set. */}
       <div
         ref={logoContainerRef}
-        className="pointer-events-none fixed inset-0 flex items-center justify-center select-none"
+        className="pointer-events-none fixed top-0 left-0 w-full h-screen-stable flex items-center justify-center select-none"
         style={{
           zIndex: -4,
+          height: "calc(var(--vh, 1vh) * 100)",
           transformOrigin: "center center",
           transform: "translateZ(0)",
           willChange: "transform, opacity",
@@ -956,8 +958,8 @@ export default function FluidShaderBackground() {
           xmlns="http://www.w3.org/2000/svg"
           className="transition-opacity duration-700"
           style={{
-            height: "28vh",
-            width: "25.06vh",
+            height: "calc(var(--vh, 1vh) * 28)",
+            width: "calc(var(--vh, 1vh) * 25.06)",
             opacity: 0.55,
             transform: "translateZ(0)",
             willChange: "transform",
@@ -994,17 +996,23 @@ export default function FluidShaderBackground() {
       {/* 3. Transparent WebGL Canvas. Covers the entire viewport to prevent box clipping. */}
       <canvas
         ref={canvasRef}
-        className="pointer-events-none fixed inset-0 w-full h-full opacity-45"
-        style={{ zIndex: -15, filter: "blur(16px)", display: isMobile ? "none" : "block" }}
+        className="pointer-events-none fixed top-0 left-0 w-full h-screen-stable opacity-45"
+        style={{
+          zIndex: -15,
+          height: "calc(var(--vh, 1vh) * 100)",
+          filter: "blur(16px)",
+          display: isMobile ? "none" : "block",
+        }}
       />
 
       {/* 4. The canvas is blurred directly above. A fullscreen backdrop-filter here
              would continuously re-rasterize page content during scrolling. */}
       <div
         ref={blurOverlayRef}
-        className="pointer-events-none fixed inset-0"
+        className="pointer-events-none fixed top-0 left-0 w-full h-screen-stable"
         style={{
           zIndex: -5,
+          height: "calc(var(--vh, 1vh) * 100)",
           transform: "translateZ(0)",
           willChange: "transform, opacity",
           background: "linear-gradient(115deg, rgba(24, 8, 54, 0.08), rgba(5, 2, 13, 0.02) 55%, rgba(0, 0, 0, 0.08))",
@@ -1015,8 +1023,11 @@ export default function FluidShaderBackground() {
              layer over the blurred backdrop. Optimized to 1 octave for rasterizer performance. */}
       <svg
         ref={grainOverlayRef}
-        className="pointer-events-none fixed inset-0 h-full w-full opacity-[0.09]"
-        style={{ zIndex: -3 }}
+        className="pointer-events-none fixed top-0 left-0 w-full h-screen-stable opacity-[0.09]"
+        style={{
+          zIndex: -3,
+          height: "calc(var(--vh, 1vh) * 100)",
+        }}
       >
         <defs>
           <linearGradient id="visionNoise" x1="0" y1="0" x2="1" y2="1">
@@ -1034,9 +1045,13 @@ export default function FluidShaderBackground() {
   return (
     <div
       ref={containerRef}
+      className="fixed top-0 left-0 w-full h-screen-stable pointer-events-none"
       style={{
         position: "fixed",
-        inset: 0,
+        top: 0,
+        left: 0,
+        width: "100%",
+        height: "calc(var(--vh, 1vh) * 100)",
         zIndex: -30,
         transformOrigin: "center center",
         willChange: "transform, opacity",
