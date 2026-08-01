@@ -72,6 +72,7 @@ export default function Themes() {
     if (!track || cards.length === 0 || !container) return;
 
     const vWidth = window.innerWidth;
+    const isMobileView = vWidth < 768;
 
     // Reset card styles to calculate clean base dimensions
     gsap.set(cards, { rotation: 0, y: 0, z: 0, scale: 1 });
@@ -80,7 +81,7 @@ export default function Themes() {
     const cardWidth = cardRect.width;
 
     // Extract gap from computed style to avoid rotated bounding rect issues
-    let gap = vWidth * 0.04; // fallback to 4vw
+    let gap = vWidth * (isMobileView ? 0.06 : 0.04); // fallback to 6vw / 4vw
     const style = window.getComputedStyle(track);
     const gapVal = style.gap;
     if (gapVal && gapVal.includes("px")) {
@@ -99,14 +100,11 @@ export default function Themes() {
     gsap.set(track, { x: startX });
 
     // Curved bend parameters
-    const maxRotation = 13; // Max degrees of tilt
-    const maxY = 90;        // Max downward drop (pixels)
-    const maxZ = 120;       // Max depth push into 3D space
-    const isMobileView = vWidth < 768;
+    const maxRotation = isMobileView ? 6 : 13; // Max degrees of tilt
+    const maxY = isMobileView ? 35 : 90;        // Max downward drop (pixels)
+    const maxZ = isMobileView ? 50 : 120;       // Max depth push into 3D space
 
     const setCardState = (card: HTMLElement, index: number, progress: number) => {
-      if (isMobileView) return;
-
       // Linear offset of the card's center relative to screen center
       const dx = (index - progress * (N - 1)) * step;
 
@@ -128,27 +126,20 @@ export default function Themes() {
     };
 
     // Apply start state immediately
-    if (isMobileView) {
-      cards.forEach((card) => {
-        gsap.set(card, { rotation: 0, y: 0, z: 0, transformPerspective: 1000 });
-      });
-    } else {
-      cards.forEach((card, i) => setCardState(card, i, 0));
-    }
+    cards.forEach((card, i) => setCardState(card, i, 0));
 
-    // Build main GSAP Timeline with ScrollTrigger directly attached
+    // Build main GSAP Timeline with ScrollTrigger pinned on all viewports
     const timeline = gsap.timeline({
       scrollTrigger: {
         trigger: container,
-        start: isMobileView ? "top 80%" : "top top",
-        end: isMobileView ? "bottom 20%" : () => `+=${vWidth * 2.2}`,
+        start: "top top",
+        end: () => `+=${vWidth * (isMobileView ? 2.6 : 2.2)}`,
         scrub: 0.8,
-        pin: !isMobileView,
+        pin: true,
         invalidateOnRefresh: true,
         refreshPriority: 10,
       },
       onUpdate: function () {
-        if (isMobileView) return;
         const p = this.progress();
         cards.forEach((card, i) => {
           setCardState(card, i, p);
@@ -168,14 +159,13 @@ export default function Themes() {
   return (
     <div
       ref={containerRef}
-      className="h-auto min-h-fit md:h-screen-stable md:min-h-screen-stable relative w-full overflow-hidden bg-transparent opacity-0 py-12 md:py-0"
+      className="h-screen-stable min-h-screen-stable relative w-full overflow-hidden bg-transparent opacity-0 flex items-center"
     >
-
-      {/* Main image horizontal slider track - justify-start aligns the track left edge to 0 coordinates, allowing precise absolute x-translates */}
+      {/* Main image horizontal slider track */}
       <div className="h-full w-full flex items-center justify-start overflow-hidden absolute top-0 left-0">
         <div
           ref={trackRef}
-          className="flex gap-[4vw] select-none pointer-events-auto py-16 will-change-transform pl-0 ml-0"
+          className="flex gap-[6vw] md:gap-[4vw] select-none pointer-events-auto py-8 md:py-16 will-change-transform pl-0 ml-0"
           style={{ transformStyle: "preserve-3d" }}
         >
           {THEME_CARDS.map((card, index) => (
@@ -192,7 +182,6 @@ export default function Themes() {
           ))}
         </div>
       </div>
-
     </div>
   );
 }

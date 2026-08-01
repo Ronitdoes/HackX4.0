@@ -73,41 +73,41 @@ export default function ThreeSteps() {
             isDesktop: boolean;
           };
 
-          // Final offset positions (centered on mobile, staggered offset on desktop)
-          const c1X = isMobileSize ? 0 : -50;
-          const c1Y = isMobileSize ? -15 : -35;
+          // Offset positions (proportional on mobile, full offset on desktop)
+          const c1X = isMobileSize ? -35 : -50;
+          const c1Y = isMobileSize ? -25 : -35;
 
           const c2X = 0;
           const c2Y = 0;
 
-          const c3X = isMobileSize ? 0 : 50;
-          const c3Y = isMobileSize ? 15 : 35;
+          const c3X = isMobileSize ? 35 : 50;
+          const c3Y = isMobileSize ? 25 : 35;
 
-          // Initial card entrance distance (reduced on mobile for smooth viewport entry)
-          const enterY = isMobileSize ? 100 : 500;
+          // Initial card entrance distance
+          const enterY = isMobileSize ? 300 : 500;
 
           gsap.set(card1, { x: c1X, y: c1Y, rotation: 0, opacity: 1 });
           gsap.set(card2, {
             x: c2X + (isMobileSize ? 0 : 150),
             y: enterY,
             rotation: 0,
-            opacity: isMobileSize ? 0.3 : 0,
+            opacity: 0,
           });
           gsap.set(card3, {
             x: c3X + (isMobileSize ? 0 : 150),
             y: enterY,
             rotation: 0,
-            opacity: isMobileSize ? 0.3 : 0,
+            opacity: 0,
           });
 
           const tl = gsap.timeline({
             scrollTrigger: {
               trigger: sectionRef.current,
-              start: isMobileSize ? "top 80%" : "top top",
-              end: isMobileSize ? "bottom 20%" : "+=170%",
+              start: "top top",
+              end: "+=170%",
               scrub: 1.2,
-              pin: !isMobileSize,
-              pinSpacing: !isMobileSize,
+              pin: true,
+              pinSpacing: true,
               refreshPriority: 5,
             },
           });
@@ -136,7 +136,7 @@ export default function ThreeSteps() {
   );
 
   return (
-    <section ref={sectionRef} className="relative w-full h-auto min-h-fit md:h-screen-stable md:min-h-screen-stable bg-transparent select-none flex items-center z-10 py-16 md:py-0">
+    <section ref={sectionRef} className="relative w-full h-screen-stable min-h-screen-stable bg-transparent select-none flex items-center justify-center z-10 py-16 md:py-0 overflow-hidden">
       {/* Background Soft Glows */}
       <div
         className="absolute top-1/2 left-1/4 -translate-y-1/2 w-[280px] h-[280px] sm:w-[450px] sm:h-[450px] rounded-full pointer-events-none filter blur-[80px] sm:blur-[120px] opacity-20"
@@ -171,9 +171,10 @@ export default function ThreeSteps() {
                 }}
               >
                 <div
-                  className="w-full h-full p-6 md:p-8 rounded-none border border-white/20 flex flex-col justify-between origin-center shadow-[0_20px_50px_rgba(0,0,0,0.5)] transition-all duration-300 bg-[#16072b] md:bg-[rgba(18,5,38,0.88)] md:backdrop-blur-xl md:backdrop-saturate-150"
+                  className="w-full h-full p-6 md:p-8 rounded-none border border-white/20 flex flex-col justify-between origin-center shadow-[0_20px_50px_rgba(0,0,0,0.5)] transition-all duration-300 bg-[#16072b] backdrop-blur-xl backdrop-saturate-150"
                   style={{
                     background: "linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.03) 100%)",
+                    backgroundColor: "#16072b",
                     transform: "translateZ(0)",
                   }}
                 >

@@ -57,22 +57,6 @@ export default function About() {
 
   return (
     <section className="relative w-full overflow-hidden py-6 md:py-24">
-      {/* Large outlined background text */}
-      <div className="absolute inset-0 flex items-center justify-center z-[1] pointer-events-none select-none overflow-hidden">
-        <span
-          className="block font-sans font-black uppercase text-center tracking-wider"
-          style={{
-            fontSize: "clamp(3.5rem, 14vw, 16rem)",
-            WebkitTextStroke: "1px rgba(255,255,255,0.15)",
-            color: "transparent",
-            opacity: 0.8,
-            letterSpacing: "0.05em",
-          }}
-        >
-          ABOUT
-        </span>
-      </div>
-
       {/* Main Container */}
       <div className="relative z-10 flex items-center justify-center px-6 md:px-12">
         <div
@@ -80,9 +64,18 @@ export default function About() {
           className="relative max-w-4xl w-full opacity-0"
         >
           {/* Section Header */}
-          <div className="text-center mb-8">
-            <h2 className="font-sans font-extrabold uppercase text-[39px] md:text-[51px] lg:text-[63px] tracking-wide text-white">
-              About
+          <div className="text-center mb-4 md:mb-8 pointer-events-none select-none">
+            <h2
+              className="font-sans font-black uppercase tracking-wider text-center"
+              style={{
+                fontSize: "clamp(3.2rem, 13vw, 8rem)",
+                WebkitTextStroke: "2px rgba(255,255,255,0.70)",
+                color: "transparent",
+                letterSpacing: "0.05em",
+                lineHeight: 1,
+              }}
+            >
+              ABOUT
             </h2>
           </div>
 
