@@ -14,7 +14,7 @@ export const executiveMembers: TeamMember[] = [
   },
   {
     id: "dolly-2026",
-    name: "Dolly",
+    name: "Dolly Srivastava ",
     role: "Student Convener",
     year: "2026",
     category: "EXECUTIVE",
@@ -30,7 +30,7 @@ export const executiveMembers: TeamMember[] = [
   },
   {
     id: "arindam-2026",
-    name: "Arindam",
+    name: "Arindam Sharma",
     role: "Student Convener",
     year: "2026",
     category: "EXECUTIVE",
