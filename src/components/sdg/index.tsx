@@ -15,49 +15,54 @@ interface Brand {
 
 const brands: Brand[] = [
   {
-    name: "Health",
+    name: "Healthcare",
     logo: "/assets/themes/healthcare.svg",
-    description: "Ensuring healthy lives and promoting well-being for all at every age.",
+    description: "Ensuring healthy lives, medical innovation, and digital health solutions for all.",
   },
   {
-    name: "Education",
+    name: "EdTech",
     logo: "/assets/themes/edtech.svg",
-    description: "Inclusive and equitable quality education for lifelong learning.",
+    description: "Transforming learning through immersive technologies, smart classrooms, and accessible education.",
   },
   {
-    name: "Equality",
-    logo: "/assets/themes/defence.svg",
-    description: "Empowering all women and girls through equal opportunities.",
-  },
-  {
-    name: "Clean Energy",
-    logo: "/assets/themes/enviroment.svg",
-    description: "Affordable, reliable, sustainable and modern energy for all.",
-  },
-  {
-    name: "Decent Work",
+    name: "FinTech",
     logo: "/assets/themes/fintech.svg",
-    description: "Sustained, inclusive economic growth and decent work for all.",
+    description: "Empowering decentralized finance, digital transactions, and next-gen banking systems.",
   },
   {
-    name: "Innovation",
-    logo: "/assets/themes/open_innovation.svg",
-    description: "Resilient infrastructure and inclusive industrialization.",
+    name: "Environment",
+    logo: "/assets/themes/enviroment.svg",
+    description: "Developing sustainable technology, green energy, and environmental protection systems.",
   },
   {
-    name: "Equality",
+    name: "Cybersecurity",
     logo: "/assets/themes/cybersecurity.svg",
-    description: "Reducing inequality within and among countries.",
+    description: "Securing digital infrastructure, data privacy, and advanced threat intelligence systems.",
   },
   {
-    name: "Climate",
+    name: "Blockchain",
+    logo: "/assets/themes/blockchian.svg",
+    description: "Building decentralized protocols, Web3 ecosystems, and transparent ledger solutions.",
+  },
+  {
+    name: "Defence",
+    logo: "/assets/themes/defence.svg",
+    description: "Advancing defense tech, autonomous security, and strategic intelligence systems.",
+  },
+  {
+    name: "Disaster Tech",
     logo: "/assets/themes/disaster.svg",
-    description: "Urgent action to combat climate change and its impacts.",
+    description: "Creating early warning systems, resilient infrastructure, and crisis response tech.",
   },
   {
-    name: "Partnerships",
+    name: "Open Innovation",
+    logo: "/assets/themes/open_innovation.svg",
+    description: "Fostering unrestricted cross-disciplinary innovation and creative problem solving.",
+  },
+  {
+    name: "Supply Chain",
     logo: "/assets/themes/supplychain.svg",
-    description: "Global partnerships for sustainable development.",
+    description: "Optimizing global logistics, smart tracking, and resilient supply networks.",
   },
 ];
 
