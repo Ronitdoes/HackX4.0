@@ -122,14 +122,14 @@ export default function ThreeSteps() {
             ease: "power3.out",
             duration: 1.5,
           }, "+=0.5")
-          .to(card3, {
-            x: c3X,
-            y: c3Y,
-            rotation: 0,
-            opacity: 1,
-            ease: "power3.out",
-            duration: 1.5,
-          }, "+=0.5");
+            .to(card3, {
+              x: c3X,
+              y: c3Y,
+              rotation: 0,
+              opacity: 1,
+              ease: "power3.out",
+              duration: 1.5,
+            }, "+=0.5");
         }
       );
 
