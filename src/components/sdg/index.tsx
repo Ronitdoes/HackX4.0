@@ -16,47 +16,47 @@ interface Brand {
 const brands: Brand[] = [
   {
     name: "Health",
-    logo: "/assets/sdg/sdg3.svg",
+    logo: "/assets/themes/healthcare.svg",
     description: "Ensuring healthy lives and promoting well-being for all at every age.",
   },
   {
     name: "Education",
-    logo: "/assets/sdg/sdg4.svg",
+    logo: "/assets/themes/edtech.svg",
     description: "Inclusive and equitable quality education for lifelong learning.",
   },
   {
     name: "Equality",
-    logo: "/assets/sdg/sdg5.svg",
+    logo: "/assets/themes/defence.svg",
     description: "Empowering all women and girls through equal opportunities.",
   },
   {
     name: "Clean Energy",
-    logo: "/assets/sdg/sdg7.svg",
+    logo: "/assets/themes/enviroment.svg",
     description: "Affordable, reliable, sustainable and modern energy for all.",
   },
   {
     name: "Decent Work",
-    logo: "/assets/sdg/sdg8.svg",
+    logo: "/assets/themes/fintech.svg",
     description: "Sustained, inclusive economic growth and decent work for all.",
   },
   {
     name: "Innovation",
-    logo: "/assets/sdg/sdg9.svg",
+    logo: "/assets/themes/open_innovation.svg",
     description: "Resilient infrastructure and inclusive industrialization.",
   },
   {
     name: "Equality",
-    logo: "/assets/sdg/sdg1.svg",
+    logo: "/assets/themes/cybersecurity.svg",
     description: "Reducing inequality within and among countries.",
   },
   {
     name: "Climate",
-    logo: "/assets/sdg/sdg6.svg",
+    logo: "/assets/themes/disaster.svg",
     description: "Urgent action to combat climate change and its impacts.",
   },
   {
     name: "Partnerships",
-    logo: "/assets/sdg/sdg2.svg",
+    logo: "/assets/themes/supplychain.svg",
     description: "Global partnerships for sustainable development.",
   },
 ];
