@@ -24,7 +24,9 @@ export const TeamCard: React.FC<TeamCardProps> = React.memo(({ member, index = 0
   };
 
   const socials = member.socials || {};
-
+  const emailAddr = member.email || socials.email;
+  const hasEmail = Boolean(emailAddr && emailAddr.trim() !== "");
+  const hasInstagram = Boolean(socials.instagram && socials.instagram.trim() !== "");
   const hasLinkedin = Boolean(socials.linkedin && socials.linkedin.trim() !== "");
   const hasGithub = Boolean(socials.github && socials.github.trim() !== "");
   const hasWebsite = Boolean(socials.website && socials.website.trim() !== "");
@@ -62,16 +64,38 @@ export const TeamCard: React.FC<TeamCardProps> = React.memo(({ member, index = 0
       {/* Bottom Gradient Overlay (for text contrast) */}
       <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-black/90 via-black/40 to-transparent pointer-events-none z-10" />
 
-      {/* Top-Right Social Media Buttons (rendered on hover) */}
-      {(hasLinkedin || hasGithub || hasWebsite) && (
+      {/* Top-Right Social Media & Contact Buttons (rendered on hover) */}
+      {(hasEmail || hasInstagram || hasLinkedin || hasGithub || hasWebsite) && (
         <div className="absolute top-3 right-3 z-20 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+          {hasInstagram && (
+            <a
+              href={socials.instagram}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`${member.name}'s Instagram`}
+              className="w-8 h-8 md:w-9 md:h-9 rounded-full bg-white/25 backdrop-blur-md border border-white/35 text-white flex items-center justify-center shadow-md hover:bg-white/40 transition-colors"
+            >
+              <i className="fa-brands fa-instagram text-base md:text-lg" />
+            </a>
+          )}
+
+          {hasEmail && (
+            <a
+              href={`mailto:${emailAddr}`}
+              aria-label={`Email ${member.name}`}
+              className="w-8 h-8 md:w-9 md:h-9 rounded-full bg-white/25 backdrop-blur-md border border-white/35 text-white flex items-center justify-center shadow-md hover:bg-white/40 transition-colors"
+            >
+              <i className="fa-solid fa-envelope text-sm md:text-base" />
+            </a>
+          )}
+
           {hasLinkedin && (
             <a
               href={socials.linkedin}
               target="_blank"
               rel="noopener noreferrer"
               aria-label={`${member.name}'s LinkedIn`}
-              className="w-8 h-8 md:w-9 md:h-9 rounded-full bg-white/25 backdrop-blur-md border border-white/35 text-white flex items-center justify-center shadow-md"
+              className="w-8 h-8 md:w-9 md:h-9 rounded-full bg-white/25 backdrop-blur-md border border-white/35 text-white flex items-center justify-center shadow-md hover:bg-white/40 transition-colors"
             >
               <i className="fa-brands fa-linkedin-in text-base md:text-lg" />
             </a>
@@ -83,7 +107,7 @@ export const TeamCard: React.FC<TeamCardProps> = React.memo(({ member, index = 0
               target="_blank"
               rel="noopener noreferrer"
               aria-label={`${member.name}'s GitHub`}
-              className="w-8 h-8 md:w-9 md:h-9 rounded-full bg-white/25 backdrop-blur-md border border-white/35 text-white flex items-center justify-center shadow-md"
+              className="w-8 h-8 md:w-9 md:h-9 rounded-full bg-white/25 backdrop-blur-md border border-white/35 text-white flex items-center justify-center shadow-md hover:bg-white/40 transition-colors"
             >
               <i className="fa-brands fa-github text-base md:text-lg" />
             </a>
@@ -95,7 +119,7 @@ export const TeamCard: React.FC<TeamCardProps> = React.memo(({ member, index = 0
               target="_blank"
               rel="noopener noreferrer"
               aria-label={`${member.name}'s Portfolio`}
-              className="w-8 h-8 md:w-9 md:h-9 rounded-full bg-white/25 backdrop-blur-md border border-white/35 text-white flex items-center justify-center shadow-md"
+              className="w-8 h-8 md:w-9 md:h-9 rounded-full bg-white/25 backdrop-blur-md border border-white/35 text-white flex items-center justify-center shadow-md hover:bg-white/40 transition-colors"
             >
               <i className="fa-solid fa-globe text-sm md:text-base" />
             </a>
@@ -104,11 +128,11 @@ export const TeamCard: React.FC<TeamCardProps> = React.memo(({ member, index = 0
       )}
 
       {/* Bottom-Left Details */}
-      <div className="absolute bottom-0 left-0 right-0 p-4 md:p-5 z-20 text-left flex flex-col justify-end">
-        <h3 className="text-base md:text-lg lg:text-xl font-bold text-white tracking-wide font-sans leading-tight drop-shadow-md">
+      <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-4 md:p-5 z-20 text-left flex flex-col justify-end">
+        <h3 className="text-sm sm:text-lg lg:text-xl font-bold text-white tracking-wide font-sans leading-tight drop-shadow-md">
           {member.name}
         </h3>
-        <p className="text-xs md:text-sm text-gray-300/90 font-normal tracking-wide mt-0.5 drop-shadow-sm">
+        <p className="text-[11px] sm:text-xs md:text-sm text-gray-300/90 font-normal tracking-wide mt-0.5 drop-shadow-sm">
           {member.role}
         </p>
       </div>

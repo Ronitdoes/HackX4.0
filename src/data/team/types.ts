@@ -2,6 +2,8 @@ export interface SocialLinks {
   linkedin?: string;
   github?: string;
   website?: string;
+  instagram?: string;
+  email?: string;
 }
 
 export type TeamYear = "2026" | "2025" | "2024";
@@ -16,5 +18,6 @@ export interface TeamMember {
   subTeam?: string;
   initials?: string;
   image?: string;
+  email?: string;
   socials?: SocialLinks;
 }

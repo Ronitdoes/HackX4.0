@@ -9,164 +9,60 @@ gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 interface Brand {
   name: string;
-  logo: React.ReactNode;
+  logo: string | React.ReactNode;
   description: string;
 }
 
 const brands: Brand[] = [
   {
-    name: "Health",
-    logo: (
-      <svg className="w-full h-auto max-h-[95px] fill-current text-[#f9f6f0]" viewBox="0 0 200 90">
-        <text x="28" y="22" dominantBaseline="middle" textAnchor="end" fontFamily="sans-serif" fontWeight="900" fontSize="27" fill="currentColor">3</text>
-        <text x="36" y="15" dominantBaseline="middle" textAnchor="start" fontFamily="sans-serif" fontWeight="700" fontSize="13" letterSpacing="0.02em" fill="currentColor">GOOD HEALTH</text>
-        <text x="36" y="28" dominantBaseline="middle" textAnchor="start" fontFamily="sans-serif" fontWeight="700" fontSize="13" letterSpacing="0.02em" fill="currentColor">AND WELL-BEING</text>
-        <path d="M40 58 L72 58 L78 46 L84 72 L92 36 L100 68 L106 52 L112 58 L124 58" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" fill="none" />
-        <path d="M136 52 Q136 46 142 46 Q148 46 148 52 Q148 58 136 66 Q124 58 124 52 Q124 46 130 46 Q136 46 136 52Z" fill="currentColor" />
-      </svg>
-    ),
-    description: "Ensuring healthy lives and promoting well-being for all at every age.",
+    name: "Healthcare",
+    logo: "/assets/themes/healthcare.svg",
+    description: "Ensuring healthy lives, medical innovation, and digital health solutions for all.",
   },
   {
-    name: "Education",
-    logo: (
-      <svg className="w-full h-auto max-h-[95px] fill-current text-[#f9f6f0]" viewBox="0 0 200 90">
-        <text x="28" y="22" dominantBaseline="middle" textAnchor="end" fontFamily="sans-serif" fontWeight="900" fontSize="27" fill="currentColor">4</text>
-        <text x="36" y="15" dominantBaseline="middle" textAnchor="start" fontFamily="sans-serif" fontWeight="700" fontSize="13" letterSpacing="0.02em" fill="currentColor">QUALITY</text>
-        <text x="36" y="28" dominantBaseline="middle" textAnchor="start" fontFamily="sans-serif" fontWeight="700" fontSize="13" letterSpacing="0.02em" fill="currentColor">EDUCATION</text>
-        <path d="M80 46 Q95 50 100 56 Q105 50 120 46 L120 74 Q105 78 100 72 Q95 78 80 74 Z" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinejoin="round" />
-        <line x1="100" y1="56" x2="100" y2="72" stroke="currentColor" strokeWidth="2.2" />
-        <path d="M128 44 L134 50 L130 70 L126 70 L126 66 Z" fill="none" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
-      </svg>
-    ),
-    description: "Inclusive and equitable quality education for lifelong learning.",
+    name: "EdTech",
+    logo: "/assets/themes/edtech.svg",
+    description: "Transforming learning through immersive technologies, smart classrooms, and accessible education.",
   },
   {
-    name: "Equality",
-    logo: (
-      <svg className="w-full h-auto max-h-[95px] fill-current text-[#f9f6f0]" viewBox="0 0 200 90">
-        <text x="28" y="22" dominantBaseline="middle" textAnchor="end" fontFamily="sans-serif" fontWeight="900" fontSize="27" fill="currentColor">5</text>
-        <text x="36" y="15" dominantBaseline="middle" textAnchor="start" fontFamily="sans-serif" fontWeight="700" fontSize="13" letterSpacing="0.02em" fill="currentColor">GENDER</text>
-        <text x="36" y="28" dominantBaseline="middle" textAnchor="start" fontFamily="sans-serif" fontWeight="700" fontSize="13" letterSpacing="0.02em" fill="currentColor">EQUALITY</text>
-        <circle cx="100" cy="54" r="11" fill="none" stroke="currentColor" strokeWidth="2.5" />
-        <line x1="94" y1="51" x2="106" y2="51" stroke="currentColor" strokeWidth="2.5" />
-        <line x1="94" y1="57" x2="106" y2="57" stroke="currentColor" strokeWidth="2.5" />
-        <line x1="100" y1="65" x2="100" y2="78" stroke="currentColor" strokeWidth="2.5" />
-        <line x1="93" y1="72" x2="107" y2="72" stroke="currentColor" strokeWidth="2.5" />
-        <line x1="108" y1="46" x2="116" y2="38" stroke="currentColor" strokeWidth="2.5" />
-        <polyline points="109,38 116,38 116,45" fill="none" stroke="currentColor" strokeWidth="2.5" />
-      </svg>
-    ),
-    description: "Empowering all women and girls through equal opportunities.",
+    name: "FinTech",
+    logo: "/assets/themes/fintech.svg",
+    description: "Empowering decentralized finance, digital transactions, and next-gen banking systems.",
   },
   {
-    name: "Clean Energy",
-    logo: (
-      <svg className="w-full h-auto max-h-[95px] fill-current text-[#f9f6f0]" viewBox="0 0 200 90">
-        <text x="28" y="22" dominantBaseline="middle" textAnchor="end" fontFamily="sans-serif" fontWeight="900" fontSize="27" fill="currentColor">7</text>
-        <text x="36" y="15" dominantBaseline="middle" textAnchor="start" fontFamily="sans-serif" fontWeight="700" fontSize="13" letterSpacing="0.02em" fill="currentColor">AFFORDABLE AND</text>
-        <text x="36" y="28" dominantBaseline="middle" textAnchor="start" fontFamily="sans-serif" fontWeight="700" fontSize="13" letterSpacing="0.02em" fill="currentColor">CLEAN ENERGY</text>
-        <circle cx="100" cy="58" r="9" fill="none" stroke="currentColor" strokeWidth="2.5" />
-        <line x1="100" y1="52" x2="100" y2="58" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
-        <line x1="100" y1="42" x2="100" y2="45" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" />
-        <line x1="100" y1="71" x2="100" y2="74" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" />
-        <line x1="84" y1="58" x2="87" y2="58" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" />
-        <line x1="113" y1="58" x2="116" y2="58" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" />
-        <line x1="89" y1="47" x2="91" y2="49" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" />
-        <line x1="109" y1="67" x2="111" y2="69" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" />
-        <line x1="89" y1="69" x2="91" y2="67" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" />
-        <line x1="109" y1="49" x2="111" y2="47" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" />
-      </svg>
-    ),
-    description: "Affordable, reliable, sustainable and modern energy for all.",
+    name: "Environment",
+    logo: "/assets/themes/enviroment.svg",
+    description: "Developing sustainable technology, green energy, and environmental protection systems.",
   },
   {
-    name: "Decent Work",
-    logo: (
-      <svg className="w-full h-auto max-h-[95px] fill-current text-[#f9f6f0]" viewBox="0 0 200 90">
-        <text x="28" y="22" dominantBaseline="middle" textAnchor="end" fontFamily="sans-serif" fontWeight="900" fontSize="27" fill="currentColor">8</text>
-        <text x="36" y="15" dominantBaseline="middle" textAnchor="start" fontFamily="sans-serif" fontWeight="700" fontSize="13" letterSpacing="0.02em" fill="currentColor">DECENT WORK AND</text>
-        <text x="36" y="28" dominantBaseline="middle" textAnchor="start" fontFamily="sans-serif" fontWeight="700" fontSize="13" letterSpacing="0.02em" fill="currentColor">ECONOMIC GROWTH</text>
-        <rect x="84" y="66" width="6" height="10" fill="currentColor" />
-        <rect x="94" y="58" width="6" height="18" fill="currentColor" />
-        <rect x="104" y="50" width="6" height="26" fill="currentColor" />
-        <rect x="114" y="42" width="6" height="34" fill="currentColor" />
-        <polyline points="80,58 95,48 106,42 122,32" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
-        <polyline points="112,32 122,32 122,42" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
-      </svg>
-    ),
-    description: "Sustained, inclusive economic growth and decent work for all.",
+    name: "Cybersecurity",
+    logo: "/assets/themes/cybersecurity.svg",
+    description: "Securing digital infrastructure, data privacy, and advanced threat intelligence systems.",
   },
   {
-    name: "Innovation",
-    logo: (
-      <svg className="w-full h-auto max-h-[95px] fill-current text-[#f9f6f0]" viewBox="0 0 200 90">
-        <text x="28" y="22" dominantBaseline="middle" textAnchor="end" fontFamily="sans-serif" fontWeight="900" fontSize="27" fill="currentColor">9</text>
-        <text x="36" y="15" dominantBaseline="middle" textAnchor="start" fontFamily="sans-serif" fontWeight="700" fontSize="13" letterSpacing="0.02em" fill="currentColor">INDUSTRY, INNOVATION</text>
-        <text x="36" y="28" dominantBaseline="middle" textAnchor="start" fontFamily="sans-serif" fontWeight="700" fontSize="13" letterSpacing="0.02em" fill="currentColor">AND INFRASTRUCTURE</text>
-        <polygon points="100,38 112,45 100,52 88,45" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinejoin="round" />
-        <path d="M88 45 L88 59 L100 66 L100 52" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinejoin="round" />
-        <path d="M112 45 L112 59 L100 66" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinejoin="round" />
-        <polygon points="88,59 76,66 88,73 100,66" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinejoin="round" />
-        <path d="M76 66 L76 80 L88 87 L88 73" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinejoin="round" />
-        <path d="M100 66 L100 80 L88 87" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinejoin="round" />
-        <polygon points="112,59 100,66 112,73 124,66" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinejoin="round" />
-        <path d="M100 66 L100 80 L112 87 L112 73" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinejoin="round" />
-        <path d="M124 66 L124 80 L112 87" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinejoin="round" />
-      </svg>
-    ),
-    description: "Resilient infrastructure and inclusive industrialization.",
+    name: "Blockchain",
+    logo: "/assets/themes/blockchian.svg",
+    description: "Building decentralized protocols, Web3 ecosystems, and transparent ledger solutions.",
   },
   {
-    name: "Equality",
-    logo: (
-      <svg className="w-full h-auto max-h-[95px] fill-current text-[#f9f6f0]" viewBox="0 0 200 90">
-        <text x="26" y="22" dominantBaseline="middle" textAnchor="end" fontFamily="sans-serif" fontWeight="900" fontSize="25" fill="currentColor">10</text>
-        <text x="34" y="15" dominantBaseline="middle" textAnchor="start" fontFamily="sans-serif" fontWeight="700" fontSize="13" letterSpacing="0.02em" fill="currentColor">REDUCED</text>
-        <text x="34" y="28" dominantBaseline="middle" textAnchor="start" fontFamily="sans-serif" fontWeight="700" fontSize="13" letterSpacing="0.02em" fill="currentColor">INEQUALITIES</text>
-        <rect x="94" y="54" width="12" height="3" fill="currentColor" />
-        <rect x="94" y="61" width="12" height="3" fill="currentColor" />
-        <polygon points="100,38 92,47 108,47" fill="currentColor" />
-        <polygon points="100,80 92,71 108,71" fill="currentColor" />
-        <polygon points="78,59 87,51 87,67" fill="currentColor" />
-        <polygon points="122,59 113,51 113,67" fill="currentColor" />
-      </svg>
-    ),
-    description: "Reducing inequality within and among countries.",
+    name: "Defence",
+    logo: "/assets/themes/defence.svg",
+    description: "Advancing defense tech, autonomous security, and strategic intelligence systems.",
   },
   {
-    name: "Climate",
-    logo: (
-      <svg className="w-full h-auto max-h-[95px] fill-current text-[#f9f6f0]" viewBox="0 0 200 90">
-        <text x="26" y="22" dominantBaseline="middle" textAnchor="end" fontFamily="sans-serif" fontWeight="900" fontSize="25" fill="currentColor">13</text>
-        <text x="34" y="15" dominantBaseline="middle" textAnchor="start" fontFamily="sans-serif" fontWeight="700" fontSize="13" letterSpacing="0.02em" fill="currentColor">CLIMATE</text>
-        <text x="34" y="28" dominantBaseline="middle" textAnchor="start" fontFamily="sans-serif" fontWeight="700" fontSize="13" letterSpacing="0.02em" fill="currentColor">ACTION</text>
-        <path d="M72 58 Q100 38 128 58 Q100 78 72 58 Z" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinejoin="round" />
-        <circle cx="100" cy="58" r="9" fill="currentColor" />
-        <path d="M96 52 Q100 50 102 54 Q98 58 95 56 Z M103 57 Q106 55 107 60 Q101 64 100 60 Z" fill="#000" />
-      </svg>
-    ),
-    description: "Urgent action to combat climate change and its impacts.",
+    name: "Disaster Tech",
+    logo: "/assets/themes/disaster.svg",
+    description: "Creating early warning systems, resilient infrastructure, and crisis response tech.",
   },
   {
-    name: "Partnerships",
-    logo: (
-      <svg className="w-full h-auto max-h-[95px] fill-current text-[#f9f6f0]" viewBox="0 0 200 90">
-        <text x="26" y="22" dominantBaseline="middle" textAnchor="end" fontFamily="sans-serif" fontWeight="900" fontSize="25" fill="currentColor">17</text>
-        <text x="34" y="15" dominantBaseline="middle" textAnchor="start" fontFamily="sans-serif" fontWeight="700" fontSize="13" letterSpacing="0.02em" fill="currentColor">PARTNERSHIPS</text>
-        <text x="34" y="28" dominantBaseline="middle" textAnchor="start" fontFamily="sans-serif" fontWeight="700" fontSize="13" letterSpacing="0.02em" fill="currentColor">FOR THE GOALS</text>
-        <g stroke="currentColor" strokeWidth="2" fill="none" transform="translate(100,58)">
-          <circle cx="0" cy="0" r="10" />
-          <circle cx="0" cy="-6" r="10" />
-          <circle cx="5.2" cy="-3" r="10" />
-          <circle cx="5.2" cy="3" r="10" />
-          <circle cx="0" cy="6" r="10" />
-          <circle cx="-5.2" cy="3" r="10" />
-          <circle cx="-5.2" cy="-3" r="10" />
-        </g>
-      </svg>
-    ),
-    description: "Global partnerships for sustainable development.",
+    name: "Open Innovation",
+    logo: "/assets/themes/open_innovation.svg",
+    description: "Fostering unrestricted cross-disciplinary innovation and creative problem solving.",
+  },
+  {
+    name: "Supply Chain",
+    logo: "/assets/themes/supplychain.svg",
+    description: "Optimizing global logistics, smart tracking, and resilient supply networks.",
   },
 ];
 
@@ -412,7 +308,15 @@ export default function SdgComponent() {
                 className="absolute left-0 w-full grid grid-cols-[1.2fr_1.6fr] items-center gap-10 pointer-events-none"
               >
                 <div className="flex items-center justify-start h-full max-h-[85px]">
-                  {brand.logo}
+                  {typeof brand.logo === "string" ? (
+                    <img
+                      src={brand.logo}
+                      alt={brand.name}
+                      className="h-16 md:h-20 w-auto object-contain drop-shadow-[0_0_12px_rgba(249,246,240,0.35)]"
+                    />
+                  ) : (
+                    brand.logo
+                  )}
                 </div>
                 <p className="font-sans text-sm leading-relaxed font-normal text-[#f9f6f0]/90 select-text">
                   {brand.description}
@@ -445,7 +349,15 @@ export default function SdgComponent() {
                 className="w-full flex items-center justify-center p-1 text-[#f9f6f0]"
               >
                 <div className="w-full max-w-[165px] h-auto flex items-center justify-center">
-                  {brand.logo}
+                  {typeof brand.logo === "string" ? (
+                    <img
+                      src={brand.logo}
+                      alt={brand.name}
+                      className="h-16 sm:h-20 w-auto object-contain drop-shadow-[0_0_10px_rgba(249,246,240,0.35)]"
+                    />
+                  ) : (
+                    brand.logo
+                  )}
                 </div>
               </div>
             ))}
