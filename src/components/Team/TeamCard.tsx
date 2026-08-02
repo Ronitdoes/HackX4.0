@@ -128,11 +128,11 @@ export const TeamCard: React.FC<TeamCardProps> = React.memo(({ member, index = 0
       )}
 
       {/* Bottom-Left Details */}
-      <div className="absolute bottom-0 left-0 right-0 p-4 md:p-5 z-20 text-left flex flex-col justify-end">
-        <h3 className="text-base md:text-lg lg:text-xl font-bold text-white tracking-wide font-sans leading-tight drop-shadow-md">
+      <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-4 md:p-5 z-20 text-left flex flex-col justify-end">
+        <h3 className="text-sm sm:text-lg lg:text-xl font-bold text-white tracking-wide font-sans leading-tight drop-shadow-md">
           {member.name}
         </h3>
-        <p className="text-xs md:text-sm text-gray-300/90 font-normal tracking-wide mt-0.5 drop-shadow-sm">
+        <p className="text-[11px] sm:text-xs md:text-sm text-gray-300/90 font-normal tracking-wide mt-0.5 drop-shadow-sm">
           {member.role}
         </p>
       </div>

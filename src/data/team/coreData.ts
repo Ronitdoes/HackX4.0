@@ -33,21 +33,21 @@ export const coreMembers: TeamMember[] = [
   },
   {
     id: "2026-core-tech-4",
-    name: "Divya Srivastava",
-    role: "Technical",
-    year: "2026",
-    category: "CORE",
-    subTeam: "TECHNICAL TEAM",
-    initials: "DS",
-  },
-  {
-    id: "2026-core-tech-5",
     name: "Samya Tiwari",
     role: "Technical",
     year: "2026",
     category: "CORE",
     subTeam: "TECHNICAL TEAM",
     initials: "ST",
+  },
+  {
+    id: "2026-core-tech-5",
+    name: "Divya Srivastava",
+    role: "Technical",
+    year: "2026",
+    category: "CORE",
+    subTeam: "TECHNICAL TEAM",
+    initials: "DS",
   },
 
   // 2. CONTENT TEAM
