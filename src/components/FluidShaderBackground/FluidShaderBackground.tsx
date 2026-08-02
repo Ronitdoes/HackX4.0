@@ -138,23 +138,23 @@ const FRAGMENT_SHADER_SOURCE = `
     // 5. Soft Glow Falloff
     float glow = exp(-max(d, 0.0) * 16.0);
 
-    // 6. Colors mapping - Perfectly matched to the X logo stops (Rich electric purples/lavenders)
-    vec3 colDeepPurple = vec3(0.09, 0.00, 0.23); // #16003b (Deep indigo/purple glow)
-    vec3 colPurple     = vec3(0.32, 0.00, 0.78); // #5200c7 (Royal electric violet)
-    vec3 colBright     = vec3(0.47, 0.00, 1.00); // #7801ff (Vibrant electric purple)
-    vec3 colCore       = vec3(0.68, 0.45, 0.95); // #ae73f2 (Soft vibrant lavender core)
+    // 6. Colors mapping - Warm White and Warm Grey-White Palette
+    vec3 colDeepWhite   = vec3(0.58, 0.54, 0.49); // Soft warm greige glow
+    vec3 colGreyWhite   = vec3(0.78, 0.74, 0.69); // Smooth warm silver-grey
+    vec3 colBrightWhite = vec3(0.92, 0.88, 0.83); // Soft warm cream white
+    vec3 colPureWhite   = vec3(0.98, 0.95, 0.91); // Soft warm ivory core
 
-    // Vibrant Electric Green / Emerald / Teal / Cyan palette for SDG section
-    vec3 colDeepGreen  = vec3(0.00, 0.08, 0.05); // #00140d (Very deep emerald/teal background)
-    vec3 colGreen      = vec3(0.00, 0.40, 0.25); // #006640 (Rich glowing green)
-    vec3 colTeal       = vec3(0.00, 0.65, 0.50); // #00a680 (Electric teal)
-    vec3 colCyan       = vec3(0.20, 0.90, 0.75); // #33e6bf (Luminous mint/cyan core)
+    // Secondary Warm White & Grey-White palette for SDG / transition state
+    vec3 colDeepWhite2  = vec3(0.52, 0.48, 0.43); // Soft warm grey
+    vec3 colGreyWhite2  = vec3(0.74, 0.70, 0.64); // Warm platinum grey
+    vec3 colBrightWhite2= vec3(0.89, 0.85, 0.79); // Warm alabaster white
+    vec3 colPureWhite2  = vec3(0.97, 0.94, 0.89); // Soft warm pearl core
 
     // Blend palettes based on transition uniform
-    vec3 mixedDeep     = mix(colDeepPurple, colDeepGreen, uColorTransition);
-    vec3 mixedPurple   = mix(colPurple, colGreen, uColorTransition);
-    vec3 mixedBright   = mix(colBright, colTeal, uColorTransition);
-    vec3 mixedCore     = mix(colCore, colCyan, uColorTransition);
+    vec3 mixedDeep     = mix(colDeepWhite, colDeepWhite2, uColorTransition);
+    vec3 mixedPurple   = mix(colGreyWhite, colGreyWhite2, uColorTransition);
+    vec3 mixedBright   = mix(colBrightWhite, colBrightWhite2, uColorTransition);
+    vec3 mixedCore     = mix(colPureWhite, colPureWhite2, uColorTransition);
 
     // Dynamic color wave shifting (matching the SVG logo gradient rotation effect)
     float wave = sin(uTime * 0.3) * 0.5 + 0.5;
@@ -167,8 +167,8 @@ const FRAGMENT_SHADER_SOURCE = `
     float mBright   = smoothstep(0.38, 0.80, glow);
     float mCyan     = smoothstep(0.62, 0.98, glow);
 
-    // Alpha gradient based on fluid glow strength (rich and visible, matching the logo)
-    float alpha = clamp(glow * 1.35, 0.0, 1.0);
+    // Alpha gradient based on fluid glow strength (soft, warm, organic glow)
+    float alpha = clamp(glow * 1.25, 0.0, 1.0);
 
     // Mix colors over transparent base
     vec3 finalColor = vec3(0.0);
@@ -376,12 +376,12 @@ export default function FluidShaderBackground() {
 
     if (pathname !== "/team") {
       container.style.opacity = "1";
-      if (logoContainer) {
+      if (logoContainer && pathname !== "/" && pathname !== "") {
         logoContainer.style.transform = defaultLogoTransform;
         logoContainer.style.opacity = pathname === "/gallery" ? "0" : "1";
       }
-      if (canvas) {
-        canvas.style.opacity = isMobile ? "0" : pathname === "/gallery" ? "0" : pathname === "/timeline" ? "0.65" : "0.45";
+      if (canvas && pathname !== "/" && pathname !== "") {
+        canvas.style.opacity = isMobile ? "0" : pathname === "/gallery" ? "0" : pathname === "/timeline" ? "0.75" : "0.65";
       }
       return;
     }
@@ -399,10 +399,10 @@ export default function FluidShaderBackground() {
         logoOpacity = 1 - Math.min((progress - 0.3) / 0.25, 1);
       }
 
-      let canvasOpacity = 0.45;
+      let canvasOpacity = 0.65;
       if (progress > 0.3) {
         const fadeProgress = Math.min((progress - 0.3) / 0.20, 1);
-        canvasOpacity = 0.45 * (1 - fadeProgress);
+        canvasOpacity = 0.65 * (1 - fadeProgress);
       }
 
       if (logoContainer) {
@@ -520,7 +520,7 @@ export default function FluidShaderBackground() {
       const canvas = canvasRef.current;
       if (canvas && !isMobileView) {
         canvas.style.transform = `translateX(${xShiftVw}vw)`;
-        canvas.style.opacity = `${0.45 + timelineProgress * 0.20}`;
+        canvas.style.opacity = `${0.65 + timelineProgress * 0.20}`;
       }
 
       // 2. Shift and scale X logo in tandem, plus soft blur dissolve
@@ -560,9 +560,9 @@ export default function FluidShaderBackground() {
         grainOverlay.style.opacity = `${0.09 + timelineProgress * 0.07}`;
       }
 
-      const fromColor = interpolateHex("#1f093f", "#001c13", targetColorTransition);
-      const viaColor = interpolateHex("#090416", "#000806", targetColorTransition);
-      const toColor = interpolateHex("#04020a", "#000403", targetColorTransition);
+      const fromColor = interpolateHex("#4c00b0", "#006640", targetColorTransition);
+      const viaColor = interpolateHex("#26005c", "#003824", targetColorTransition);
+      const toColor = interpolateHex("#12002e", "#001a11", targetColorTransition);
       document.documentElement.style.setProperty("--bg-gradient-from", fromColor);
       document.documentElement.style.setProperty("--bg-gradient-via", viaColor);
       document.documentElement.style.setProperty("--bg-gradient-to", toColor);
@@ -620,9 +620,9 @@ export default function FluidShaderBackground() {
         grainOverlayRef.current.style.opacity = "0.09";
       }
       document.documentElement.style.setProperty("--logo-hue-rotate", "0deg");
-      document.documentElement.style.setProperty("--bg-gradient-from", "#1f093f");
-      document.documentElement.style.setProperty("--bg-gradient-via", "#090416");
-      document.documentElement.style.setProperty("--bg-gradient-to", "#04020a");
+      document.documentElement.style.setProperty("--bg-gradient-from", "#4c00b0");
+      document.documentElement.style.setProperty("--bg-gradient-via", "#26005c");
+      document.documentElement.style.setProperty("--bg-gradient-to", "#12002e");
     };
   }, [defaultLogoTransform, pathname]);
 
@@ -631,6 +631,7 @@ export default function FluidShaderBackground() {
     if (pathname !== "/" && pathname !== "") return;
 
     let tl: gsap.core.Timeline | null = null;
+    let heroTl: gsap.core.Timeline | null = null;
     let active = true;
 
     const initScrollTrigger = () => {
@@ -645,9 +646,9 @@ export default function FluidShaderBackground() {
       shaderParams.current = { zoom: 1.25, colorTransition: 0.0 };
 
       document.documentElement.style.setProperty("--logo-hue-rotate", "0deg");
-      document.documentElement.style.setProperty("--bg-gradient-from", "#1f093f");
-      document.documentElement.style.setProperty("--bg-gradient-via", "#090416");
-      document.documentElement.style.setProperty("--bg-gradient-to", "#04020a");
+      document.documentElement.style.setProperty("--bg-gradient-from", "#4c00b0");
+      document.documentElement.style.setProperty("--bg-gradient-via", "#26005c");
+      document.documentElement.style.setProperty("--bg-gradient-to", "#12002e");
 
       const logoContainer = logoContainerRef.current;
       const blurOverlay = blurOverlayRef.current;
@@ -657,13 +658,13 @@ export default function FluidShaderBackground() {
       const isMobileView = window.innerWidth < 768;
 
       if (logoContainer) {
-        gsap.set(logoContainer, { scale: 1.0, filter: "blur(0px)" });
+        gsap.set(logoContainer, { scale: 1.0, filter: "blur(0px)", y: "75vh", opacity: 0 });
         logoContainer.style.setProperty("--x-color-stop-0", "#5200c7");
         logoContainer.style.setProperty("--x-color-stop-33", "#ae73f2");
         logoContainer.style.setProperty("--x-color-stop-66", "#7801ff");
         logoContainer.style.setProperty("--x-color-stop-100", "#5200c7");
-        logoContainer.style.setProperty("--x-shadow-1", "rgba(174, 115, 242, 0.80)");
-        logoContainer.style.setProperty("--x-shadow-2", "rgba(82, 0, 199, 0.70)");
+        logoContainer.style.setProperty("--x-shadow-1", "rgba(174, 115, 242, 0.35)");
+        logoContainer.style.setProperty("--x-shadow-2", "rgba(82, 0, 199, 0.30)");
       }
 
       if (blurOverlay) {
@@ -674,14 +675,36 @@ export default function FluidShaderBackground() {
         gsap.set(grainOverlay, { opacity: 0.09 });
       }
       if (canvas) {
-        gsap.set(canvas, { opacity: isMobileView ? 0 : 0.45 });
+        gsap.set(canvas, { y: "0vh", opacity: isMobileView ? 0 : 0.65 });
+      }
+
+      // Hero scroll trigger: SVG X logo comes up from center bottom and gets placed into position on scroll
+      const heroSection = document.getElementById("hero-section") || document.body;
+
+      heroTl = gsap.timeline({
+        scrollTrigger: {
+          trigger: heroSection,
+          start: "top top",
+          end: "450px top",
+          scrub: 0.5,
+          invalidateOnRefresh: true,
+        }
+      });
+
+      if (logoContainer) {
+        heroTl.to(logoContainer, {
+          y: "0vh",
+          opacity: 1,
+          duration: 1,
+          ease: "power1.out"
+        }, 0);
       }
 
       // Animatable objects to handle precise color, degree, blur, and grain interpolation natively in GSAP
       const bgColors = {
-        from: "#1f093f",
-        via: "#090416",
-        to: "#04020a"
+        from: "#4c00b0",
+        via: "#26005c",
+        to: "#12002e"
       };
 
       const logoColors = {
@@ -689,8 +712,8 @@ export default function FluidShaderBackground() {
         stop33: "#ae73f2",
         stop66: "#7801ff",
         stop100: "#5200c7",
-        shadow1: "rgba(174, 115, 242, 0.80)",
-        shadow2: "rgba(82, 0, 199, 0.70)"
+        shadow1: "rgba(174, 115, 242, 0.35)",
+        shadow2: "rgba(82, 0, 199, 0.30)"
       };
 
       const logoHue = { rotate: 0 };
@@ -733,9 +756,9 @@ export default function FluidShaderBackground() {
       }, 0);
 
       tl.to(bgColors, {
-        from: "#001c13",
-        via: "#000806",
-        to: "#000403",
+        from: "#006640",
+        via: "#003824",
+        to: "#001a11",
         duration: 1,
         ease: "power1.out",
         onUpdate: () => {
@@ -774,7 +797,7 @@ export default function FluidShaderBackground() {
 
       if (canvas && !isMobileView) {
         tl.to(canvas, {
-          opacity: 0.70,
+          opacity: 0.85,
           duration: 1,
           ease: "power1.out"
         }, 0);
@@ -786,8 +809,8 @@ export default function FluidShaderBackground() {
           stop33: "#30e5c8",
           stop66: "#00b590",
           stop100: "#005035",
-          shadow1: "rgba(48, 229, 200, 0.80)",
-          shadow2: "rgba(0, 80, 53, 0.70)",
+          shadow1: "rgba(48, 229, 200, 0.35)",
+          shadow2: "rgba(0, 80, 53, 0.30)",
           duration: 1,
           ease: "power1.out",
           onUpdate: () => {
@@ -836,9 +859,9 @@ export default function FluidShaderBackground() {
       }, 4.6);
 
       tl.to(bgColors, {
-        from: "#1f093f",
-        via: "#090416",
-        to: "#04020a",
+        from: "#4c00b0",
+        via: "#26005c",
+        to: "#12002e",
         duration: 1,
         ease: "power1.in",
         onUpdate: () => {
@@ -875,7 +898,7 @@ export default function FluidShaderBackground() {
 
       if (canvas && !isMobileView) {
         tl.to(canvas, {
-          opacity: 0.45,
+          opacity: 0.65,
           duration: 1,
           ease: "power1.in"
         }, 4.6);
@@ -887,8 +910,8 @@ export default function FluidShaderBackground() {
           stop33: "#ae73f2",
           stop66: "#7801ff",
           stop100: "#5200c7",
-          shadow1: "rgba(174, 115, 242, 0.80)",
-          shadow2: "rgba(82, 0, 199, 0.70)",
+          shadow1: "rgba(174, 115, 242, 0.35)",
+          shadow2: "rgba(82, 0, 199, 0.30)",
           duration: 1,
           ease: "power1.in",
           onUpdate: () => {
@@ -916,6 +939,9 @@ export default function FluidShaderBackground() {
 
     return () => {
       active = false;
+      if (heroTl) {
+        heroTl.revert();
+      }
       if (tl) {
         tl.revert();
       }
@@ -930,7 +956,7 @@ export default function FluidShaderBackground() {
         style={{
           zIndex: -20,
           height: "calc(var(--vh, 1vh) * 100)",
-          background: "radial-gradient(ellipse at center, var(--bg-gradient-from, #1f093f) 0%, var(--bg-gradient-via, #090416) 60%, var(--bg-gradient-to, #04020a) 100%)",
+          background: "radial-gradient(ellipse at center, var(--bg-gradient-from, #4c00b0) 0%, var(--bg-gradient-via, #26005c) 60%, var(--bg-gradient-to, #12002e) 100%)",
         }}
       />
 
@@ -948,8 +974,8 @@ export default function FluidShaderBackground() {
           "--x-color-stop-33": "#ae73f2",
           "--x-color-stop-66": "#7801ff",
           "--x-color-stop-100": "#5200c7",
-          "--x-shadow-1": "rgba(174, 115, 242, 0.80)",
-          "--x-shadow-2": "rgba(82, 0, 199, 0.70)",
+          "--x-shadow-1": "rgba(174, 115, 242, 0.35)",
+          "--x-shadow-2": "rgba(82, 0, 199, 0.30)",
         } as React.CSSProperties}
       >
         <svg
@@ -960,10 +986,10 @@ export default function FluidShaderBackground() {
           style={{
             height: "calc(var(--vh, 1vh) * 28)",
             width: "calc(var(--vh, 1vh) * 25.06)",
-            opacity: 0.55,
+            opacity: 0.50,
             transform: "translateZ(0)",
             willChange: "transform",
-            filter: "blur(2px) drop-shadow(0 0 25px var(--x-shadow-1, rgba(174, 115, 242, 0.80))) drop-shadow(0 0 50px var(--x-shadow-2, rgba(82, 0, 199, 0.70))) drop-shadow(0 0 15px rgba(255, 255, 255, 0.50))",
+            filter: "blur(2px) drop-shadow(0 0 20px var(--x-shadow-1, rgba(174, 115, 242, 0.35))) drop-shadow(0 0 40px var(--x-shadow-2, rgba(82, 0, 199, 0.30)))",
           }}
         >
           <defs>
@@ -985,10 +1011,10 @@ export default function FluidShaderBackground() {
           <path
             d="M335.279 0.25L559.355 400.69L894.574 999.75H559.721L335.645 599.31L0.425781 0.25H335.279ZM335.177 999.75H0.535156L335.177 600.119V999.75ZM894.465 0.25L559.823 399.88V0.25H894.465Z"
             fill="url(#movingGradient)"
-            stroke="#ffffff"
-            strokeWidth="10.0"
+            stroke="rgba(255, 255, 255, 0.25)"
+            strokeWidth="4.0"
             strokeLinejoin="round"
-            strokeOpacity="1.0"
+            strokeOpacity="0.35"
           />
         </svg>
       </div>
@@ -996,7 +1022,7 @@ export default function FluidShaderBackground() {
       {/* 3. Transparent WebGL Canvas. Covers the entire viewport to prevent box clipping. */}
       <canvas
         ref={canvasRef}
-        className="pointer-events-none fixed top-0 left-0 w-full h-screen-stable opacity-45"
+        className="pointer-events-none fixed top-0 left-0 w-full h-screen-stable opacity-65"
         style={{
           zIndex: -15,
           height: "calc(var(--vh, 1vh) * 100)",
@@ -1015,7 +1041,7 @@ export default function FluidShaderBackground() {
           height: "calc(var(--vh, 1vh) * 100)",
           transform: "translateZ(0)",
           willChange: "transform, opacity",
-          background: "linear-gradient(115deg, rgba(24, 8, 54, 0.08), rgba(5, 2, 13, 0.02) 55%, rgba(0, 0, 0, 0.08))",
+          background: "linear-gradient(115deg, rgba(76, 0, 176, 0.10), rgba(38, 0, 92, 0.03) 55%, rgba(18, 0, 46, 0.08))",
         }}
       />
 
