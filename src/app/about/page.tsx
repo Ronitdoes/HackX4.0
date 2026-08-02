@@ -3,6 +3,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import WhyHackX from "@/components/WhyHackX";
+import HistoryShowcase from "@/components/HistoryShowcase";
 
 export default function AboutPage() {
   const containerVariants = {
@@ -107,6 +108,9 @@ export default function AboutPage() {
 
       {/* Sticky Content Section */}
       <WhyHackX />
+
+      {/* History & Evolution Showcase */}
+      <HistoryShowcase />
     </div>
   );
 }
