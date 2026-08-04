@@ -180,8 +180,12 @@ export default function NetflixCurtainBackground({ scrollYProgress }: NetflixCur
     const progress = Math.min(latest / 0.35, 1.0);
     openUniformRef.current = progress;
 
-    // Curtain fully fades out by scroll progress 0.7 (see Team/index.tsx).
+    // Curtain fully fades out by scroll progress 0.72 (see Team/index.tsx).
     const visible = latest < 0.72;
+    if (containerRef.current) {
+      containerRef.current.style.display = visible ? "block" : "none";
+    }
+
     if (visible !== isVisibleRef.current) {
       isVisibleRef.current = visible;
       if (visible) requestRenderRef.current();

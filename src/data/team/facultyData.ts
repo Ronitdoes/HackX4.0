@@ -5,7 +5,10 @@ interface FacultyRawData {
   role: string;
   subTeam: string;
   email?: string;
+  image?: string;
 }
+
+const R2_FACULTY_BASE = "https://pub-45c102ac14a64011a530ed2864a18405.r2.dev/faculty";
 
 const rawFacultyList: FacultyRawData[] = [
   // ── ORGANIZING CHAIR & CO-CHAIRS ──
@@ -13,30 +16,35 @@ const rawFacultyList: FacultyRawData[] = [
     name: "Dr. Kuldeep Singh Sangwan",
     role: "Organizing Chair",
     subTeam: "FACULTY ORGANIZERS",
+    image: `${R2_FACULTY_BASE}/Dr20Kuldip20Singh.webp`,
   },
   {
     name: "Dr. C S Lamba",
     role: "Organizer Co-Chair",
     subTeam: "FACULTY ORGANIZERS",
     email: "cs.lamba@jaipur.manipal.edu",
+    image: `${R2_FACULTY_BASE}/CS-LAMBDA.webp`,
   },
   {
     name: "Dr. Neha Chauhdhary",
     role: "Organizer Co-Chair",
     subTeam: "FACULTY ORGANIZERS",
     email: "chaudhary.neha@jaipur.manipal.edu",
+    image: `${R2_FACULTY_BASE}/NEHA.webp`,
   },
   {
     name: "Dr. Rohit Bhatnagar",
     role: "Organizer Co-Chair",
     subTeam: "FACULTY ORGANIZERS",
     email: "roheet.bhatnagar@jaipur.manipal.edu",
+    image: `${R2_FACULTY_BASE}/ROHEET.webp`,
   },
   {
     name: "Dr. Sandeep Chaurasia",
     role: "Organizer Co-Chair",
     subTeam: "FACULTY ORGANIZERS",
     email: "sandeep.chaurasia@jaipur.manipal.edu",
+    image: `${R2_FACULTY_BASE}/SANDEEP.webp`,
   },
 
   // ── CONVENERS ──
@@ -45,12 +53,14 @@ const rawFacultyList: FacultyRawData[] = [
     role: "Convener",
     subTeam: "FACULTY CONVENERS",
     email: "shishir.chauhan@jaipur.manipal.edu",
+    image: `${R2_FACULTY_BASE}/SHISHRI.webp`,
   },
   {
     name: "Dr. Juhi Singh",
     role: "Convener",
     subTeam: "FACULTY CONVENERS",
     email: "juhi.singh@jaipur.manipal.edu",
+    image: `${R2_FACULTY_BASE}/JUHI.webp`,
   },
 
   // ── FACULTY COORDINATORS ──
@@ -59,83 +69,97 @@ const rawFacultyList: FacultyRawData[] = [
     role: "Faculty Coordinator",
     subTeam: "FACULTY CO-ORDINATORS",
     email: "bali.devi@jaipur.manipal.edu",
+    image: `${R2_FACULTY_BASE}/BALI.webp`,
   },
   {
     name: "Ms. Stuti Pandey",
     role: "Faculty Coordinator",
     subTeam: "FACULTY CO-ORDINATORS",
+    image: `${R2_FACULTY_BASE}/STUTI.webp`,
   },
   {
     name: "Dr. Usha Jain",
     role: "Faculty Coordinator",
     subTeam: "FACULTY CO-ORDINATORS",
     email: "usha.jain@jaipur.manipal.edu",
+    image: `${R2_FACULTY_BASE}/USHA.webp`,
   },
   {
     name: "Mr. Lav Upadhyay",
     role: "Faculty Coordinator",
     subTeam: "FACULTY CO-ORDINATORS",
     email: "lav.upadhyay@jaipur.manipal.edu",
+    image: `${R2_FACULTY_BASE}/LAV.webp`,
   },
   {
     name: "Dr. Prashant Vats",
     role: "Faculty Coordinator",
     subTeam: "FACULTY CO-ORDINATORS",
     email: "prashant.vats@jaipur.manipal.edu",
+    image: `${R2_FACULTY_BASE}/PRASHANT.webp`,
   },
   {
     name: "Dr. Amit Garg",
     role: "Faculty Coordinator",
     subTeam: "FACULTY CO-ORDINATORS",
     email: "amit.garg@jaipur.manipal.edu",
+    image: `${R2_FACULTY_BASE}/AMIT.webp`,
   },
   {
     name: "Mr. Abhay Singh Bisht",
     role: "Faculty Coordinator",
     subTeam: "FACULTY CO-ORDINATORS",
     email: "abhay.bisht@jaipur.manipal.edu",
+    image: `${R2_FACULTY_BASE}/ABHAY.webp`,
   },
   {
     name: "Dr. Satyabrata Roy",
     role: "Faculty Coordinator",
     subTeam: "FACULTY CO-ORDINATORS",
     email: "satyabrata.roy@jaipur.manipal.edu",
+    image: `${R2_FACULTY_BASE}/SATYA.webp`,
   },
   {
     name: "Dr. Sayar Singh Shekhawat",
     role: "Faculty Coordinator",
     subTeam: "FACULTY CO-ORDINATORS",
     email: "sayar.shekhawat@jaipur.manipal.edu",
+    image: `${R2_FACULTY_BASE}/SAYAR.webp`,
   },
   {
     name: "Dr. Ajay Kumar",
     role: "Faculty Coordinator",
     subTeam: "FACULTY CO-ORDINATORS",
     email: "kumar.ajay@jaipur.manipal.edu",
+    image: `${R2_FACULTY_BASE}/AJAY.webp`,
   },
   {
     name: "Dr. Mahesh Jangid",
     role: "Faculty Coordinator",
     subTeam: "FACULTY CO-ORDINATORS",
     email: "mahesh.jangid@jaipur.manipal.edu",
+    image: `${R2_FACULTY_BASE}/MAHESH.webp`,
   },
   {
     name: "Dr. Surbhi Sharma",
     role: "Faculty Coordinator",
     subTeam: "FACULTY CO-ORDINATORS",
     email: "surbhi.sharma@jaipur.manipal.edu",
+    image: `${R2_FACULTY_BASE}/SURBHI.webp`,
   },
   {
     name: "Dr. Sunita Singhal",
     role: "Faculty Coordinator",
     subTeam: "FACULTY CO-ORDINATORS",
     email: "sunita.singhal@jaipur.manipal.edu",
+    image: `${R2_FACULTY_BASE}/SUNITA.webp`,
   },
   {
     name: "Dr. Ankur Pandey",
     role: "Faculty Coordinator",
     subTeam: "FACULTY CO-ORDINATORS",
     email: "ankur.pandey@jaipur.manipal.edu",
+    image: `${R2_FACULTY_BASE}/ANKUR.webp`,
   },
   {
     name: "Ms. Soni Gupta",
@@ -147,30 +171,35 @@ const rawFacultyList: FacultyRawData[] = [
     role: "Faculty Coordinator",
     subTeam: "FACULTY CO-ORDINATORS",
     email: "vivek.sikarwar@jaipur.manipal.edu",
+    image: `${R2_FACULTY_BASE}/VIVEK.webp`,
   },
   {
     name: "Dr. Mayank Namdev",
     role: "Faculty Coordinator",
     subTeam: "FACULTY CO-ORDINATORS",
     email: "mayank.namdev@jaipur.manipal.edu",
+    image: `${R2_FACULTY_BASE}/MAYANK.webp`,
   },
   {
     name: "Dr. Divya Thakur",
     role: "Faculty Coordinator",
     subTeam: "FACULTY CO-ORDINATORS",
     email: "divya.thakur@jaipur.manipal.edu",
+    image: `${R2_FACULTY_BASE}/DIVYA.webp`,
   },
   {
     name: "Dr. Anil Kumar",
     role: "Faculty Coordinator",
     subTeam: "FACULTY CO-ORDINATORS",
     email: "anil.kumar@jaipur.manipal.edu",
+    image: `${R2_FACULTY_BASE}/ANIL.webp`,
   },
   {
     name: "Dr. Umashankar Rawat",
     role: "Faculty Coordinator",
     subTeam: "FACULTY CO-ORDINATORS",
     email: "umashankar.rawat@jaipur.manipal.edu",
+    image: `${R2_FACULTY_BASE}/UMASH.webp`,
   },
   {
     name: "Dr. Arunangshu Pal",
@@ -183,12 +212,50 @@ const rawFacultyList: FacultyRawData[] = [
     role: "Faculty Coordinator",
     subTeam: "FACULTY CO-ORDINATORS",
     email: "babita.tiwari@jaipur.manipal.edu",
+    image: `${R2_FACULTY_BASE}/BABITA.webp`,
   },
   {
     name: "Dr. Anita Shrotriya",
     role: "Faculty Coordinator",
     subTeam: "FACULTY CO-ORDINATORS",
     email: "anita.shrotriya@jaipur.manipal.edu",
+    image: `${R2_FACULTY_BASE}/ANITA.webp`,
+  },
+  {
+    name: "Dr. Akhilesh Kumar",
+    role: "Faculty Coordinator",
+    subTeam: "FACULTY CO-ORDINATORS",
+    image: `${R2_FACULTY_BASE}/AKHILESH.webp`,
+  },
+  {
+    name: "Dr. Arjun Singh",
+    role: "Faculty Coordinator",
+    subTeam: "FACULTY CO-ORDINATORS",
+    image: `${R2_FACULTY_BASE}/ARJUN.webp`,
+  },
+  {
+    name: "Dr. Deepak Moud",
+    role: "Faculty Coordinator",
+    subTeam: "FACULTY CO-ORDINATORS",
+    image: `${R2_FACULTY_BASE}/DEEPAK.webp`,
+  },
+  {
+    name: "Dr. Geetha K",
+    role: "Faculty Coordinator",
+    subTeam: "FACULTY CO-ORDINATORS",
+    image: `${R2_FACULTY_BASE}/geetha.webp`,
+  },
+  {
+    name: "Ms. Pratistha Mathur",
+    role: "Faculty Coordinator",
+    subTeam: "FACULTY CO-ORDINATORS",
+    image: `${R2_FACULTY_BASE}/Pratistha.webp`,
+  },
+  {
+    name: "Dr. Rishav Sharma",
+    role: "Faculty Coordinator",
+    subTeam: "FACULTY CO-ORDINATORS",
+    image: `${R2_FACULTY_BASE}/RISHAV.webp`,
   },
   {
     name: "Mr. Pradeep Chaturvedi",
@@ -243,6 +310,7 @@ const generateFacultyForYear = (year: "2026" | "2025"): TeamMember[] => {
     category: "FACULTY",
     subTeam: item.subTeam,
     email: item.email,
+    image: item.image,
   }));
 };
 
@@ -296,6 +364,7 @@ export const facultyMembers: TeamMember[] = [
     year: "2024",
     category: "FACULTY",
     subTeam: "CO-PATRON",
+    image: `${R2_FACULTY_BASE}/Dr20Kuldip20Singh.webp`,
   },
 
   // CHAIR
@@ -306,6 +375,7 @@ export const facultyMembers: TeamMember[] = [
     year: "2024",
     category: "FACULTY",
     subTeam: "CHAIR",
+    image: `${R2_FACULTY_BASE}/SANDEEP.webp`,
   },
   {
     id: "2024-faculty-chair-2",
@@ -325,6 +395,7 @@ export const facultyMembers: TeamMember[] = [
     category: "FACULTY",
     subTeam: "PROGRAM CHAIR",
     email: "chaudhary.neha@jaipur.manipal.edu",
+    image: `${R2_FACULTY_BASE}/NEHA.webp`,
   },
 
   // CONVENER
@@ -336,6 +407,7 @@ export const facultyMembers: TeamMember[] = [
     category: "FACULTY",
     subTeam: "CONVENER",
     email: "juhi.singh@jaipur.manipal.edu",
+    image: `${R2_FACULTY_BASE}/JUHI.webp`,
   },
   {
     id: "2024-faculty-convener-2",
@@ -345,5 +417,6 @@ export const facultyMembers: TeamMember[] = [
     category: "FACULTY",
     subTeam: "CONVENER",
     email: "shishir.chauhan@jaipur.manipal.edu",
+    image: `${R2_FACULTY_BASE}/SHISHRI.webp`,
   },
 ];

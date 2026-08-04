@@ -986,10 +986,10 @@ export default function FluidShaderBackground() {
           style={{
             height: "calc(var(--vh, 1vh) * 28)",
             width: "calc(var(--vh, 1vh) * 25.06)",
-            opacity: 0.50,
+            opacity: 0.65,
             transform: "translateZ(0)",
             willChange: "transform",
-            filter: "blur(2px) drop-shadow(0 0 20px var(--x-shadow-1, rgba(174, 115, 242, 0.35))) drop-shadow(0 0 40px var(--x-shadow-2, rgba(82, 0, 199, 0.30)))",
+            filter: "blur(1.5px) drop-shadow(0 0 20px var(--x-shadow-1, rgba(174, 115, 242, 0.35))) drop-shadow(0 0 40px var(--x-shadow-2, rgba(82, 0, 199, 0.30)))",
           }}
         >
           <defs>
@@ -1007,10 +1007,16 @@ export default function FluidShaderBackground() {
                 repeatCount="indefinite"
               />
             </linearGradient>
+            <filter id="xOrganicNoise">
+              <feTurbulence type="fractalNoise" baseFrequency="0.70" numOctaves="1" result="noise" />
+              <feColorMatrix type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 0.08 0" result="coloredNoise" />
+              <feComposite in="SourceGraphic" in2="coloredNoise" operator="over" />
+            </filter>
           </defs>
           <path
             d="M335.279 0.25L559.355 400.69L894.574 999.75H559.721L335.645 599.31L0.425781 0.25H335.279ZM335.177 999.75H0.535156L335.177 600.119V999.75ZM894.465 0.25L559.823 399.88V0.25H894.465Z"
             fill="url(#movingGradient)"
+            filter="url(#xOrganicNoise)"
             stroke="rgba(255, 255, 255, 0.25)"
             strokeWidth="4.0"
             strokeLinejoin="round"
@@ -1049,19 +1055,19 @@ export default function FluidShaderBackground() {
              layer over the blurred backdrop. Optimized to 1 octave for rasterizer performance. */}
       <svg
         ref={grainOverlayRef}
-        className="pointer-events-none fixed top-0 left-0 w-full h-screen-stable opacity-[0.09]"
+        className="pointer-events-none fixed top-0 left-0 w-full h-screen-stable opacity-[0.10]"
         style={{
           zIndex: -3,
           height: "calc(var(--vh, 1vh) * 100)",
         }}
       >
         <defs>
-          <linearGradient id="visionNoise" x1="0" y1="0" x2="1" y2="1">
-            <stop stopColor="rgba(255,255,255,0.12)" stopOpacity="0.12" />
-            <stop offset="1" stopColor="rgba(255,255,255,0)" stopOpacity="0" />
-          </linearGradient>
+          <filter id="visionNoise">
+            <feTurbulence type="fractalNoise" baseFrequency="0.75" numOctaves="1" result="noise" />
+            <feColorMatrix type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 0.14 0" />
+          </filter>
         </defs>
-        <rect width="100%" height="100%" fill="url(#visionNoise)" />
+        <rect width="100%" height="100%" filter="url(#visionNoise)" />
       </svg>
     </>
   );

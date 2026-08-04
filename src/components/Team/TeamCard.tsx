@@ -31,10 +31,12 @@ export const TeamCard: React.FC<TeamCardProps> = React.memo(({ member, index = 0
   const hasGithub = Boolean(socials.github && socials.github.trim() !== "");
   const hasWebsite = Boolean(socials.website && socials.website.trim() !== "");
 
+  const hasValidImage = Boolean(member.image && member.image.trim() !== "");
+
   return (
     <div className="group relative w-full max-w-[260px] sm:max-w-none aspect-[3/4] overflow-hidden rounded-[2px] bg-zinc-900/90 shadow-lg mx-auto">
       {/* Background Image / Gradient Fallback */}
-      {member.image && !imageError ? (
+      {hasValidImage && !imageError ? (
         <img
           src={member.image}
           alt={member.name}

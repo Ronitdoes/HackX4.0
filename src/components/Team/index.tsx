@@ -15,10 +15,11 @@ export default function Team() {
   const [isMobile, setIsMobile] = useState(false);
 
   React.useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 768);
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
-    return () => window.removeEventListener("resize", checkMobile);
+    const mediaQuery = window.matchMedia("(max-width: 767px)");
+    setIsMobile(mediaQuery.matches);
+    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches);
+    mediaQuery.addEventListener("change", handler);
+    return () => mediaQuery.removeEventListener("change", handler);
   }, []);
 
   /* ── scroll progress through the hero container ── */
@@ -66,11 +67,13 @@ export default function Team() {
     },
   };
 
+  const allMembers = TEAM_MEMBERS;
+
   const currentMembers = useMemo(() => {
-    return TEAM_MEMBERS.filter(
+    return allMembers.filter(
       (m) => m.year === selectedYear && m.category === selectedCategory
     );
-  }, [selectedYear, selectedCategory]);
+  }, [allMembers, selectedYear, selectedCategory]);
 
   const subTeamGroups = useMemo(() => {
     const groups: { title: string; members: TeamMember[] }[] = [];
@@ -90,6 +93,13 @@ export default function Team() {
 
     return groups;
   }, [currentMembers]);
+
+  const handleYearSelect = (year: TeamYear) => {
+    if (year === "2024" && selectedCategory === "CORE") {
+      setSelectedCategory("EXECUTIVE");
+    }
+    setSelectedYear(year);
+  };
 
   return (
     <div className="relative min-h-screen-stable text-white bg-[#070312] overflow-x-clip">
@@ -114,6 +124,7 @@ export default function Team() {
               opacity: heroOpacity,
               filter: heroBlur,
               transformOrigin: "57.5% 75%",
+              transform: "translateZ(0)",
               willChange: "transform, opacity, filter",
             }}
           >
@@ -169,12 +180,7 @@ export default function Team() {
             {(["2026", "2025", "2024"] as const).map((year) => (
               <button
                 key={year}
-                onClick={() => {
-                  setSelectedYear(year);
-                  if (year === "2024" && selectedCategory === "CORE") {
-                    setSelectedCategory("EXECUTIVE");
-                  }
-                }}
+                onClick={() => handleYearSelect(year)}
                 className={`text-xl sm:text-3xl font-black tracking-widest uppercase transition-all duration-300 relative px-2 py-1 ${
                   selectedYear === year
                     ? "text-white scale-110"
@@ -235,7 +241,7 @@ export default function Team() {
                       key={member.id || member.name}
                       initial={{ opacity: 0, y: 20 }}
                       whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true, margin: "0px 0px -10% 0px" }}
+                      viewport={{ once: true, margin: "50px" }}
                       transition={{ duration: 0.35, delay: Math.min(i * 0.04, 0.3) }}
                       className="w-full flex justify-center"
                     >
