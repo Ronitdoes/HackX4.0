@@ -6,11 +6,7 @@ import NetflixCurtainBackground from "@/components/NetflixCurtainBackground/Netf
 import { TeamCard } from "./TeamCard";
 import { TEAM_MEMBERS, TeamYear, TeamCategory, TeamMember } from "@/data/team";
 
-interface TeamProps {
-  initialMembers?: TeamMember[];
-}
-
-export default function Team({ initialMembers }: TeamProps) {
+export default function Team() {
   const containerRef = useRef<HTMLDivElement>(null);
 
   const [selectedYear, setSelectedYear] = useState<TeamYear>("2026");
@@ -71,7 +67,7 @@ export default function Team({ initialMembers }: TeamProps) {
     },
   };
 
-  const allMembers = initialMembers && initialMembers.length > 0 ? initialMembers : TEAM_MEMBERS;
+  const allMembers = TEAM_MEMBERS;
 
   const currentMembers = useMemo(() => {
     return allMembers.filter(
