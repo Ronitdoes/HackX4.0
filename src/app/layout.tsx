@@ -6,6 +6,8 @@ import Footer from "@/components/Footer";
 import FluidShaderBackground from "@/components/FluidShaderBackground/FluidShaderBackground";
 import LenisProvider from "@/components/LenisProvider";
 import ViewportFix from "@/components/ViewportFix";
+import PageTransitionProvider from "@/components/PageTransitionProvider";
+import { NavTransitionProvider } from "@/context/NavTransitionContext";
 
 const oskariG2Sans = localFont({
   src: "../../public/assets/fonts/OskariG2Medium.otf",
@@ -46,12 +48,16 @@ export default function RootLayout({
       <body className="antialiased flex flex-col min-h-screen-stable justify-between bg-transparent text-white relative">
         <ViewportFix />
         <LenisProvider>
-          <FluidShaderBackground />
-          <Navbar />
-          <main className="flex-grow relative z-10">
-            {children}
-          </main>
-          <Footer />
+          <NavTransitionProvider>
+            <PageTransitionProvider>
+              <FluidShaderBackground />
+              <Navbar />
+              <main className="flex-grow relative z-10">
+                {children}
+              </main>
+              <Footer />
+            </PageTransitionProvider>
+          </NavTransitionProvider>
         </LenisProvider>
       </body>
     </html>

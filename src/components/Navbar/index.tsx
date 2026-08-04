@@ -6,6 +6,7 @@ import Link from "next/link";
 import dynamic from "next/dynamic";
 import gsap from "gsap";
 import { usePathname } from "next/navigation";
+import { useNavTransition } from "@/context/NavTransitionContext";
 
 const loadCircularNebulaShader = () =>
   import("@/components/CircularNebulaShader/CircularNebulaShader");
@@ -55,7 +56,7 @@ const isSameMenuItemTarget = (a: MenuItemTarget | undefined, b: MenuItemTarget) 
 
 export default function Navbar() {
   const pathname = usePathname();
-  const [isOpen, setIsOpen] = useState(false);
+  const { isOpen, setIsOpen } = useNavTransition();
   const prefersReducedMotion = useReducedMotion() ?? false;
   const isOpenRef = useRef(isOpen);
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -469,7 +470,11 @@ export default function Navbar() {
                         >
                           <Link
                             href={item.href}
-                            onClick={closeMenu}
+                            onClick={() => {
+                              if (item.href.includes("#")) {
+                                closeMenu();
+                              }
+                            }}
                             onMouseEnter={() => handleMenuItemHover(idx)}
                             aria-current={pathname === item.href ? "page" : undefined}
                             className="block text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-normal text-[#F9F6F0] font-sans cursor-pointer select-none"

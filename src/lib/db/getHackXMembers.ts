@@ -8,11 +8,17 @@ export async function getHackXMembers(): Promise<TeamMember[]> {
   }
 
   try {
-    const { data, error } = await supabase
+    const fetchPromise = supabase
       .from('hackx_members')
       .select('*')
       .eq('is_active', true)
       .order('display_order', { ascending: true });
+
+    const timeoutPromise = new Promise<{ data: null; error: { message: string } }>((resolve) =>
+      setTimeout(() => resolve({ data: null, error: { message: 'Fetch timeout (3s)' } }), 3000)
+    );
+
+    const { data, error } = await Promise.race([fetchPromise, timeoutPromise]);
 
     if (error || !data || data.length === 0) {
       if (error) {
