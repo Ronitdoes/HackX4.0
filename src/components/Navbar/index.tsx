@@ -59,7 +59,6 @@ export default function Navbar() {
   const prefersReducedMotion = useReducedMotion() ?? false;
   const isOpenRef = useRef(isOpen);
   const buttonRef = useRef<HTMLButtonElement>(null);
-  const headerBackdropRef = useRef<HTMLDivElement>(null);
   const line1Ref = useRef<HTMLSpanElement>(null);
   const line2Ref = useRef<HTMLSpanElement>(null);
   const hoverTimelineRef = useRef<gsap.core.Timeline | null>(null);
@@ -108,20 +107,6 @@ export default function Navbar() {
       if (idleId !== undefined) window.cancelIdleCallback(idleId);
       if (timeoutId !== undefined) globalThis.clearTimeout(timeoutId);
     };
-  }, []);
-
-  useEffect(() => {
-    const ua = navigator.userAgent.toLowerCase();
-    const isSafariBrowser =
-      ua.includes("safari") &&
-      !ua.includes("chrome") &&
-      !ua.includes("chromium") &&
-      !ua.includes("android");
-
-    if (isSafariBrowser && headerBackdropRef.current) {
-      headerBackdropRef.current.style.backdropFilter = "none";
-      headerBackdropRef.current.style.setProperty("-webkit-backdrop-filter", "none");
-    }
   }, []);
 
   const animationSpeed = prefersReducedMotion ? 0 : 1;
@@ -399,20 +384,6 @@ export default function Navbar() {
     <>
       {/* Sleek Floating Header Bar */}
       <header className="fixed top-0 left-0 z-[100] isolate h-24 w-full overflow-hidden px-7 md:h-32 md:px-12 flex justify-between items-center pointer-events-none">
-        <div
-          ref={headerBackdropRef}
-          aria-hidden="true"
-          className="absolute inset-0 z-0 transition-opacity duration-300"
-          style={{
-            background:
-              "linear-gradient(to bottom, rgba(4, 5, 16, 0.78) 0%, rgba(4, 5, 16, 0.48) 56%, rgba(4, 5, 16, 0.16) 82%, rgba(4, 5, 16, 0) 100%)",
-            backdropFilter: "blur(28px) saturate(1.35)",
-            WebkitBackdropFilter: "blur(28px) saturate(1.35)",
-            transform: "translateZ(0)",
-            willChange: "transform, opacity",
-            opacity: isOpen ? 0 : 1,
-          }}
-        />
         <button
           ref={buttonRef}
           type="button"
