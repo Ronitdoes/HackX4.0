@@ -31,7 +31,7 @@ const LANDING_CARDS: ScatteredCardConfig[] = [
   { sponsor: SPONSORS[4], left: "0vw", bottom: "4%", width: "16vw", height: "40%", zIndex: 3, rotate: 2, depth: 40 },
   { sponsor: SPONSORS[5], left: "18vw", bottom: "8%", width: "12vw", height: "30%", zIndex: 2, rotate: -3, depth: -45 },
   { sponsor: SPONSORS[6], left: "58vw", bottom: "0%", width: "14vw", height: "32%", zIndex: 2, rotate: 1, depth: 25 },
-  { sponsor: SPONSORS[7], left: "48vw", top: "32%", width: "8vw", height: "20%", zIndex: 1, rotate: -2, depth: -55 },
+  { sponsor: SPONSORS[7], left: "34vw", top: "14%", width: "9vw", height: "22%", zIndex: 1, rotate: -2, depth: -55 },
 ];
 
 // Helper to chunk array into groups of 4 (for 2x2 grids)
@@ -117,7 +117,7 @@ function Grid2x2Card({
 
   return (
     <motion.div
-      className="w-[260px] md:w-[310px] lg:w-[360px] h-[220px] md:h-[260px] lg:h-[300px] rounded-2xl overflow-hidden bg-white/[0.06] border border-white/[0.1] flex items-center justify-center p-6 md:p-8 hover:border-white/25 hover:bg-white/[0.12] transition-colors duration-300 flex-shrink-0"
+      className="w-[210px] md:w-[250px] lg:w-[290px] h-[175px] md:h-[210px] lg:h-[245px] rounded-2xl overflow-hidden bg-white/[0.06] border border-white/[0.1] flex items-center justify-center p-5 md:p-6 hover:border-white/25 hover:bg-white/[0.12] transition-colors duration-300 flex-shrink-0"
       style={{
         x: translateX,
         y: translateY,
@@ -245,14 +245,14 @@ export default function OurPartners() {
           </div>
 
           {/* --- VERTICAL DIVIDER LINE --- */}
-          <div className="w-[1px] h-[72vh] bg-white/20 flex-shrink-0 my-auto mx-6 md:mx-10" />
+          <div className="w-[1px] h-[60vh] bg-white/20 flex-shrink-0 my-auto mx-6 md:mx-10" />
 
           {/* --- SECTION 2: 2x2 Grid Blocks with Vertical Dividing Lines --- */}
-          <div className="relative h-full flex items-center pr-[8vw] gap-8 md:gap-12 flex-shrink-0">
+          <div className="relative h-full flex items-center pr-[8vw] gap-6 md:gap-10 flex-shrink-0">
             {SPONSOR_CHUNKS.map((chunk, blockIndex) => (
               <React.Fragment key={`block-${blockIndex}`}>
                 {/* 2x2 Grid (2 rows x 2 columns) */}
-                <div className="grid grid-rows-2 grid-cols-2 gap-5 md:gap-7 lg:gap-8 my-auto">
+                <div className="grid grid-rows-2 grid-cols-2 gap-4 md:gap-5 lg:gap-6 my-auto">
                   {chunk.map((sponsor, indexInChunk) => {
                     const globalIndex = blockIndex * 4 + indexInChunk;
                     return (
@@ -269,15 +269,13 @@ export default function OurPartners() {
 
                 {/* Vertical Divider Line between 2x2 grid blocks */}
                 {blockIndex < SPONSOR_CHUNKS.length - 1 && (
-                  <div className="w-[1px] h-[68vh] bg-white/20 flex-shrink-0 my-auto" />
+                  <div className="w-[1px] h-[56vh] bg-white/20 flex-shrink-0 my-auto" />
                 )}
               </React.Fragment>
             ))}
           </div>
         </div>
 
-        {/* Horizontal Baseline Divider Line */}
-        <div className="absolute bottom-8 left-8 right-8 h-[1px] bg-white/20 pointer-events-none" />
       </div>
 
       {/* Mobile Layout */}
