@@ -64,6 +64,7 @@ export default function WhyHackX() {
   const containerRef = useRef<HTMLDivElement>(null);
   const spacerRef = useRef<HTMLDivElement>(null);
   const progressLineRef = useRef<HTMLDivElement>(null);
+  const mainTlRef = useRef<gsap.core.Timeline | null>(null);
   const [isMobile, setIsMobile] = React.useState(false);
   
   // Refs to each item's wrapper for scroll entrance translations
@@ -84,8 +85,7 @@ export default function WhyHackX() {
   }, []);
 
   // Entirely scroll-bound animations built into a single scrubbed GSAP timeline.
-  // This removes React activeIndex state triggers, preventing snappy snaps or re-render flashes.
-  useGSAP(
+  const { contextSafe } = useGSAP(
     () => {
       const mm = gsap.matchMedia();
 
@@ -101,9 +101,10 @@ export default function WhyHackX() {
             trigger: spacerRef.current,
             start: "top top",
             end: "bottom bottom",
-            scrub: 1.6, // Silky catching-up interpolation
+            scrub: 1, // Smooth catching-up interpolation
           },
         });
+        mainTlRef.current = tl;
 
         const totalDuration = ITEMS.length * SEGMENT_DURATION + BUFFER_DURATION;
 
@@ -236,6 +237,52 @@ export default function WhyHackX() {
     { scope: containerRef }
   );
 
+  const [openItems, setOpenItems] = React.useState<{ [key: number]: boolean }>({});
+
+  const handleItemClick = contextSafe((index: number) => {
+    if (isMobile) return;
+
+    const isCurrentlyOpen = !!openItems[index];
+    const willBeOpen = !isCurrentlyOpen;
+
+    setOpenItems((prev) => ({
+      ...prev,
+      [index]: willBeOpen,
+    }));
+
+    const itemEl = itemRefs.current[index];
+    const titleEl = titleRefs.current[index];
+    const descWrapEl = descWrapRefs.current[index];
+    const descTextEl = descTextRefs.current[index];
+
+    if (!itemEl || !titleEl || !descWrapEl || !descTextEl) return;
+
+    if (willBeOpen) {
+      // Expand item in place on click
+      gsap.to(itemEl, { y: 0, duration: 0.4, ease: "power2.out" });
+      gsap.to(titleEl, { opacity: 1, color: "#ff7695", duration: 0.4, ease: "power2.out" });
+      gsap.to(descWrapEl, { height: "auto", duration: 0.4, ease: "power2.out" });
+      gsap.to(descTextEl, {
+        opacity: 1,
+        filter: "blur(0px)",
+        y: 0,
+        duration: 0.4,
+        ease: "power2.out",
+      });
+    } else {
+      // Collapse item in place on click close
+      gsap.to(titleEl, { opacity: 0.5, color: "#ff7695", duration: 0.35, ease: "power2.inOut" });
+      gsap.to(descWrapEl, { height: 0, duration: 0.35, ease: "power2.inOut" });
+      gsap.to(descTextEl, {
+        opacity: 0,
+        filter: "blur(10px)",
+        y: 10,
+        duration: 0.35,
+        ease: "power2.inOut",
+      });
+    }
+  });
+
   return (
     <section
       ref={containerRef}
@@ -284,7 +331,16 @@ export default function WhyHackX() {
                     ref={(el) => {
                       titleRefs.current[i] = el;
                     }}
-                    className="font-sans font-semibold uppercase tracking-[-0.02em] text-xl md:text-2xl lg:text-[2rem] leading-snug cursor-default text-[#ff7695] max-md:!opacity-100"
+                    onClick={() => handleItemClick(i)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" || e.key === " ") {
+                        e.preventDefault();
+                        handleItemClick(i);
+                      }
+                    }}
+                    role="button"
+                    tabIndex={0}
+                    className="font-sans font-semibold uppercase tracking-[-0.02em] text-xl md:text-2xl lg:text-[2rem] leading-snug cursor-pointer text-[#ff7695] max-md:!opacity-100 transition-all duration-200 hover:text-white hover:translate-x-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#ff7695]"
                     style={{
                       opacity: isMobile || i === 0 ? 1 : 0.5,
                       wordSpacing: "0.06em",
