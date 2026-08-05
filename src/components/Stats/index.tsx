@@ -382,18 +382,18 @@ export default function Stats() {
       </div>
 
       {/* Mobile view: 2x2 Grid, No scroll animation */}
-      <div className="block md:hidden w-full py-10 px-4 sm:px-6 select-none">
+      <div className="block md:hidden w-full py-8 px-4 sm:px-6 select-none">
         <div className="max-w-md mx-auto">
           <div className="grid grid-cols-2 gap-3 sm:gap-4">
             {STATS_DATA.map((sec) => (
               <div
                 key={sec.id}
-                className="relative w-full aspect-square overflow-hidden shadow-[0_10px_30px_rgba(0,0,0,0.5)] rounded-none"
+                className="relative w-full aspect-[5/6] overflow-hidden shadow-[0_10px_30px_rgba(0,0,0,0.5)] rounded-md bg-black/20"
               >
                 <img
                   src={sec.image}
                   alt={sec.title}
-                  className="w-full h-full object-cover rounded-none"
+                  className="w-full h-full object-contain rounded-md"
                   draggable={false}
                   loading="lazy"
                   decoding="async"

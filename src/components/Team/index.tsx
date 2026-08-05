@@ -95,7 +95,7 @@ export default function Team() {
   }, [currentMembers]);
 
   const handleYearSelect = (year: TeamYear) => {
-    if (year === "2024" && selectedCategory === "CORE") {
+    if ((year === "2024" || year === "2025") && selectedCategory === "CORE") {
       setSelectedCategory("EXECUTIVE");
     }
     setSelectedYear(year);
@@ -200,9 +200,9 @@ export default function Team() {
 
           {/* Sub-Category Filter (FACULTY EXECUTIVE CORE) */}
           <div className="flex items-center justify-center gap-6 sm:gap-10 pt-2">
-            {(selectedYear === "2024"
-              ? (["FACULTY", "EXECUTIVE"] as TeamCategory[])
-              : (["FACULTY", "EXECUTIVE", "CORE"] as TeamCategory[])
+            {(selectedYear === "2026"
+              ? (["FACULTY", "EXECUTIVE", "CORE"] as TeamCategory[])
+              : (["FACULTY", "EXECUTIVE"] as TeamCategory[])
             ).map((cat) => (
               <button
                 key={cat}
