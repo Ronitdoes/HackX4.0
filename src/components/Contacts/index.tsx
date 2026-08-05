@@ -63,28 +63,28 @@ const TRANSIT_INFO = [
 
 const CONVENERS = [
   {
-    name: "Aryan Verma",
+    name: "Tanmoy Mandal",
     role: "STUDENT CONVENER",
-    phone: "+91 8287044755",
-    email: "vermaryan1@gmail.com"
+    phone: "+91 8340157213",
+    email: "tanmaymandal1250@gmail.com"
   },
   {
-    name: "Samaksh Gupta",
+    name: "Dolly Srivastava",
     role: "STUDENT CONVENER",
-    phone: "+91 9871340076",
-    email: "samakshgupta04@gmail.com"
+    phone: "+91 7985008591",
+    email: "dolly8842vsecap@gmail.com"
   },
   {
-    name: "Tamanna Yadav",
+    name: "Arindam Sharma",
     role: "STUDENT CONVENER",
-    phone: "+91 8805147140",
-    email: "23yadav.tamanna@gmail.com"
+    phone: "+91 9877234162",
+    email: "arindamsharma05@gmail.com"
   },
   {
-    name: "Harshada Chandel",
+    name: "Anshuman Singh",
     role: "STUDENT CONVENER",
-    phone: "+91 9821970872",
-    email: "hcwork28@gmail.com"
+    phone: "+91 9978644964",
+    email: "anshuman.singh11166@gmail.com"
   }
 ];
 
@@ -243,10 +243,10 @@ export default function Contacts() {
                   <p>DEHMI KALAN, JAIPUR</p>
                   <p>RAJASTHAN 303007</p>
                   <a
-                    href="tel:+918287044755"
+                    href="tel:+918340157213"
                     className="mt-2 text-white/60 hover:text-white transition-colors"
                   >
-                    (+91) 8287044755
+                    (+91) 8340157213
                   </a>
                 </div>
               </div>
@@ -267,10 +267,10 @@ export default function Contacts() {
                   <div className="flex flex-col gap-1.5">
                     <span className="text-white/30 uppercase text-[11px] font-semibold tracking-widest">Student Conveners</span>
                     <div className="flex flex-col gap-1 text-white/60">
-                      <p className="text-white/80 font-medium">Aryan Verma</p>
+                      <p className="text-white/80 font-medium">Tanmoy Mandal</p>
                       <a href="mailto:vermaryan1@gmail.com" className="hover:text-white transition-colors underline decoration-white/20 underline-offset-2 break-all">vermaryan1@gmail.com</a>
 
-                      <p className="text-white/80 font-medium mt-1">Samaksh Gupta</p>
+                      <p className="text-white/80 font-medium mt-1">Arindam Sharma</p>
                       <a href="mailto:samakshgupta04@gmail.com" className="hover:text-white transition-colors underline decoration-white/20 underline-offset-2 break-all">samakshgupta04@gmail.com</a>
                     </div>
                   </div>
@@ -282,7 +282,7 @@ export default function Contacts() {
                 <span className="text-white/40 uppercase font-sans font-semibold text-[12px]">Follow</span>
                 <div className="flex flex-col gap-2 text-white/90 font-sans font-semibold">
                   <a
-                    href="https://instagram.com"
+                    href="https://www.instagram.com/muj.hackx/"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="w-fit underline decoration-white/30 underline-offset-4 hover:decoration-white transition-all"
@@ -290,20 +290,12 @@ export default function Contacts() {
                     INSTAGRAM
                   </a>
                   <a
-                    href="https://linkedin.com"
+                    href="https://www.linkedin.com/company/hackxmuj"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="w-fit underline decoration-white/30 underline-offset-4 hover:decoration-white transition-all"
                   >
                     LINKEDIN
-                  </a>
-                  <a
-                    href="https://facebook.com"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-fit underline decoration-white/30 underline-offset-4 hover:decoration-white transition-all"
-                  >
-                    FACEBOOK
                   </a>
                 </div>
               </div>
