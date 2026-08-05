@@ -55,7 +55,9 @@
   grid-template-columns: repeat(2, minmax(210px, 260px));
   gap: clamp(32px, 4.5vw, 56px) clamp(28px, 5vw, 64px);
   padding-top: clamp(8px, 2vw, 20px);
-  margin-right: clamp(40px, 8vw, 140px);
+  margin-right: 0;
+  margin-left: auto;
+  transform: translateX(clamp(60px, 10vw, 200px));
 }
 
 .team-card{
