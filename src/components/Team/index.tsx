@@ -235,7 +235,7 @@ export default function Team() {
                     {group.title}
                   </h2>
                 )}
-                <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2.5 sm:gap-4 md:gap-6">
+                <div className="flex flex-wrap justify-center gap-2.5 sm:gap-4 md:gap-6">
                   {group.members.map((member, i) => (
                     <motion.div
                       key={member.id || member.name}
@@ -243,7 +243,7 @@ export default function Team() {
                       whileInView={{ opacity: 1, y: 0 }}
                       viewport={{ once: true, margin: "50px" }}
                       transition={{ duration: 0.35, delay: Math.min(i * 0.04, 0.3) }}
-                      className="w-full flex justify-center"
+                      className="w-[calc(50%-0.35rem)] sm:w-[calc(50%-0.5rem)] md:w-[calc(33.333%-1rem)] lg:w-[calc(25%-1.15rem)] flex justify-center"
                     >
                       <TeamCard member={member} index={i} />
                     </motion.div>
