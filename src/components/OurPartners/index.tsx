@@ -66,7 +66,7 @@ function ParallaxScatteredCard({
 
   return (
     <motion.div
-      className="absolute rounded-lg overflow-hidden bg-white/[0.06] border border-white/[0.1] flex items-center justify-center p-4 md:p-5 hover:border-white/20 hover:bg-white/[0.1] transition-colors duration-300"
+      className="absolute flex items-center justify-center p-4 md:p-5"
       style={{
         left: config.left,
         top: config.top,
@@ -82,14 +82,14 @@ function ParallaxScatteredCard({
         transformPerspective: 800,
         willChange: "transform",
       }}
-      whileHover={{ scale: 1.08, transition: { duration: 0.35 } }}
+      whileHover={{ scale: 1.1, transition: { duration: 0.35 } }}
     >
       <div className="relative w-full h-full flex items-center justify-center">
         <Image
           src={config.sponsor.logo}
           alt={config.sponsor.name}
           fill
-          className="object-contain p-3 brightness-110 drop-shadow-sm"
+          className="object-contain p-2 brightness-110 drop-shadow-md"
           sizes="260px"
         />
       </div>

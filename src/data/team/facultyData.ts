@@ -18,6 +18,13 @@ const rawFacultyList: FacultyRawData[] = [
     subTeam: "FACULTY ORGANIZERS",
     image: `${R2_FACULTY_BASE}/Dr20Kuldip20Singh.webp`,
   },
+    {
+    name: "Dr. Sandeep Chaurasia",
+    role: "Organizer Co-Chair",
+    subTeam: "FACULTY ORGANIZERS",
+    email: "sandeep.chaurasia@jaipur.manipal.edu",
+    image: `${R2_FACULTY_BASE}/SANDEEP.webp`,
+  },
   {
     name: "Dr. C S Lamba",
     role: "Organizer Co-Chair",
@@ -26,41 +33,35 @@ const rawFacultyList: FacultyRawData[] = [
     image: `${R2_FACULTY_BASE}/CS-LAMBDA.webp`,
   },
   {
-    name: "Dr. Neha Chauhdhary",
-    role: "Organizer Co-Chair",
-    subTeam: "FACULTY ORGANIZERS",
-    email: "chaudhary.neha@jaipur.manipal.edu",
-    image: `${R2_FACULTY_BASE}/NEHA.webp`,
-  },
-  {
     name: "Dr. Rohit Bhatnagar",
     role: "Organizer Co-Chair",
     subTeam: "FACULTY ORGANIZERS",
     email: "roheet.bhatnagar@jaipur.manipal.edu",
     image: `${R2_FACULTY_BASE}/ROHEET.webp`,
   },
-  {
-    name: "Dr. Sandeep Chaurasia",
+    {
+    name: "Dr. Neha Chauhdhary",
     role: "Organizer Co-Chair",
     subTeam: "FACULTY ORGANIZERS",
-    email: "sandeep.chaurasia@jaipur.manipal.edu",
-    image: `${R2_FACULTY_BASE}/SANDEEP.webp`,
+    email: "chaudhary.neha@jaipur.manipal.edu",
+    image: `${R2_FACULTY_BASE}/NEHA.webp`,
   },
 
+
   // ── CONVENERS ──
+   {
+    name: "Dr. Juhi Singh",
+    role: "Convener",
+    subTeam: "FACULTY CONVENERS",
+    email: "juhi.singh@jaipur.manipal.edu",
+    image: `${R2_FACULTY_BASE}/JUHI.webp`,
+  },
   {
     name: "Dr. Shishir Singh Chauhan",
     role: "Convener",
     subTeam: "FACULTY CONVENERS",
     email: "shishir.chauhan@jaipur.manipal.edu",
     image: `${R2_FACULTY_BASE}/SHISHRI.webp`,
-  },
-  {
-    name: "Dr. Juhi Singh",
-    role: "Convener",
-    subTeam: "FACULTY CONVENERS",
-    email: "juhi.singh@jaipur.manipal.edu",
-    image: `${R2_FACULTY_BASE}/JUHI.webp`,
   },
 
   // ── FACULTY COORDINATORS ──
