@@ -93,57 +93,47 @@ export default function Ambassador() {
       />
 
       {/* Hero Section */}
-      <section ref={heroRef} className="relative w-full min-h-fit md:h-screen-stable flex flex-col items-center justify-center px-4 sm:px-6 md:px-12 select-none z-10 pt-24 pb-8 md:py-0 overflow-x-hidden">
-        <div className="relative flex flex-col items-center justify-center max-w-[95vw] md:max-w-[85vw] lg:max-w-[75vw] text-center">
+      <section ref={heroRef} className="relative w-full min-h-fit md:h-screen-stable flex flex-col items-center justify-center px-2 sm:px-4 md:px-6 select-none z-10 pt-24 pb-8 md:py-0 overflow-x-hidden">
+        <div className="relative flex flex-col items-center justify-center w-full max-w-[98vw] text-center">
+          {/* Subtitle */}
+          <div className="overflow-visible py-0.5 mb-3 sm:mb-4 md:mb-6">
+            <span className="hero-line block origin-bottom font-serif italic text-white text-base sm:text-xl md:text-2xl lg:text-3xl tracking-wide">
+              Be the representation of your campus!
+            </span>
+          </div>
+
+          {/* Main heading */}
           <h1
-            className="flex flex-col items-center justify-center font-sans font-black uppercase tracking-normal leading-[0.9] text-center text-[#FAF8F5]"
+            className="flex flex-col items-center justify-center font-sans font-black uppercase tracking-normal leading-[0.92] text-center w-full text-[#FAF8F5]"
             style={{
-              fontSize: "clamp(1.8rem, 6.2vw, 6.8rem)",
+              fontSize: "clamp(2.0rem, 7.6vw, 8.2rem)",
             }}
           >
-            {/* Subtitle / First line */}
-            <div className="overflow-visible py-1 md:py-2 mb-1 md:mb-4 px-2">
-              <span
-                className="hero-line block origin-bottom font-serif italic font-normal text-white/60 tracking-normal text-base sm:text-2xl md:text-3xl lg:text-4xl normal-case"
-              >
-                Be the representative of your campus!
-              </span>
-            </div>
-
             {/* Heading Line 1 */}
-            <div className="overflow-visible py-1 md:py-2 px-2">
-              <span
-                className="hero-line block origin-bottom font-extrabold text-[#FAF8F5]"
-              >
+            <div className="overflow-visible py-0.5 w-full">
+              <span className="hero-line block origin-bottom font-extrabold text-[#FAF8F5] whitespace-nowrap">
                 CAMPUS AMBASSADOR
               </span>
             </div>
 
             {/* Heading Line 2 */}
-            <div className="overflow-visible py-1 md:py-2 px-2">
-              <span
-                className="hero-line block origin-bottom text-transparent bg-clip-text bg-gradient-to-r from-[#D242D7] via-[#B86EF9] to-white/95 font-black"
-              >
+            <div className="overflow-visible py-0.5 w-full">
+              <span className="hero-line block origin-bottom text-[#F0ABFC] font-extrabold text-[0.74em] tracking-normal whitespace-nowrap">
                 OF MUJ HACKX 4.0!
               </span>
             </div>
           </h1>
 
           {/* Apply Now Button */}
-          <div
-            className="hero-btn mt-6 md:mt-12 pointer-events-auto"
-          >
+          <div className="hero-btn mt-6 md:mt-10 pointer-events-auto">
             <Link
               href="#apply"
-              className="relative inline-flex items-center justify-center px-10 py-5 rounded-full font-sans text-sm md:text-base font-semibold tracking-wider text-white uppercase border border-white/10 overflow-hidden group transition-all duration-300 hover:border-white/30 shadow-[0_0_20px_rgba(120,1,255,0.15)] hover:shadow-[0_0_35px_rgba(120,1,255,0.35)] bg-white/[0.03] backdrop-blur-md"
+              className="relative inline-flex items-center justify-center px-8 py-3.5 sm:px-10 sm:py-4 rounded-full font-sans text-xs sm:text-sm font-bold tracking-widest text-white uppercase border border-white/30 bg-white/10 backdrop-blur-md shadow-[0_8px_32px_rgba(0,0,0,0.37)] transition-all duration-300 hover:bg-white/20 hover:border-white/50 hover:scale-105"
+              style={{
+                WebkitBackdropFilter: "blur(12px)",
+              }}
             >
-              <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-[#7801FF]/20 to-[#D242D7]/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              <span className="relative z-10 flex items-center gap-2">
-                Apply Now
-                <span className="inline-block transition-transform duration-300 group-hover:translate-x-1">
-                  →
-                </span>
-              </span>
+              APPLY NOW!
             </Link>
           </div>
         </div>
