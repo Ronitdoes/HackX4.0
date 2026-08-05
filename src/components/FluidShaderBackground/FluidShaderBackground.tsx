@@ -449,8 +449,8 @@ export default function FluidShaderBackground() {
       const totalTimelineHeight = timelineSection
         ? timelineSection.getBoundingClientRect().height
         : isMobileView
-        ? 1680
-        : 5100;
+          ? 1680
+          : 5100;
 
       if (timelineSection) {
         const rect = timelineSection.getBoundingClientRect();
@@ -723,7 +723,7 @@ export default function FluidShaderBackground() {
         scrollTrigger: {
           trigger: sdgSection,
           start: "top bottom",
-          end: () => "+=" + (window.innerHeight * 5.6),
+          end: () => (window.innerWidth < 768 ? "bottom center" : "+=" + (window.innerHeight * 5.6)),
           scrub: 0.5,
           invalidateOnRefresh: true,
           refreshPriority: -10, // Calculate after layout-altering ScrollTriggers (like Stats pin spacing)
@@ -1007,20 +1007,10 @@ export default function FluidShaderBackground() {
                 repeatCount="indefinite"
               />
             </linearGradient>
-            <filter id="xOrganicNoise">
-              <feTurbulence type="fractalNoise" baseFrequency="0.70" numOctaves="1" result="noise" />
-              <feColorMatrix type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 0.08 0" result="coloredNoise" />
-              <feComposite in="SourceGraphic" in2="coloredNoise" operator="over" />
-            </filter>
           </defs>
           <path
             d="M335.279 0.25L559.355 400.69L894.574 999.75H559.721L335.645 599.31L0.425781 0.25H335.279ZM335.177 999.75H0.535156L335.177 600.119V999.75ZM894.465 0.25L559.823 399.88V0.25H894.465Z"
             fill="url(#movingGradient)"
-            filter="url(#xOrganicNoise)"
-            stroke="rgba(255, 255, 255, 0.25)"
-            strokeWidth="4.0"
-            strokeLinejoin="round"
-            strokeOpacity="0.35"
           />
         </svg>
       </div>
