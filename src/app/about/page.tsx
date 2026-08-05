@@ -47,60 +47,52 @@ export default function AboutPage() {
       <div className="w-full min-h-fit md:h-screen-stable flex flex-col items-center justify-center text-center px-6 md:px-12 select-none relative overflow-hidden pt-24 pb-8 md:py-0">
         
         {/* Centered Hero Typography */}
-        <div className="relative flex flex-col items-center justify-center max-w-[90vw] md:max-w-[75vw]">
-          <motion.h1
+        <div className="relative flex flex-col items-center justify-center w-full max-w-[98vw] sm:max-w-[90vw] md:max-w-[85vw] lg:max-w-[75vw] text-center">
+          <motion.div
             variants={containerVariants}
             initial="hidden"
             animate="visible"
-            className="flex flex-col items-center justify-center font-sans font-black uppercase tracking-normal leading-[0.95] text-center"
-            style={{
-              fontSize: "clamp(2rem, 5.8vw, 6.2rem)",
-              transform: "translateZ(0)",
-            }}
+            className="flex flex-col items-center justify-center text-center w-full"
           >
-            <div className="overflow-visible py-2 md:py-3 leading-normal px-4">
+            {/* Subtitle */}
+            <div className="overflow-hidden py-0.5 mb-3 sm:mb-4 md:mb-6">
               <motion.span
                 variants={lineVariants}
-                className="block origin-bottom font-serif italic font-normal text-white/50 lowercase tracking-normal leading-normal"
-                style={{ transform: "translateZ(0)" }}
+                className="block origin-bottom font-serif italic text-white text-lg sm:text-2xl md:text-3xl lg:text-4xl tracking-wide"
               >
-                why participate in
-              </motion.span>
-            </div>
-            
-            <div className="overflow-visible py-2 md:py-3 px-4">
-              <motion.span
-                variants={lineVariants}
-                className="block origin-bottom text-white font-extrabold"
-                style={{ transform: "translateZ(0)" }}
-              >
-                THE ARENA OF
+                Why participate in the arena of MUJ HackX 4.0?
               </motion.span>
             </div>
 
-            <div className="overflow-visible py-2 md:py-3 px-4">
-              <motion.span
-                variants={lineVariants}
-                className="block origin-bottom text-transparent bg-clip-text bg-gradient-to-r from-[#D242D7] via-[#B86EF9] to-white/95 font-black"
-                style={{ transform: "translateZ(0)" }}
-              >
-                HACKX 4.0?
-              </motion.span>
-            </div>
-          </motion.h1>
+            {/* Main Heading */}
+            <motion.h1
+              className="flex flex-col items-center justify-center font-sans font-black uppercase tracking-normal leading-[0.92] text-center w-full text-[#FAF8F5]"
+              style={{
+                fontSize: "clamp(3.0rem, 11vw, 9.5rem)",
+              }}
+            >
+              <div className="overflow-hidden py-0.5 w-full">
+                <motion.span
+                  variants={lineVariants}
+                  className="block origin-bottom font-extrabold text-[#FAF8F5] whitespace-nowrap"
+                >
+                  WHO ARE <span className="text-[#F0ABFC]">WE?</span>
+                </motion.span>
+              </div>
+            </motion.h1>
 
-          {/* Subtitle Description */}
-          <motion.p
-            variants={textVariants}
-            initial="hidden"
-            animate="visible"
-            className="mt-8 md:mt-10 max-w-2xl text-[#F9F6F0]/70 text-sm md:text-base lg:text-lg font-sans font-normal leading-relaxed"
-            style={{ transform: "translateZ(0)" }}
-          >
-            Step into a 36-hour sandbox of pure innovation. Turn your wildest ideas into reality, 
-            collaborate with exceptional minds, and pitch to leading tech founders. This is where 
-            your journey accelerates.
-          </motion.p>
+            {/* Subtitle Description */}
+            <motion.p
+              variants={textVariants}
+              initial="hidden"
+              animate="visible"
+              className="mt-6 md:mt-8 max-w-3xl text-white text-[17px] md:text-[20px] font-sans font-normal leading-relaxed text-center"
+            >
+              Step into a 36-hour sandbox of pure innovation. Turn your wildest ideas into reality, 
+              collaborate with exceptional minds, and pitch to leading tech founders. This is where 
+              your journey accelerates.
+            </motion.p>
+          </motion.div>
         </div>
 
 
