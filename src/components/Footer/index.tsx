@@ -99,9 +99,8 @@ export default function Footer() {
 
         <div className={styles["footer-meta"]}>
           <div className={styles["social-links"]}>
-            <a href="#facebook">Facebook</a>
-            <a href="#linkedin">LinkedIn</a>
-            <a href="#instagram">Instagram</a>
+            <a href="https://www.linkedin.com/company/hackxmuj">LinkedIn</a>
+            <a href="https://www.instagram.com/muj.hackx/">Instagram</a>
           </div>
           <p className={styles.copyright}>© <span className={styles.year}>{year || "2026"}</span> All rights reserved. MUJHACKX.</p>
         </div>
