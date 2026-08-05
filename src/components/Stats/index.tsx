@@ -10,33 +10,27 @@ gsap.registerPlugin(ScrollTrigger);
 const STATS_DATA = [
   {
     id: "01",
-    title: "genesis",
+    title: "UNIVERSITIES",
     caption: "What started in China as a creative partnership which became the foundation of everything we've built. The curiosity never stops there.",
-    image: "https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&w=1000&q=85",
+    image: "https://pub-45c102ac14a64011a530ed2864a18405.r2.dev/hackx/1785920134883_ejgpg.avif",
   },
   {
     id: "02",
-    title: "footing",
+    title: "PARTICIPANTS",
     caption: "Saigon is where we found our footing. Fast, ambitious, never satisfied — shaped how we work and what we expect from ourselves.",
-    image: "https://images.unsplash.com/photo-1549490349-8643362247b5?auto=format&fit=crop&w=1000&q=85",
+    image: "https://pub-45c102ac14a64011a530ed2864a18405.r2.dev/hackx/1785920124566_7bh44k.avif",
   },
   {
     id: "03",
-    title: "expansion",
+    title: "PATENTS",
     caption: "But good work doesn't stay in one place — and neither did we. We go wherever the next brief takes us.",
-    image: "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1000&q=85",
+    image: "https://pub-45c102ac14a64011a530ed2864a18405.r2.dev/hackx/1785920143453_k93m3g.avif",
   },
   {
     id: "04",
-    title: "synergy",
+    title: "PROJECTS",
     caption: "The offices gave us roots in new places. The people gave us reasons to keep going.",
-    image: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1000&q=85",
-  },
-  {
-    id: "05",
-    title: "future",
-    caption: "We build digital products that move people, redefine categories, and stand the test of time.",
-    image: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1000&q=85",
+    image: "https://pub-45c102ac14a64011a530ed2864a18405.r2.dev/hackx/1785920153789_2h6o4q.avif",
   }
 ];
 
@@ -391,13 +385,13 @@ export default function Stats() {
       <div className="block md:hidden w-full py-10 px-4 sm:px-6 select-none">
         <div className="max-w-md mx-auto">
           <div className="grid grid-cols-2 gap-3 sm:gap-4">
-            {STATS_DATA.slice(0, 4).map((sec) => (
+            {STATS_DATA.map((sec) => (
               <div
                 key={sec.id}
                 className="relative w-full aspect-square overflow-hidden shadow-[0_10px_30px_rgba(0,0,0,0.5)] rounded-none"
               >
                 <img
-                  src={sec.image.replace("w=1000&q=85", "w=400&q=80")}
+                  src={sec.image}
                   alt={sec.title}
                   className="w-full h-full object-cover rounded-none"
                   draggable={false}
