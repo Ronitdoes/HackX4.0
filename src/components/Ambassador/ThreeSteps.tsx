@@ -226,7 +226,7 @@ export default function ThreeSteps() {
                 IN 3 SIMPLE STEPS
               </span>
             </h2>
-            <p className="font-sans text-white/60 text-sm md:text-base mt-4 max-w-[480px] leading-relaxed md:ml-auto text-center md:text-left">
+            <p className="font-sans text-white text-[17px] md:text-[19px] mt-4 max-w-[520px] leading-relaxed md:ml-auto text-center md:text-left font-normal">
               As a Campus Ambassador, you will be responsible for promoting our brand on campus, organizing and hosting events and workshops, engaging with students and gathering feedback, and representing our company at campus fairs and events.
             </p>
           </div>

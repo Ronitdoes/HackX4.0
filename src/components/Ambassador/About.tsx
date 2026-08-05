@@ -93,20 +93,6 @@ export default function About() {
               transform: "translateZ(0)",
             }}
           >
-            {/* Ambient Background Glow inside Card */}
-            <div 
-              className="absolute -top-24 -left-24 w-48 h-48 rounded-full pointer-events-none select-none z-0 filter blur-[50px] opacity-25 will-change-transform"
-              style={{
-                background: "var(--color-magenta, #D242D7)",
-              }}
-            />
-            <div 
-              className="absolute -bottom-24 -right-24 w-48 h-48 rounded-full pointer-events-none select-none z-0 filter blur-[50px] opacity-20 will-change-transform"
-              style={{
-                background: "var(--color-violet, #7801FF)",
-              }}
-            />
-
             <div className="relative z-10 flex flex-col gap-6 md:gap-8">
               <p
                 className="font-sans text-white text-lg md:text-xl lg:text-2xl leading-relaxed font-medium text-center"
