@@ -16,41 +16,6 @@ export default function Footer() {
 
   return (
     <footer className={styles["site-footer"]}>
-      <div className={styles.glow} aria-hidden="true">
-        <svg viewBox="0 0 1400 900" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <radialGradient id="g1" cx="50%" cy="30%" r="60%">
-              <stop offset="0%" stopColor="#A223ED" stopOpacity="0.5"/>
-              <stop offset="100%" stopColor="#A223ED" stopOpacity="0"/>
-            </radialGradient>
-            <radialGradient id="g2" cx="35%" cy="55%" r="45%">
-              <stop offset="0%" stopColor="#572CE6" stopOpacity="0.55"/>
-              <stop offset="100%" stopColor="#572CE6" stopOpacity="0"/>
-            </radialGradient>
-            <radialGradient id="g3" cx="65%" cy="55%" r="45%">
-              <stop offset="0%" stopColor="#C076EC" stopOpacity="0.45"/>
-              <stop offset="100%" stopColor="#C076EC" stopOpacity="0"/>
-            </radialGradient>
-            <radialGradient id="g4" cx="50%" cy="72%" r="40%">
-              <stop offset="0%" stopColor="#3a1470" stopOpacity="0.7"/>
-              <stop offset="100%" stopColor="#3a1470" stopOpacity="0"/>
-            </radialGradient>
-          </defs>
-          <rect width="1400" height="900" fill="url(#g1)"/>
-          <rect width="1400" height="900" fill="url(#g2)"/>
-          <rect width="1400" height="900" fill="url(#g3)"/>
-          <rect width="1400" height="900" fill="url(#g4)"/>
-          <g stroke="#A223ED" strokeOpacity="0.3" strokeWidth="60" strokeLinecap="round">
-            <line x1="700" y1="450" x2="430" y2="180"/>
-            <line x1="700" y1="450" x2="970" y2="180"/>
-            <line x1="700" y1="450" x2="430" y2="720"/>
-            <line x1="700" y1="450" x2="970" y2="720"/>
-            <line x1="700" y1="450" x2="700" y2="150"/>
-            <line x1="700" y1="450" x2="700" y2="800"/>
-          </g>
-        </svg>
-      </div>
-
       <div className={styles["hero-row"]}>
         <div className="flex flex-col items-start gap-4">
           <h2 className={styles["hero-headline"]}>
@@ -99,9 +64,8 @@ export default function Footer() {
 
         <div className={styles["footer-meta"]}>
           <div className={styles["social-links"]}>
-            <a href="#facebook">Facebook</a>
-            <a href="#linkedin">LinkedIn</a>
-            <a href="#instagram">Instagram</a>
+            <a href="https://www.linkedin.com/company/hackxmuj">LinkedIn</a>
+            <a href="https://www.instagram.com/muj.hackx/">Instagram</a>
           </div>
           <p className={styles.copyright}>© <span className={styles.year}>{year || "2026"}</span> All rights reserved. MUJHACKX.</p>
         </div>

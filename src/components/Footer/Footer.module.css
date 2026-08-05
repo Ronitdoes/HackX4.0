@@ -1,22 +1,12 @@
 
 .site-footer{
-  --bg: rgba(12, 10, 22, 0.1);
-  --bg-soft: #14101f;
   --cream: #f4efe2;
   --gray: #8b8f98;
   --gray-dim: #565a63;
-  --glow-a: #572CE6;
-  --glow-b: #A223ED;
-  --glow-c: #C076EC;
-  --hairline: rgba(244,239,226,0.12);
 
   position: relative;
   z-index: 20;
-  background: linear-gradient(to bottom, transparent 0%, var(--bg) 5%, var(--bg) 100%);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  mask-image: linear-gradient(to bottom, transparent 0%, black 5%, black 100%);
-  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 5%, black 100%);
+  background: transparent;
   overflow: hidden;
   padding-top: clamp(100px, 12vw, 160px);
   padding-bottom: clamp(20px, 3vw, 40px);
@@ -29,21 +19,6 @@
   font-family: var(--font-sans), sans-serif;
   -webkit-font-smoothing: antialiased;
 }
-
-/* ---------- ambient glow ---------- */
-.glow{
-  position: absolute;
-  top: 8%;
-  left: 50%;
-  width: min(1400px, 140vw);
-  height: 900px;
-  transform: translateX(-38%);
-  pointer-events: none;
-  z-index: 0;
-  filter: blur(60px);
-  opacity: 0.85;
-}
-.glow svg{ width:100%; height:100%; }
 
 /* ---------- hero row ---------- */
 .hero-row{
