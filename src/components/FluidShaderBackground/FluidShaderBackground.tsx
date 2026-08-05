@@ -560,9 +560,9 @@ export default function FluidShaderBackground() {
         grainOverlay.style.opacity = `${0.09 + timelineProgress * 0.07}`;
       }
 
-      const fromColor = interpolateHex("#4c00b0", "#006640", targetColorTransition);
-      const viaColor = interpolateHex("#26005c", "#003824", targetColorTransition);
-      const toColor = interpolateHex("#12002e", "#001a11", targetColorTransition);
+      const fromColor = interpolateHex("#180038", "#003320", targetColorTransition);
+      const viaColor = interpolateHex("#0d0021", "#001c12", targetColorTransition);
+      const toColor = interpolateHex("#05000d", "#000d08", targetColorTransition);
       document.documentElement.style.setProperty("--bg-gradient-from", fromColor);
       document.documentElement.style.setProperty("--bg-gradient-via", viaColor);
       document.documentElement.style.setProperty("--bg-gradient-to", toColor);
@@ -620,9 +620,9 @@ export default function FluidShaderBackground() {
         grainOverlayRef.current.style.opacity = "0.09";
       }
       document.documentElement.style.setProperty("--logo-hue-rotate", "0deg");
-      document.documentElement.style.setProperty("--bg-gradient-from", "#4c00b0");
-      document.documentElement.style.setProperty("--bg-gradient-via", "#26005c");
-      document.documentElement.style.setProperty("--bg-gradient-to", "#12002e");
+      document.documentElement.style.setProperty("--bg-gradient-from", "#180038");
+      document.documentElement.style.setProperty("--bg-gradient-via", "#0d0021");
+      document.documentElement.style.setProperty("--bg-gradient-to", "#05000d");
     };
   }, [defaultLogoTransform, pathname]);
 
@@ -646,9 +646,9 @@ export default function FluidShaderBackground() {
       shaderParams.current = { zoom: 1.25, colorTransition: 0.0 };
 
       document.documentElement.style.setProperty("--logo-hue-rotate", "0deg");
-      document.documentElement.style.setProperty("--bg-gradient-from", "#4c00b0");
-      document.documentElement.style.setProperty("--bg-gradient-via", "#26005c");
-      document.documentElement.style.setProperty("--bg-gradient-to", "#12002e");
+      document.documentElement.style.setProperty("--bg-gradient-from", "#180038");
+      document.documentElement.style.setProperty("--bg-gradient-via", "#0d0021");
+      document.documentElement.style.setProperty("--bg-gradient-to", "#05000d");
 
       const logoContainer = logoContainerRef.current;
       const blurOverlay = blurOverlayRef.current;
@@ -702,9 +702,9 @@ export default function FluidShaderBackground() {
 
       // Animatable objects to handle precise color, degree, blur, and grain interpolation natively in GSAP
       const bgColors = {
-        from: "#4c00b0",
-        via: "#26005c",
-        to: "#12002e"
+        from: "#180038",
+        via: "#0d0021",
+        to: "#05000d"
       };
 
       const logoColors = {
@@ -823,14 +823,12 @@ export default function FluidShaderBackground() {
           }
         }, 0);
 
-        if (!isMobileView) {
-          tl.to(logoContainer, {
-            scale: 1.9,
-            filter: "blur(1px)",
-            duration: 1,
-            ease: "power1.out"
-          }, 0);
-        }
+        tl.to(logoContainer, {
+          scale: isMobileView ? 1.35 : 1.9,
+          filter: isMobileView ? "blur(0.5px)" : "blur(1px)",
+          duration: 1,
+          ease: "power1.out"
+        }, 0);
       }
 
       // Transition OUT (4.6 to 5.6)
@@ -859,9 +857,9 @@ export default function FluidShaderBackground() {
       }, 4.6);
 
       tl.to(bgColors, {
-        from: "#4c00b0",
-        via: "#26005c",
-        to: "#12002e",
+        from: "#180038",
+        via: "#0d0021",
+        to: "#05000d",
         duration: 1,
         ease: "power1.in",
         onUpdate: () => {
@@ -924,14 +922,12 @@ export default function FluidShaderBackground() {
           }
         }, 4.6);
 
-        if (!isMobileView) {
-          tl.to(logoContainer, {
-            scale: 1.0,
-            filter: "blur(0px)",
-            duration: 1,
-            ease: "power1.in"
-          }, 4.6);
-        }
+        tl.to(logoContainer, {
+          scale: 1.0,
+          filter: isMobileView ? "blur(0.5px)" : "blur(0px)",
+          duration: 1,
+          ease: "power1.in"
+        }, 4.6);
       }
     };
 
@@ -956,7 +952,7 @@ export default function FluidShaderBackground() {
         style={{
           zIndex: -20,
           height: "calc(var(--vh, 1vh) * 100)",
-          background: "radial-gradient(ellipse at center, var(--bg-gradient-from, #4c00b0) 0%, var(--bg-gradient-via, #26005c) 60%, var(--bg-gradient-to, #12002e) 100%)",
+          background: "radial-gradient(ellipse at center, var(--bg-gradient-from, #180038) 0%, var(--bg-gradient-via, #0d0021) 60%, var(--bg-gradient-to, #05000d) 100%)",
         }}
       />
 
@@ -970,12 +966,12 @@ export default function FluidShaderBackground() {
           transformOrigin: "center center",
           transform: "translateZ(0)",
           willChange: "transform, opacity",
-          "--x-color-stop-0": "#5200c7",
-          "--x-color-stop-33": "#ae73f2",
-          "--x-color-stop-66": "#7801ff",
-          "--x-color-stop-100": "#5200c7",
-          "--x-shadow-1": "rgba(174, 115, 242, 0.35)",
-          "--x-shadow-2": "rgba(82, 0, 199, 0.30)",
+          "--x-color-stop-0": isMobile ? "#6b11e0" : "#5200c7",
+          "--x-color-stop-33": isMobile ? "#bd8aff" : "#ae73f2",
+          "--x-color-stop-66": isMobile ? "#8f26ff" : "#7801ff",
+          "--x-color-stop-100": isMobile ? "#6b11e0" : "#5200c7",
+          "--x-shadow-1": isMobile ? "rgba(189, 138, 255, 0.6)" : "rgba(174, 115, 242, 0.35)",
+          "--x-shadow-2": isMobile ? "rgba(107, 17, 224, 0.5)" : "rgba(82, 0, 199, 0.30)",
         } as React.CSSProperties}
       >
         <svg
@@ -984,12 +980,14 @@ export default function FluidShaderBackground() {
           xmlns="http://www.w3.org/2000/svg"
           className="transition-opacity duration-700"
           style={{
-            height: "calc(var(--vh, 1vh) * 28)",
-            width: "calc(var(--vh, 1vh) * 25.06)",
-            opacity: 0.65,
+            height: isMobile ? "min(48vh, 72vw)" : "calc(var(--vh, 1vh) * 28)",
+            width: isMobile ? "min(42.96vh, 64.44vw)" : "calc(var(--vh, 1vh) * 25.06)",
+            opacity: isMobile ? 0.85 : 0.65,
             transform: "translateZ(0)",
             willChange: "transform",
-            filter: "blur(1.5px) drop-shadow(0 0 20px var(--x-shadow-1, rgba(174, 115, 242, 0.35))) drop-shadow(0 0 40px var(--x-shadow-2, rgba(82, 0, 199, 0.30)))",
+            filter: isMobile
+              ? "blur(0.5px) drop-shadow(0 0 30px var(--x-shadow-1, rgba(189, 138, 255, 0.6))) drop-shadow(0 0 60px var(--x-shadow-2, rgba(107, 17, 224, 0.5)))"
+              : "blur(1.5px) drop-shadow(0 0 20px var(--x-shadow-1, rgba(174, 115, 242, 0.35))) drop-shadow(0 0 40px var(--x-shadow-2, rgba(82, 0, 199, 0.30)))",
           }}
         >
           <defs>
@@ -1037,7 +1035,7 @@ export default function FluidShaderBackground() {
           height: "calc(var(--vh, 1vh) * 100)",
           transform: "translateZ(0)",
           willChange: "transform, opacity",
-          background: "linear-gradient(115deg, rgba(76, 0, 176, 0.10), rgba(38, 0, 92, 0.03) 55%, rgba(18, 0, 46, 0.08))",
+          background: "linear-gradient(115deg, rgba(24, 0, 56, 0.10), rgba(13, 0, 33, 0.03) 55%, rgba(5, 0, 13, 0.08))",
         }}
       />
 

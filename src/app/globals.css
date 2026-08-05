@@ -8,11 +8,11 @@
   --color-purple: #B86EF9;
   --color-magenta: #D242D7;
   --color-white: #FFFFFF;
-  --color-bg: #26005c;
+  --color-bg: #0d0021;
   --logo-hue-rotate: 0deg;
-  --bg-gradient-from: #4c00b0;
-  --bg-gradient-via: #26005c;
-  --bg-gradient-to: #12002e;
+  --bg-gradient-from: #180038;
+  --bg-gradient-via: #0d0021;
+  --bg-gradient-to: #05000d;
 }
 
 * {
@@ -34,7 +34,7 @@
 }
 
 html {
-  background-color: #12002e;
+  background-color: #05000d;
   min-height: calc(var(--vh, 1vh) * 100);
 }
 
