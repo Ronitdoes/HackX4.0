@@ -68,24 +68,24 @@ export default function Footer() {
 
         <div className={styles["team-grid"]}>
           <div className={styles["team-card"]}>
-            <p className={styles["team-name"]}>Aryan Verma</p>
-            <p className={styles["team-phone"]}>+91 8287044755</p>
-            <a className={styles["team-email"]} href="mailto:vermaryan1@gmail.com">vermaryan1@gmail.com</a>
+            <p className={styles["team-name"]}>Tanmoy Mandal</p>
+            <p className={styles["team-phone"]}>+91 8340157213</p>
+            <a className={styles["team-email"]} href="mailto:tanmaymandal1250@gmail.com">tanmaymandal1250@gmail.com</a>
           </div>
           <div className={styles["team-card"]}>
-            <p className={styles["team-name"]}>Samaksh Gupta</p>
-            <p className={styles["team-phone"]}>+91 9871340076</p>
-            <a className={styles["team-email"]} href="mailto:samakshgupta04@gmail.com">samakshgupta04@gmail.com</a>
+            <p className={styles["team-name"]}>Dolly Srivastava</p>
+            <p className={styles["team-phone"]}>+91 7985008591</p>
+            <a className={styles["team-email"]} href="mailto:dolly8842vsecap@gmail.com">dolly8842vsecap@gmail.com</a>
           </div>
           <div className={styles["team-card"]}>
-            <p className={styles["team-name"]}>Tamanna Yadav</p>
-            <p className={styles["team-phone"]}>+91 8860514740</p>
-            <a className={styles["team-email"]} href="mailto:23yadav.tamanna@gmail.com">23yadav.tamanna@gmail.com</a>
+            <p className={styles["team-name"]}>Arindam Sharma</p>
+            <p className={styles["team-phone"]}>+91 9877234162</p>
+            <a className={styles["team-email"]} href="arindamsharma05@gmail.com">arindamsharma05@gmail.com</a>
           </div>
           <div className={styles["team-card"]}>
-            <p className={styles["team-name"]}>Harshada Chandel</p>
-            <p className={styles["team-phone"]}>+91 9821970872</p>
-            <a className={styles["team-email"]} href="mailto:hcwork28@gmail.com">hcwork28@gmail.com</a>
+            <p className={styles["team-name"]}>Anshuman Singh</p>
+            <p className={styles["team-phone"]}>+91 9978644964</p>
+            <a className={styles["team-email"]} href="anshuman.singh11166@gmail.com">anshuman.singh11166@gmail.com</a>
           </div>
         </div>
       </div>
