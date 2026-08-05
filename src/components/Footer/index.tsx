@@ -45,12 +45,12 @@ export default function Footer() {
           <div className={styles["team-card"]}>
             <p className={styles["team-name"]}>Arindam Sharma</p>
             <p className={styles["team-phone"]}>+91 9877234162</p>
-            <a className={styles["team-email"]} href="arindamsharma05@gmail.com">arindamsharma05@gmail.com</a>
+            <a className={styles["team-email"]} href="mailto:arindamsharma05@gmail.com">arindamsharma05@gmail.com</a>
           </div>
           <div className={styles["team-card"]}>
             <p className={styles["team-name"]}>Anshuman Singh</p>
             <p className={styles["team-phone"]}>+91 9978644964</p>
-            <a className={styles["team-email"]} href="anshuman.singh11166@gmail.com">anshuman.singh11166@gmail.com</a>
+            <a className={styles["team-email"]} href="mailto:anshuman.singh11166@gmail.com">anshuman.singh11166@gmail.com</a>
           </div>
         </div>
       </div>
@@ -64,8 +64,8 @@ export default function Footer() {
 
         <div className={styles["footer-meta"]}>
           <div className={styles["social-links"]}>
-            <a href="https://www.linkedin.com/company/hackxmuj">LinkedIn</a>
-            <a href="https://www.instagram.com/muj.hackx/">Instagram</a>
+            <a href="https://www.linkedin.com/company/hackxmuj" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+            <a href="https://www.instagram.com/muj.hackx/" target="_blank" rel="noopener noreferrer">Instagram</a>
           </div>
           <p className={styles.copyright}>© <span className={styles.year}>{year || "2026"}</span> All rights reserved. MUJHACKX.</p>
         </div>
