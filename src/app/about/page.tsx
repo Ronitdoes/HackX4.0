@@ -3,6 +3,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import WhyHackX from "@/components/WhyHackX";
+import Stats from "@/components/Stats";
 import OurPartners from "@/components/OurPartners";
 
 export default function AboutPage() {
@@ -100,6 +101,9 @@ export default function AboutPage() {
 
       {/* Sticky Content Section */}
       <WhyHackX />
+
+      {/* Stats Section */}
+      <Stats />
 
       {/* Our Partners Section */}
       <OurPartners />

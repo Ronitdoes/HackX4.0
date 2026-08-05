@@ -54,11 +54,16 @@ export default function Stats() {
 
   const scrollToSection = (index: number) => {
     if (typeof window === "undefined") return;
-
-    window.scrollTo({
-      top: index * window.innerHeight,
-      behavior: "smooth"
-    });
+    const trigger = ScrollTrigger.getById("stats-scroll-trigger");
+    if (trigger) {
+      const targetY = trigger.start + (index / (STATS_DATA.length - 1)) * (trigger.end - trigger.start);
+      window.scrollTo({ top: targetY, behavior: "smooth" });
+    } else {
+      window.scrollTo({
+        top: index * window.innerHeight,
+        behavior: "smooth"
+      });
+    }
   };
 
   useGSAP(() => {
@@ -141,11 +146,15 @@ export default function Stats() {
         // Create standard timeline linked to ScrollTrigger pinning (smooth scroll-scrub without snapping)
         const tl = gsap.timeline({
           scrollTrigger: {
+            id: "stats-scroll-trigger",
             trigger: containerRef.current,
             start: "top top",
             end: () => `+=${(STATS_DATA.length - 1) * window.innerHeight}`,
             scrub: 1,
             pin: true,
+            pinSpacing: true,
+            anticipatePin: 1,
+            refreshPriority: 1,
             onUpdate: (self) => {
               const progress = self.progress;
               const index = Math.round(progress * (STATS_DATA.length - 1));
@@ -265,6 +274,13 @@ export default function Stats() {
     if (containerRef.current) {
       gsap.to(containerRef.current, { opacity: 1, duration: 0.4 });
     }
+
+    // Refresh all ScrollTriggers on page to calculate correct pin spacing
+    const refreshTimer = setTimeout(() => {
+      ScrollTrigger.refresh();
+    }, 200);
+
+    return () => clearTimeout(refreshTimer);
   }, { scope: containerRef, dependencies: [isReady] });
 
   return (
