@@ -257,7 +257,7 @@ export default function SdgComponent() {
     <section id="sdg-section" className="w-full bg-transparent select-none overflow-hidden">
       <div className="hidden h-[37vh] items-end justify-center md:flex">
         <h2 className="font-serif italic text-white text-[9vw] sm:text-[13vw] lg:text-[12vw] leading-[0.85] text-center tracking-normal whitespace-nowrap">
-          OUR GOALS
+          OUR THEMES
         </h2>
       </div>
       {/* Desktop View: Pinned Arc Conveyor */}
@@ -339,7 +339,7 @@ export default function SdgComponent() {
           {/* Header */}
           <div className="text-center mb-3">
             <span className="font-serif italic text-white text-[17vw] sm:text-[15vw] lg:text-[13.5vw] leading-[0.85] text-center tracking-normal whitespace-nowrap">
-              OUR GOALS
+              OUR THEMES
             </span>
           </div>
           
