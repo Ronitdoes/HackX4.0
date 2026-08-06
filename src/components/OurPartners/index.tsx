@@ -6,12 +6,12 @@ import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
-import { SPONSORS } from "@/data/sponsors";
+import { LANDING_SPONSORS, GRID_SPONSORS, SPONSORS, Sponsor } from "@/data/sponsors";
 
 gsap.registerPlugin(ScrollTrigger);
 
 interface ScatteredCardConfig {
-  sponsor: (typeof SPONSORS)[number];
+  sponsor: Sponsor;
   left: string;
   top?: string;
   bottom?: string;
@@ -22,16 +22,16 @@ interface ScatteredCardConfig {
   depth: number;
 }
 
-// 8 Landing Scattered Cards (Viewport 1)
+// 8 Landing Scattered Cards (Viewport 1) - All uniform size
 const LANDING_CARDS: ScatteredCardConfig[] = [
-  { sponsor: SPONSORS[0], left: "2vw", top: "4%", width: "14vw", height: "42%", zIndex: 2, rotate: -2, depth: 35 },
-  { sponsor: SPONSORS[1], left: "80vw", top: "0%", width: "18vw", height: "28%", zIndex: 3, rotate: 1, depth: -20 },
-  { sponsor: SPONSORS[2], left: "64vw", top: "6%", width: "10vw", height: "24%", zIndex: 2, rotate: 3, depth: 50 },
-  { sponsor: SPONSORS[3], left: "74vw", top: "30%", width: "16vw", height: "48%", zIndex: 4, rotate: -1, depth: -30 },
-  { sponsor: SPONSORS[4], left: "0vw", bottom: "4%", width: "16vw", height: "40%", zIndex: 3, rotate: 2, depth: 40 },
-  { sponsor: SPONSORS[5], left: "18vw", bottom: "8%", width: "12vw", height: "30%", zIndex: 2, rotate: -3, depth: -45 },
-  { sponsor: SPONSORS[6], left: "58vw", bottom: "0%", width: "14vw", height: "32%", zIndex: 2, rotate: 1, depth: 25 },
-  { sponsor: SPONSORS[7], left: "34vw", top: "14%", width: "9vw", height: "22%", zIndex: 1, rotate: -2, depth: -55 },
+  { sponsor: LANDING_SPONSORS[0], left: "3vw", top: "8%", width: "14vw", height: "25%", zIndex: 2, rotate: -2, depth: 35 },
+  { sponsor: LANDING_SPONSORS[1], left: "78vw", top: "6%", width: "14vw", height: "25%", zIndex: 3, rotate: 1, depth: -20 },
+  { sponsor: LANDING_SPONSORS[2], left: "62vw", top: "8%", width: "14vw", height: "25%", zIndex: 2, rotate: 3, depth: 50 },
+  { sponsor: LANDING_SPONSORS[3], left: "76vw", top: "58%", width: "14vw", height: "25%", zIndex: 4, rotate: -1, depth: -30 },
+  { sponsor: LANDING_SPONSORS[4], left: "2vw", bottom: "6%", width: "14vw", height: "25%", zIndex: 3, rotate: 2, depth: 40 },
+  { sponsor: LANDING_SPONSORS[5], left: "18vw", bottom: "8%", width: "14vw", height: "25%", zIndex: 2, rotate: -3, depth: -45 },
+  { sponsor: LANDING_SPONSORS[6], left: "58vw", bottom: "6%", width: "14vw", height: "25%", zIndex: 2, rotate: 1, depth: 25 },
+  { sponsor: LANDING_SPONSORS[7], left: "28vw", top: "6%", width: "14vw", height: "25%", zIndex: 1, rotate: -2, depth: -55 },
 ];
 
 // Helper to chunk array into groups of 4 (for 2x2 grids)
@@ -43,7 +43,7 @@ function chunkArray<T>(arr: T[], size: number): T[][] {
   return chunks;
 }
 
-const SPONSOR_CHUNKS = chunkArray(SPONSORS, 4);
+const SPONSOR_CHUNKS = chunkArray(GRID_SPONSORS, 4);
 
 const SPRING_CONFIG = { damping: 30, stiffness: 120, mass: 0.8 };
 
@@ -103,7 +103,7 @@ function Grid2x2Card({
   mouseX,
   mouseY,
 }: {
-  sponsor: (typeof SPONSORS)[number];
+  sponsor: Sponsor;
   index: number;
   mouseX: ReturnType<typeof useMotionValue<number>>;
   mouseY: ReturnType<typeof useMotionValue<number>>;
@@ -117,7 +117,7 @@ function Grid2x2Card({
 
   return (
     <motion.div
-      className="w-[210px] md:w-[250px] lg:w-[290px] h-[175px] md:h-[210px] lg:h-[245px] rounded-2xl overflow-hidden bg-white/[0.06] border border-white/[0.1] flex items-center justify-center p-5 md:p-6 hover:border-white/25 hover:bg-white/[0.12] transition-colors duration-300 flex-shrink-0"
+      className="w-[210px] md:w-[250px] lg:w-[290px] h-[175px] md:h-[210px] lg:h-[245px] rounded-2xl overflow-hidden bg-black/50 backdrop-blur-md border border-white/[0.1] flex items-center justify-center p-5 md:p-6 hover:border-white/25 hover:bg-black/75 transition-colors duration-300 flex-shrink-0"
       style={{
         x: translateX,
         y: translateY,
@@ -294,7 +294,7 @@ export default function OurPartners() {
           {SPONSORS.map((sponsor) => (
             <div
               key={`mobile-${sponsor.id}`}
-              className="relative aspect-[4/3] rounded-lg overflow-hidden bg-white/[0.06] border border-white/[0.1] flex items-center justify-center p-4"
+              className="relative aspect-[4/3] rounded-lg overflow-hidden bg-black/50 backdrop-blur-md border border-white/[0.1] flex items-center justify-center p-4"
             >
               <Image
                 src={sponsor.logo}
