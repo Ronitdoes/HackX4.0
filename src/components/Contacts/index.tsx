@@ -268,10 +268,10 @@ export default function Contacts() {
                     <span className="text-white/30 uppercase text-[11px] font-semibold tracking-widest">Student Conveners</span>
                     <div className="flex flex-col gap-1 text-white/60">
                       <p className="text-white/80 font-medium">Tanmoy Mandal</p>
-                      <a href="mailto:vermaryan1@gmail.com" className="hover:text-white transition-colors underline decoration-white/20 underline-offset-2 break-all">vermaryan1@gmail.com</a>
+                      <a href="mailto:tanmaymandal1250@gmail.com" className="hover:text-white transition-colors underline decoration-white/20 underline-offset-2 break-all">tanmaymandal1250@gmail.com</a>
 
                       <p className="text-white/80 font-medium mt-1">Arindam Sharma</p>
-                      <a href="mailto:samakshgupta04@gmail.com" className="hover:text-white transition-colors underline decoration-white/20 underline-offset-2 break-all">samakshgupta04@gmail.com</a>
+                      <a href="mailto:arindamsharma05@gmail.com" className="hover:text-white transition-colors underline decoration-white/20 underline-offset-2 break-all">arindamsharma05@gmail.com</a>
                     </div>
                   </div>
                 </div>
