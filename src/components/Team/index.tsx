@@ -1,13 +1,16 @@
 "use client";
 
-import React, { useRef, useState, useMemo } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import React, { useEffect, useMemo, useRef, useState } from "react";
+import { motion, useMotionValue, useTransform } from "framer-motion";
+import { useLenis } from "lenis/react";
 import NetflixCurtainBackground from "@/components/NetflixCurtainBackground/NetflixCurtainBackground";
 import { TeamCard } from "./TeamCard";
 import { TEAM_MEMBERS, TeamYear, TeamCategory, TeamMember } from "@/data/team";
 
 export default function Team() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const scrollYProgress = useMotionValue(0);
+  const lenis = useLenis();
 
   const [selectedYear, setSelectedYear] = useState<TeamYear>("2026");
   const [selectedCategory, setSelectedCategory] = useState<TeamCategory>("FACULTY");
@@ -23,10 +26,34 @@ export default function Team() {
   }, []);
 
   /* ── scroll progress through the hero container ── */
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end start"],
-  });
+  // Lenis owns the animated scroll position. Keeping this motion value in
+  // sync with Lenis prevents the hero from retaining its end-state on return.
+  useEffect(() => {
+    const syncScrollProgress = () => {
+      const container = containerRef.current;
+      if (!container) return;
+
+      const renderedScrollTop = lenis?.animatedScroll ?? window.scrollY;
+      // Native scroll is exact at the document top, while Lenis can still be
+      // easing its animated value. This guarantees a full hero reset there.
+      const scrollTop = window.scrollY <= 1 ? 0 : renderedScrollTop;
+      const containerTop = container.offsetTop;
+      const scrollDistance = Math.max(container.offsetHeight - window.innerHeight, 1);
+      const progress = (scrollTop - containerTop) / scrollDistance;
+
+      scrollYProgress.set(Math.min(Math.max(progress, 0), 1));
+    };
+
+    const frame = window.requestAnimationFrame(syncScrollProgress);
+    const unsubscribe = lenis?.on("scroll", syncScrollProgress);
+    window.addEventListener("resize", syncScrollProgress);
+
+    return () => {
+      window.cancelAnimationFrame(frame);
+      unsubscribe?.();
+      window.removeEventListener("resize", syncScrollProgress);
+    };
+  }, [lenis, scrollYProgress]);
 
   // Hero curtain canvas opacity: visible → smoothly fades out
   const curtainOpacity = useTransform(scrollYProgress, [0.3, 0.7], [1, 0]);
