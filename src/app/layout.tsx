@@ -8,6 +8,13 @@ import LenisProvider from "@/components/LenisProvider";
 import ViewportFix from "@/components/ViewportFix";
 import PageTransitionProvider from "@/components/PageTransitionProvider";
 import { NavTransitionProvider } from "@/context/NavTransitionContext";
+import { Montserrat } from "next/font/google";
+
+const montserrat = Montserrat({
+  subsets: ["latin"],
+  weight: ["700", "800", "900"],
+  variable: "--font-montserrat",
+});
 
 const oskariG2Sans = localFont({
   src: "../../public/assets/fonts/OskariG2Medium.otf",
@@ -35,7 +42,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${oskariG2Sans.variable} ${instrumentSerifItalic.variable} ${antonFallback.variable}`}>
+    <html lang="en" className={`${oskariG2Sans.variable} ${instrumentSerifItalic.variable} ${antonFallback.variable} ${montserrat.variable}`}>
       <head>
         <link
           rel="stylesheet"
