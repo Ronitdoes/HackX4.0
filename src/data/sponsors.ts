@@ -8,10 +8,10 @@ export interface Sponsor {
 export const LANDING_SPONSORS: Sponsor[] = [
   { id: 1, name: "EY", logo: "/assets/sponsors/S2.png.webp" },
   { id: 2, name: "Oracle", logo: "/assets/sponsors/sponsor11.svg" },
-  { id: 3, name: "GFG", logo: "/assets/sponsors/S3.png" },
+  { id: 3, name: "Salesforce", logo: "/assets/sponsors/S4.png" },
   { id: 4, name: "Quillbot", logo: "/assets/sponsors/sponsor19.svg" },
   { id: 5, name: "Ecell", logo: "/assets/sponsors/sponsor8.svg" },
-  { id: 6, name: "Salesforce", logo: "/assets/sponsors/S4.png" },
+  { id: 6, name: "GFG", logo: "/assets/sponsors/S3.png" },
   { id: 7, name: "CD", logo: "/assets/sponsors/sponsor16.svg" },
   { id: 8, name: "E-Cell", logo: "/assets/sponsors/S1.png" },
 ];
