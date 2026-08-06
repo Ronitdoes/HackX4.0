@@ -95,7 +95,7 @@ export default function Team() {
   }, [currentMembers]);
 
   const handleYearSelect = (year: TeamYear) => {
-    if (year === "2024" && selectedCategory === "CORE") {
+    if ((year === "2024" || year === "2025") && (selectedCategory === "CORE" || selectedCategory === "FACULTY")) {
       setSelectedCategory("EXECUTIVE");
     }
     setSelectedYear(year);
@@ -118,26 +118,26 @@ export default function Team() {
       <div ref={containerRef} className="relative h-[220vh] z-20">
         <div className="sticky top-0 w-full h-screen-stable flex items-center justify-center pointer-events-none">
           <motion.div
-            className="flex flex-col items-center justify-center text-center px-6 md:px-12 select-none"
+            className="flex flex-col items-center justify-center text-center px-2 sm:px-6 md:px-12 select-none"
             style={{
               scale: heroScale,
               opacity: heroOpacity,
               filter: heroBlur,
-              transformOrigin: "57.5% 75%",
+              transformOrigin: "50% 50%",
               transform: "translateZ(0)",
               willChange: "transform, opacity, filter",
             }}
           >
-            <div className="relative flex flex-col items-center justify-center max-w-[95vw] md:max-w-[85vw] lg:max-w-[75vw]">
+            <div className="relative flex flex-col items-center justify-center w-full max-w-[98vw] sm:max-w-[90vw] md:max-w-[85vw] lg:max-w-[75vw]">
               {/* Subtitle */}
               <motion.div
                 variants={textVariants}
                 initial="hidden"
                 animate="visible"
-                className="mb-6 md:mb-8 pointer-events-auto"
+                className="mb-3 sm:mb-4 md:mb-6 pointer-events-auto"
               >
-                <span className="text-[#FAF8F5]/60 text-2xl md:text-3xl lg:text-4xl font-serif italic tracking-wide">
-                  Meet The Humans Behind The Curtains
+                <span className="text-white text-lg sm:text-xl md:text-2xl lg:text-3xl font-serif italic tracking-wide">
+                  Meet the humans behind the curtains!
                 </span>
               </motion.div>
 
@@ -146,23 +146,23 @@ export default function Team() {
                 variants={titleContainerVariants}
                 initial="hidden"
                 animate="visible"
-                className="flex flex-col items-center justify-center font-sans font-black uppercase tracking-normal leading-[0.98] text-center"
-                style={{ fontSize: "clamp(2.5rem, 8.5vw, 8.8rem)" }}
+                className="flex flex-col items-center justify-center font-sans font-black uppercase tracking-normal leading-[0.92] text-center w-full"
+                style={{ fontSize: "clamp(2.7rem, 11.5vw, 8.8rem)" }}
               >
-                <div className="overflow-hidden py-1 md:py-2">
+                <div className="overflow-hidden py-0.5 w-full">
                   <motion.span
                     variants={lineVariants}
-                    className="block origin-bottom font-extrabold text-[#FAF8F5]"
+                    className="block origin-bottom font-extrabold text-[#FAF8F5] whitespace-nowrap"
                   >
-                    TEAM MUJ
+                    MEET THE <span className="text-[#F0ABFC]">TEAM!</span>
                   </motion.span>
                 </div>
-                <div className="overflow-hidden py-1 md:py-2">
+                <div className="overflow-hidden py-0.5 w-full">
                   <motion.span
                     variants={lineVariants}
-                    className="block origin-bottom text-[#FAF8F5] font-extrabold"
+                    className="block origin-bottom text-[#FAF8F5] font-extrabold text-[0.72em] md:text-[calc(0.62em+3px)] tracking-tight whitespace-nowrap"
                   >
-                    HACKX 4.0
+                    OF MUJ HACKX 4.0
                   </motion.span>
                 </div>
               </motion.h1>
@@ -198,11 +198,11 @@ export default function Team() {
             ))}
           </div>
 
-          {/* Sub-Category Filter (FACULTY EXECUTIVE CORE) */}
+          {/* Sub-Category Filter (FACULTY EXECUTIVE CORE for 2026, EXECUTIVE for 2025/2024) */}
           <div className="flex items-center justify-center gap-6 sm:gap-10 pt-2">
-            {(selectedYear === "2024"
-              ? (["FACULTY", "EXECUTIVE"] as TeamCategory[])
-              : (["FACULTY", "EXECUTIVE", "CORE"] as TeamCategory[])
+            {(selectedYear === "2026"
+              ? (["FACULTY", "EXECUTIVE", "CORE"] as TeamCategory[])
+              : (["EXECUTIVE"] as TeamCategory[])
             ).map((cat) => (
               <button
                 key={cat}
@@ -235,7 +235,7 @@ export default function Team() {
                     {group.title}
                   </h2>
                 )}
-                <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2.5 sm:gap-4 md:gap-6">
+                <div className="flex flex-wrap justify-center gap-2.5 sm:gap-4 md:gap-6">
                   {group.members.map((member, i) => (
                     <motion.div
                       key={member.id || member.name}
@@ -243,7 +243,7 @@ export default function Team() {
                       whileInView={{ opacity: 1, y: 0 }}
                       viewport={{ once: true, margin: "50px" }}
                       transition={{ duration: 0.35, delay: Math.min(i * 0.04, 0.3) }}
-                      className="w-full flex justify-center"
+                      className="w-[calc(50%-0.35rem)] sm:w-[calc(50%-0.5rem)] md:w-[calc(33.333%-1rem)] lg:w-[calc(25%-1.15rem)] flex justify-center"
                     >
                       <TeamCard member={member} index={i} />
                     </motion.div>

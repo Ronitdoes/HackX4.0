@@ -18,6 +18,13 @@ const rawFacultyList: FacultyRawData[] = [
     subTeam: "FACULTY ORGANIZERS",
     image: `${R2_FACULTY_BASE}/Dr20Kuldip20Singh.webp`,
   },
+    {
+    name: "Dr. Sandeep Chaurasia",
+    role: "Organizer Co-Chair",
+    subTeam: "FACULTY ORGANIZERS",
+    email: "sandeep.chaurasia@jaipur.manipal.edu",
+    image: `${R2_FACULTY_BASE}/SANDEEP.webp`,
+  },
   {
     name: "Dr. C S Lamba",
     role: "Organizer Co-Chair",
@@ -26,41 +33,35 @@ const rawFacultyList: FacultyRawData[] = [
     image: `${R2_FACULTY_BASE}/CS-LAMBDA.webp`,
   },
   {
-    name: "Dr. Neha Chauhdhary",
-    role: "Organizer Co-Chair",
-    subTeam: "FACULTY ORGANIZERS",
-    email: "chaudhary.neha@jaipur.manipal.edu",
-    image: `${R2_FACULTY_BASE}/NEHA.webp`,
-  },
-  {
     name: "Dr. Rohit Bhatnagar",
     role: "Organizer Co-Chair",
     subTeam: "FACULTY ORGANIZERS",
     email: "roheet.bhatnagar@jaipur.manipal.edu",
     image: `${R2_FACULTY_BASE}/ROHEET.webp`,
   },
-  {
-    name: "Dr. Sandeep Chaurasia",
+    {
+    name: "Dr. Neha Chauhdhary",
     role: "Organizer Co-Chair",
     subTeam: "FACULTY ORGANIZERS",
-    email: "sandeep.chaurasia@jaipur.manipal.edu",
-    image: `${R2_FACULTY_BASE}/SANDEEP.webp`,
+    email: "chaudhary.neha@jaipur.manipal.edu",
+    image: `${R2_FACULTY_BASE}/NEHA.webp`,
   },
 
+
   // ── CONVENERS ──
+   {
+    name: "Dr. Juhi Singh",
+    role: "Convener",
+    subTeam: "FACULTY CONVENERS",
+    email: "juhi.singh@jaipur.manipal.edu",
+    image: `${R2_FACULTY_BASE}/JUHI.webp`,
+  },
   {
     name: "Dr. Shishir Singh Chauhan",
     role: "Convener",
     subTeam: "FACULTY CONVENERS",
     email: "shishir.chauhan@jaipur.manipal.edu",
     image: `${R2_FACULTY_BASE}/SHISHRI.webp`,
-  },
-  {
-    name: "Dr. Juhi Singh",
-    role: "Convener",
-    subTeam: "FACULTY CONVENERS",
-    email: "juhi.singh@jaipur.manipal.edu",
-    image: `${R2_FACULTY_BASE}/JUHI.webp`,
   },
 
   // ── FACULTY COORDINATORS ──
@@ -317,106 +318,4 @@ const generateFacultyForYear = (year: "2026" | "2025"): TeamMember[] => {
 export const facultyMembers: TeamMember[] = [
   // ── 2026 FACULTY ──
   ...generateFacultyForYear("2026"),
-
-  // ── 2025 FACULTY ──
-  ...generateFacultyForYear("2025"),
-
-  // ── 2024 FACULTY ──
-  // PATRON
-  {
-    id: "2024-faculty-patron-1",
-    name: "Mr. S. Vaitheeswaran",
-    role: "CHAIRPERSON, MUJ",
-    year: "2024",
-    category: "FACULTY",
-    subTeam: "PATRON",
-  },
-  {
-    id: "2024-faculty-patron-2",
-    name: "Dr. N N Sharma",
-    role: "PRESIDENT, MUJ",
-    year: "2024",
-    category: "FACULTY",
-    subTeam: "PATRON",
-  },
-
-  // CO-PATRON
-  {
-    id: "2024-faculty-copatron-1",
-    name: "Dr. Jawar N Jangir",
-    role: "PRO PRESIDENT, MUJ",
-    year: "2024",
-    category: "FACULTY",
-    subTeam: "CO-PATRON",
-  },
-  {
-    id: "2024-faculty-copatron-2",
-    name: "Dr. Nitu Bhatnagar",
-    role: "REGISTRAR, MUJ",
-    year: "2024",
-    category: "FACULTY",
-    subTeam: "CO-PATRON",
-  },
-  {
-    id: "2024-faculty-copatron-3",
-    name: "Dr. Kuldeep Singh Sangwan",
-    role: "DEAN FOE, MUJ",
-    year: "2024",
-    category: "FACULTY",
-    subTeam: "CO-PATRON",
-    image: `${R2_FACULTY_BASE}/Dr20Kuldip20Singh.webp`,
-  },
-
-  // CHAIR
-  {
-    id: "2024-faculty-chair-1",
-    name: "Dr. Sandeep Chaurasia",
-    role: "CHAIR",
-    year: "2024",
-    category: "FACULTY",
-    subTeam: "CHAIR",
-    image: `${R2_FACULTY_BASE}/SANDEEP.webp`,
-  },
-  {
-    id: "2024-faculty-chair-2",
-    name: "Dr. Sandeep Joshi",
-    role: "CEO AIC",
-    year: "2024",
-    category: "FACULTY",
-    subTeam: "CHAIR",
-  },
-
-  // PROGRAM CHAIR
-  {
-    id: "2024-faculty-program-chair-1",
-    name: "Dr. Neha Chaudhary",
-    role: "PROGRAM CHAIR",
-    year: "2024",
-    category: "FACULTY",
-    subTeam: "PROGRAM CHAIR",
-    email: "chaudhary.neha@jaipur.manipal.edu",
-    image: `${R2_FACULTY_BASE}/NEHA.webp`,
-  },
-
-  // CONVENER
-  {
-    id: "2024-faculty-convener-1",
-    name: "Dr. Juhi Singh",
-    role: "CONVENER",
-    year: "2024",
-    category: "FACULTY",
-    subTeam: "CONVENER",
-    email: "juhi.singh@jaipur.manipal.edu",
-    image: `${R2_FACULTY_BASE}/JUHI.webp`,
-  },
-  {
-    id: "2024-faculty-convener-2",
-    name: "Mr. Shishir Singh",
-    role: "CONVENER",
-    year: "2024",
-    category: "FACULTY",
-    subTeam: "CONVENER",
-    email: "shishir.chauhan@jaipur.manipal.edu",
-    image: `${R2_FACULTY_BASE}/SHISHRI.webp`,
-  },
 ];

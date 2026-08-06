@@ -331,15 +331,13 @@ export default function Contacts() {
         </div>
 
         {/* Large screen-spanning bottom text */}
-        <div ref={heroWordmarkRef} className="w-full overflow-hidden mt-12 md:mt-16 lg:mt-20 pointer-events-none select-none">
-          <h1 className="font-serif italic text-white text-[16vw] lg:text-[14vw] leading-[0.8] text-center uppercase tracking-tighter flex justify-center items-center gap-1.5 md:gap-4">
-            <span className="wordmark-char block">c</span>
-            <span className="wordmark-char block">o</span>
-            <span className="wordmark-char block">n</span>
-            <span className="wordmark-char block">t</span>
-            <span className="wordmark-char block">a</span>
-            <span className="wordmark-char block">c</span>
-            <span className="wordmark-char block">t</span>
+        <div ref={heroWordmarkRef} className="relative w-full overflow-hidden mt-8 md:mt-12 lg:mt-16 pointer-events-none select-none">
+          <h1 className="font-serif italic text-white text-[17vw] sm:text-[15vw] lg:text-[13.5vw] leading-[0.85] text-center tracking-normal whitespace-nowrap">
+            {"Contact Us!".split("").map((char, index) => (
+              <span key={index} className="wordmark-char inline-block">
+                {char === " " ? "\u00A0" : char}
+              </span>
+            ))}
           </h1>
         </div>
 
