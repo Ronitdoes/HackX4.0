@@ -11,6 +11,7 @@ export const executiveMembers: TeamMember[] = [
     year: "2026",
     category: "EXECUTIVE",
     subTeam: "STUDENT CONVENER",
+    image: "https://pub-2b91df05320148438318902a8dc7795b.r2.dev/media/1781889254081_37vzf.avif",
   },
   {
     id: "dolly-2026",
@@ -19,6 +20,7 @@ export const executiveMembers: TeamMember[] = [
     year: "2026",
     category: "EXECUTIVE",
     subTeam: "STUDENT CONVENER",
+    image: "https://pub-2b91df05320148438318902a8dc7795b.r2.dev/media/1782011065871_m0oq3a.avif",
   },
   {
     id: "anshuman-singh-2026",
@@ -27,6 +29,7 @@ export const executiveMembers: TeamMember[] = [
     year: "2026",
     category: "EXECUTIVE",
     subTeam: "STUDENT CONVENER",
+    image: "https://pub-2b91df05320148438318902a8dc7795b.r2.dev/media/1782011094578_2vzedf.avif",
   },
   {
     id: "arindam-2026",
@@ -46,7 +49,7 @@ export const executiveMembers: TeamMember[] = [
     category: "EXECUTIVE",
     subTeam: "MUJ HACKX 4.0 ADVISORIES",
     initials: "AV",
-    socials: { linkedin: "https://linkedin.com", github: "https://github.com" },
+    image: "https://pub-2b91df05320148438318902a8dc7795b.r2.dev/media/1781889246969_y6vynm.avif",
   },
   {
     id: "samaksh-gupta-2026",
@@ -56,7 +59,7 @@ export const executiveMembers: TeamMember[] = [
     category: "EXECUTIVE",
     subTeam: "MUJ HACKX 4.0 ADVISORIES",
     initials: "SG",
-    socials: { linkedin: "https://linkedin.com", github: "https://github.com" },
+    image: "https://pub-2b91df05320148438318902a8dc7795b.r2.dev/media/1781889259800_nlyuc.avif",
   },
   {
     id: "tamanna-yadav-2026",
@@ -66,18 +69,10 @@ export const executiveMembers: TeamMember[] = [
     category: "EXECUTIVE",
     subTeam: "MUJ HACKX 4.0 ADVISORIES",
     initials: "TY",
-    socials: { linkedin: "https://linkedin.com" },
+    image: "https://pub-45c102ac14a64011a530ed2864a18405.r2.dev/hackx/1785956271180_sivqyl.webp",
   },
-  {
-    id: "harshada-chandel-2026",
-    name: "Harshada Chandel",
-    role: "Advisory",
-    year: "2026",
-    category: "EXECUTIVE",
-    subTeam: "MUJ HACKX 4.0 ADVISORIES",
-    initials: "HC",
-    socials: { linkedin: "https://linkedin.com" },
-  },
+
+ 
 
   // 3. TECHNICAL TEAM
   {
@@ -87,6 +82,7 @@ export const executiveMembers: TeamMember[] = [
     year: "2026",
     category: "EXECUTIVE",
     subTeam: "TECHNICAL TEAM",
+    image: "https://pub-45c102ac14a64011a530ed2864a18405.r2.dev/ecs/neeraj-sharma.avif",
     socials: {
       instagram: "https://instagram.com/neeraj704_",
       linkedin: "https://linkedin.com/in/neeraj704_",
@@ -99,6 +95,7 @@ export const executiveMembers: TeamMember[] = [
     year: "2026",
     category: "EXECUTIVE",
     subTeam: "TECHNICAL TEAM",
+    image: "https://pub-45c102ac14a64011a530ed2864a18405.r2.dev/ecs/sarthak-routray.avif",
     socials: {
       instagram: "https://instagram.com/sarthakroutray1809",
       linkedin: "https://www.linkedin.com/in/sarthak-routray-020583323",
@@ -113,6 +110,7 @@ export const executiveMembers: TeamMember[] = [
     year: "2026",
     category: "EXECUTIVE",
     subTeam: "CONTENT TEAM",
+    image: "https://pub-45c102ac14a64011a530ed2864a18405.r2.dev/ecs/sara-pansuriya.avif",
     socials: {
       instagram: "https://www.instagram.com/sarapansuriya/",
       linkedin: "https://www.linkedin.com/in/sarapansuriya/",
@@ -125,6 +123,7 @@ export const executiveMembers: TeamMember[] = [
     year: "2026",
     category: "EXECUTIVE",
     subTeam: "CONTENT TEAM",
+    image: "https://pub-45c102ac14a64011a530ed2864a18405.r2.dev/ecs/rakshit-dubey.avif",
     socials: {
       instagram: "https://instagram.com/rakkk_21",
       linkedin: "https://www.linkedin.com/in/rakshit-dubey-b9b799283",
@@ -139,6 +138,7 @@ export const executiveMembers: TeamMember[] = [
     year: "2026",
     category: "EXECUTIVE",
     subTeam: "CURATIONS TEAM",
+    image: "https://pub-45c102ac14a64011a530ed2864a18405.r2.dev/ecs/aakashi-ansh.avif",
     socials: {
       instagram: "https://www.instagram.com/aakashii.97",
       linkedin: "https://www.linkedin.com/in/aakashi-ansh-27a57932b",
@@ -151,6 +151,7 @@ export const executiveMembers: TeamMember[] = [
     year: "2026",
     category: "EXECUTIVE",
     subTeam: "CURATIONS TEAM",
+    image: "https://pub-45c102ac14a64011a530ed2864a18405.r2.dev/ecs/ayush-tanwar.avif",
     socials: {
       instagram: "https://instagram.com/ayushtanwar_07",
       linkedin: "https://www.linkedin.com/in/ayush-tanwar-x7",
@@ -163,6 +164,7 @@ export const executiveMembers: TeamMember[] = [
     year: "2026",
     category: "EXECUTIVE",
     subTeam: "CURATIONS TEAM",
+    image: "https://pub-45c102ac14a64011a530ed2864a18405.r2.dev/ecs/dev-raikwar.avif",
     socials: {
       instagram: "https://instagram.com/raikwardev_18",
       linkedin: "https://www.linkedin.com/in/dev-kumar-raikwar-x7/",
@@ -175,6 +177,7 @@ export const executiveMembers: TeamMember[] = [
     year: "2026",
     category: "EXECUTIVE",
     subTeam: "CURATIONS TEAM",
+    image: "https://pub-45c102ac14a64011a530ed2864a18405.r2.dev/ecs/saksham-jain.avif",
     socials: {
       instagram: "https://instagram.com/_.saksham_jain",
       linkedin: "https://www.linkedin.com/in/saksham-jain-x7",
@@ -189,6 +192,7 @@ export const executiveMembers: TeamMember[] = [
     year: "2026",
     category: "EXECUTIVE",
     subTeam: "GRAPHIC DESIGN TEAM",
+    image: "https://pub-45c102ac14a64011a530ed2864a18405.r2.dev/hackx/1785955244980_uo8u06.jpg",
     socials: {
       instagram: "https://instagram.com/abhijay_0910",
     },
@@ -210,6 +214,7 @@ export const executiveMembers: TeamMember[] = [
     year: "2026",
     category: "EXECUTIVE",
     subTeam: "HOSPITALITY TEAM",
+    image: "https://pub-45c102ac14a64011a530ed2864a18405.r2.dev/ecs/rishan-mazumdar.avif",
     socials: {
       instagram: "https://instagram.com/thefab.rishan",
       linkedin: "https://www.linkedin.com/in/rishan-mazumdar-449057312",
@@ -222,6 +227,7 @@ export const executiveMembers: TeamMember[] = [
     year: "2026",
     category: "EXECUTIVE",
     subTeam: "HOSPITALITY TEAM",
+    image: "https://pub-45c102ac14a64011a530ed2864a18405.r2.dev/ecs/srijan-satyam.avif",
     socials: {
       instagram: "https://instagram.com/srijan_satya.m",
       linkedin: "https://linkedin.com/in/srijan-satyam",
@@ -234,6 +240,7 @@ export const executiveMembers: TeamMember[] = [
     year: "2026",
     category: "EXECUTIVE",
     subTeam: "HOSPITALITY TEAM",
+    image: "https://pub-45c102ac14a64011a530ed2864a18405.r2.dev/hackx/1785956811325_2krm0s.png",
     socials: {
       instagram: "https://instagram.com/sh3bhhh",
       linkedin: "https://www.linkedin.com/in/shubhanshu-dixit-a768552b2",
@@ -248,6 +255,7 @@ export const executiveMembers: TeamMember[] = [
     year: "2026",
     category: "EXECUTIVE",
     subTeam: "MARKETING TEAM",
+    image: "https://pub-45c102ac14a64011a530ed2864a18405.r2.dev/ecs/adit-tanted.avif",
     socials: {
       instagram: "https://instagram.com/adit_tanted_22",
       linkedin: "https://www.linkedin.com/in/adit-tanted-052526336",
@@ -260,6 +268,7 @@ export const executiveMembers: TeamMember[] = [
     year: "2026",
     category: "EXECUTIVE",
     subTeam: "MARKETING TEAM",
+    image: "https://pub-45c102ac14a64011a530ed2864a18405.r2.dev/ecs/kunal.avif",
     socials: {
       instagram: "https://instagram.com/kunal_maharia",
       linkedin: "https://www.linkedin.com/in/kunal-maharia-73214834a",
@@ -272,6 +281,7 @@ export const executiveMembers: TeamMember[] = [
     year: "2026",
     category: "EXECUTIVE",
     subTeam: "MARKETING TEAM",
+    image: "https://pub-45c102ac14a64011a530ed2864a18405.r2.dev/ecs/aarushi.avif",
     socials: {
       instagram: "https://instagram.com/_aarushisinghh",
       linkedin: "https://linkedin.com/in/aarushisingh27",
@@ -284,6 +294,7 @@ export const executiveMembers: TeamMember[] = [
     year: "2026",
     category: "EXECUTIVE",
     subTeam: "MARKETING TEAM",
+    image: "https://pub-45c102ac14a64011a530ed2864a18405.r2.dev/ecs/ashutosh-lotlikar.avif",
     socials: {
       instagram: "https://instagram.com/ashutosh_lotli",
       linkedin: "https://www.linkedin.com/in/ashutosh-lotlikar-876a00354",
@@ -298,6 +309,7 @@ export const executiveMembers: TeamMember[] = [
     year: "2026",
     category: "EXECUTIVE",
     subTeam: "MEDIA & COVERAGE TEAM",
+    image: "https://pub-45c102ac14a64011a530ed2864a18405.r2.dev/ecs/akshat-pandey.avif",
     socials: {
       instagram: "https://instagram.com/aksht.p",
       linkedin: "https://www.linkedin.com/in/akshat-pandey-57a69a21a",
@@ -310,6 +322,7 @@ export const executiveMembers: TeamMember[] = [
     year: "2026",
     category: "EXECUTIVE",
     subTeam: "MEDIA & COVERAGE TEAM",
+    image: "https://pub-45c102ac14a64011a530ed2864a18405.r2.dev/ecs/maulik-bahl.avif",
     socials: {
       instagram: "https://www.instagram.com/maulik_17",
       linkedin: "https://www.linkedin.com/in/maulik-bahl-bb577a307",
@@ -322,6 +335,7 @@ export const executiveMembers: TeamMember[] = [
     year: "2026",
     category: "EXECUTIVE",
     subTeam: "MEDIA & COVERAGE TEAM",
+    image: "https://pub-45c102ac14a64011a530ed2864a18405.r2.dev/ecs/abhinav-prakash.avif",
     socials: {
       instagram: "https://www.instagram.com/ft.abhinaw_",
       linkedin: "https://www.linkedin.com/in/abhinaw-prakash-b19468337/",
@@ -336,6 +350,7 @@ export const executiveMembers: TeamMember[] = [
     year: "2026",
     category: "EXECUTIVE",
     subTeam: "OPERATIONS TEAM",
+    image: "https://pub-2b91df05320148438318902a8dc7795b.r2.dev/media/1782011040019_jvrrg.avif",
   },
   {
     id: "2026-exec-ops-1",
@@ -344,6 +359,7 @@ export const executiveMembers: TeamMember[] = [
     year: "2026",
     category: "EXECUTIVE",
     subTeam: "OPERATIONS TEAM",
+    image: "https://pub-45c102ac14a64011a530ed2864a18405.r2.dev/ecs/abc-123.avif",
     socials: {
       instagram: "https://instagram.com/idk.pushkar",
       linkedin: "https://www.linkedin.com/in/pushkar-chaudhary-327068314",
@@ -356,6 +372,7 @@ export const executiveMembers: TeamMember[] = [
     year: "2026",
     category: "EXECUTIVE",
     subTeam: "OPERATIONS TEAM",
+    image: "https://pub-45c102ac14a64011a530ed2864a18405.r2.dev/ecs/pratyush-sharma.avif",
     socials: {
       instagram: "https://instagram.com/_.pratyush.sharma._",
       linkedin: "https://www.linkedin.com/in/pratyush-sharma-2006",
@@ -368,6 +385,7 @@ export const executiveMembers: TeamMember[] = [
     year: "2026",
     category: "EXECUTIVE",
     subTeam: "OPERATIONS TEAM",
+    image: "https://pub-45c102ac14a64011a530ed2864a18405.r2.dev/ecs/manya-moonat.avif",
     socials: {
       instagram: "https://www.instagram.com/manyamoonat",
       linkedin: "https://www.linkedin.com/in/manya29",
@@ -380,6 +398,7 @@ export const executiveMembers: TeamMember[] = [
     year: "2026",
     category: "EXECUTIVE",
     subTeam: "OPERATIONS TEAM",
+    image: "https://pub-45c102ac14a64011a530ed2864a18405.r2.dev/ecs/keshav-anand.avif",
     socials: {
       instagram: "https://www.instagram.com/keshav_anand_21",
       linkedin: "https://www.linkedin.com/in/keshav-anand-479712327",
@@ -392,6 +411,7 @@ export const executiveMembers: TeamMember[] = [
     year: "2026",
     category: "EXECUTIVE",
     subTeam: "OPERATIONS TEAM",
+    image: "https://pub-45c102ac14a64011a530ed2864a18405.r2.dev/ecs/aarush-chandra.avif",
     socials: {
       instagram: "https://instagram.com/weird_kid_07",
       linkedin: "https://www.linkedin.com/in/aarush-chandra-4r724",
@@ -404,6 +424,7 @@ export const executiveMembers: TeamMember[] = [
     year: "2026",
     category: "EXECUTIVE",
     subTeam: "OPERATIONS TEAM",
+    image: "https://pub-45c102ac14a64011a530ed2864a18405.r2.dev/ecs/tansi-shukla.avif",
     socials: {
       instagram: "https://www.instagram.com/tanxsi_",
       linkedin: "https://www.linkedin.com/in/tansi-shukla-951846273",
@@ -416,6 +437,7 @@ export const executiveMembers: TeamMember[] = [
     year: "2026",
     category: "EXECUTIVE",
     subTeam: "OPERATIONS TEAM",
+    image: "https://pub-45c102ac14a64011a530ed2864a18405.r2.dev/ecs/arunanshu-basu.avif",
     socials: {
       instagram: "https://instagram.com/Thisisarunanshu",
       linkedin: "https://www.linkedin.com/in/arunanshu-basu",
@@ -430,6 +452,7 @@ export const executiveMembers: TeamMember[] = [
     year: "2026",
     category: "EXECUTIVE",
     subTeam: "SOCIAL MEDIA TEAM",
+    image: "https://pub-45c102ac14a64011a530ed2864a18405.r2.dev/ecs/arush-pradhan.avif",
     socials: {
       instagram: "https://www.instagram.com/aru._.shhh_",
       linkedin: "https://www.linkedin.com/in/arush-pradhan-b2023b316",
@@ -442,6 +465,7 @@ export const executiveMembers: TeamMember[] = [
     year: "2026",
     category: "EXECUTIVE",
     subTeam: "SOCIAL MEDIA TEAM",
+    image:"https://pub-45c102ac14a64011a530ed2864a18405.r2.dev/ecs/luna-arts.avif",
     socials: {
       instagram: "https://www.instagram.com/_itss._.drishhh_",
       linkedin: "https://www.linkedin.com/in/drishti-verma-240b2b302",
@@ -454,6 +478,7 @@ export const executiveMembers: TeamMember[] = [
     year: "2026",
     category: "EXECUTIVE",
     subTeam: "SOCIAL MEDIA TEAM",
+    image: "https://pub-45c102ac14a64011a530ed2864a18405.r2.dev/ecs/shrinivas-kharpade.avif",
     socials: {
       instagram: "https://www.instagram.com/shrinivask.05",
       linkedin: "https://www.linkedin.com/in/shrinivas-kharpade-856285336",
@@ -468,6 +493,7 @@ export const executiveMembers: TeamMember[] = [
     year: "2026",
     category: "EXECUTIVE",
     subTeam: "SPONSORSHIP & FINANCE TEAM",
+    image: "https://pub-45c102ac14a64011a530ed2864a18405.r2.dev/ecs/o.avif",
     socials: {
       instagram: "https://instagram.com/anmolrawal07",
       linkedin: "https://www.linkedin.com/in/anmol-rawal-aa87b3285",
@@ -480,6 +506,7 @@ export const executiveMembers: TeamMember[] = [
     year: "2026",
     category: "EXECUTIVE",
     subTeam: "SPONSORSHIP & FINANCE TEAM",
+    image: "https://pub-45c102ac14a64011a530ed2864a18405.r2.dev/ecs/harsh-pat.avif",
     socials: {
       instagram: "https://instagram.com/Harsh.bhp",
       linkedin: "https://www.linkedin.com/in/harshxv14",
@@ -492,6 +519,7 @@ export const executiveMembers: TeamMember[] = [
     year: "2026",
     category: "EXECUTIVE",
     subTeam: "SPONSORSHIP & FINANCE TEAM",
+    image: "https://pub-45c102ac14a64011a530ed2864a18405.r2.dev/hackx/1785955235565_c1rttp.jpg",
   },
   {
     id: "2026-exec-sponsorship-4",
@@ -513,6 +541,7 @@ export const executiveMembers: TeamMember[] = [
     category: "EXECUTIVE",
     subTeam: "STUDENT CONVENER 2024-25",
     initials: "AV",
+    image: "https://pub-2b91df05320148438318902a8dc7795b.r2.dev/media/1781889246969_y6vynm.avif",
   },
   {
     id: "2025-exec-convener-2",
@@ -522,6 +551,7 @@ export const executiveMembers: TeamMember[] = [
     category: "EXECUTIVE",
     subTeam: "STUDENT CONVENER 2024-25",
     initials: "SG",
+    image: "https://pub-2b91df05320148438318902a8dc7795b.r2.dev/media/1781889259800_nlyuc.avif",
   },
   {
     id: "2025-exec-convener-3",
@@ -531,6 +561,7 @@ export const executiveMembers: TeamMember[] = [
     category: "EXECUTIVE",
     subTeam: "STUDENT CONVENER 2024-25",
     initials: "TY",
+    image: "https://pub-45c102ac14a64011a530ed2864a18405.r2.dev/hackx/1785956271180_sivqyl.webp",
   },
   {
     id: "2025-exec-convener-4",
@@ -540,6 +571,7 @@ export const executiveMembers: TeamMember[] = [
     category: "EXECUTIVE",
     subTeam: "STUDENT CONVENER 2024-25",
     initials: "HC",
+    image: "https://pub-45c102ac14a64011a530ed2864a18405.r2.dev/hackx/1785957238235_cp69rc.webp",
   },
 
   // 2. MUJ HACKX 3.0 ADVISORIES
@@ -551,6 +583,7 @@ export const executiveMembers: TeamMember[] = [
     category: "EXECUTIVE",
     subTeam: "MUJ HACKX 3.0 ADVISORIES",
     initials: "RJ",
+    image: "https://pub-45c102ac14a64011a530ed2864a18405.r2.dev/hackx/1785957258859_3dx2ri.webp",
   },
   {
     id: "2025-exec-advisory-2",
@@ -560,6 +593,7 @@ export const executiveMembers: TeamMember[] = [
     category: "EXECUTIVE",
     subTeam: "MUJ HACKX 3.0 ADVISORIES",
     initials: "PG",
+    image: "https://pub-45c102ac14a64011a530ed2864a18405.r2.dev/hackx/1785957270782_007n8.webp",
   },
   {
     id: "2025-exec-advisory-3",
@@ -569,6 +603,7 @@ export const executiveMembers: TeamMember[] = [
     category: "EXECUTIVE",
     subTeam: "MUJ HACKX 3.0 ADVISORIES",
     initials: "AJ",
+    image: "https://pub-45c102ac14a64011a530ed2864a18405.r2.dev/hackx/1785957281415_aoemie.webp",
   },
 
   // ── 2024 EXECUTIVE ──
@@ -582,6 +617,7 @@ export const executiveMembers: TeamMember[] = [
     category: "EXECUTIVE",
     subTeam: "STUDENT CONVENER 2023-24",
     initials: "ND",
+    image: "https://pub-45c102ac14a64011a530ed2864a18405.r2.dev/hackx/1785957463794_jpfpqi.webp",
   },
   {
     id: "2024-exec-convener-2",
@@ -591,6 +627,7 @@ export const executiveMembers: TeamMember[] = [
     category: "EXECUTIVE",
     subTeam: "STUDENT CONVENER 2023-24",
     initials: "RJ",
+    image: "https://pub-45c102ac14a64011a530ed2864a18405.r2.dev/hackx/1785957258859_3dx2ri.webp",
   },
   {
     id: "2024-exec-convener-3",
@@ -600,6 +637,7 @@ export const executiveMembers: TeamMember[] = [
     category: "EXECUTIVE",
     subTeam: "STUDENT CONVENER 2023-24",
     initials: "SK",
+    image: "https://pub-45c102ac14a64011a530ed2864a18405.r2.dev/hackx/1785957474759_uk19r.webp",
   },
   {
     id: "2024-exec-convener-4",
@@ -609,6 +647,7 @@ export const executiveMembers: TeamMember[] = [
     category: "EXECUTIVE",
     subTeam: "STUDENT CONVENER 2023-24",
     initials: "PG",
+    image: "https://pub-45c102ac14a64011a530ed2864a18405.r2.dev/hackx/1785957270782_007n8.webp",
   },
   {
     id: "2024-exec-convener-5",
@@ -618,6 +657,7 @@ export const executiveMembers: TeamMember[] = [
     category: "EXECUTIVE",
     subTeam: "STUDENT CONVENER 2023-24",
     initials: "RC",
+    image: "https://pub-45c102ac14a64011a530ed2864a18405.r2.dev/hackx/1785957493657_zc64ic.webp",
   },
   {
     id: "2024-exec-convener-6",
@@ -627,6 +667,7 @@ export const executiveMembers: TeamMember[] = [
     category: "EXECUTIVE",
     subTeam: "STUDENT CONVENER 2023-24",
     initials: "AJ",
+    image: "https://pub-45c102ac14a64011a530ed2864a18405.r2.dev/hackx/1785957281415_aoemie.webp",
   },
 
   // 2. MUJ HACKX 2.0 ADVISORIES
@@ -638,6 +679,7 @@ export const executiveMembers: TeamMember[] = [
     category: "EXECUTIVE",
     subTeam: "MUJ HACKX 2.0 ADVISORIES",
     initials: "SS",
+    image: "https://pub-45c102ac14a64011a530ed2864a18405.r2.dev/hackx/1785957584451_8prhkl.webp",
   },
   {
     id: "2024-exec-advisory-2",
@@ -647,6 +689,7 @@ export const executiveMembers: TeamMember[] = [
     category: "EXECUTIVE",
     subTeam: "MUJ HACKX 2.0 ADVISORIES",
     initials: "MG",
+    image: "https://pub-45c102ac14a64011a530ed2864a18405.r2.dev/hackx/1785957596352_xu59nd6.webp",
   },
   {
     id: "2024-exec-advisory-3",
@@ -656,5 +699,6 @@ export const executiveMembers: TeamMember[] = [
     category: "EXECUTIVE",
     subTeam: "MUJ HACKX 2.0 ADVISORIES",
     initials: "AK",
+    image: "https://pub-45c102ac14a64011a530ed2864a18405.r2.dev/hackx/1785957611943_04qsrp.webp",
   },
 ];
