@@ -63,14 +63,14 @@ export default function Home() {
               fontSize: "clamp(1.8rem, 5.4vw, 5.6rem)",
             }}
           >
-            <div className="overflow-visible pb-1">
+            <div className="overflow-visible pb-0">
               <motion.div variants={lineVariants} className="block origin-bottom">
                 <GlassPill className="text-[0.26em] md:text-[0.22em] tracking-[0.15em] uppercase">
                   DEPARTMENT OF COMPUTER SCIENCE AND ENGINEERING, SCSE, FOSTA
                 </GlassPill>
               </motion.div>
             </div>
-            <div className="overflow-visible py-2 md:py-3 mt-1 md:mt-2">
+            <div className="overflow-visible pt-1 pb-2 md:pt-1 md:pb-3 mt-0">
               <motion.div variants={lineVariants} className="block origin-bottom">
                 <div className="relative inline-flex items-center justify-center px-3 py-1.5 md:px-4 md:py-2">
                   {/* Top-left corner */}
@@ -103,10 +103,10 @@ export default function Home() {
                 </div>
               </motion.div>
             </div>
-            <div className="overflow-hidden py-0 w-full -mt-2 md:-mt-4">
-              <motion.div variants={lineVariants} className="flex items-center justify-between w-full gap-4 sm:gap-6">
+            <div className="overflow-visible pb-3 w-full -mt-6 sm:-mt-8 md:-mt-10">
+              <motion.div variants={lineVariants} className="flex items-center justify-between w-full gap-3 sm:gap-4">
                 <div className="h-[1.5px] flex-1 bg-[#F0ABFC]" />
-                <span className="font-serif italic font-normal tracking-wide text-xl sm:text-3xl md:text-4xl lg:text-[2.6rem] text-white whitespace-nowrap">
+                <span className="font-serif font-normal normal-case tracking-wide text-lg sm:text-2xl md:text-3xl lg:text-[2.2rem] leading-normal text-white whitespace-nowrap pt-0.5 pb-2 pr-4 inline-block flex-shrink-0">
                   MUJ&apos;s Largest Hackathon!
                 </span>
               </motion.div>

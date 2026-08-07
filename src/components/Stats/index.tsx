@@ -10,26 +10,26 @@ gsap.registerPlugin(ScrollTrigger);
 const STATS_DATA = [
   {
     id: "01",
-    title: "UNIVERSITIES",
-    caption: "What started in China as a creative partnership which became the foundation of everything we've built. The curiosity never stops there.",
+    title: "universities",
+    caption: "What started as a college level hackathon has now grown into a multi-university movement, bringing together talent from 50+ universities across the country.",
     image: "https://pub-45c102ac14a64011a530ed2864a18405.r2.dev/hackx/1785920134883_ejgpg.avif",
   },
   {
     id: "02",
-    title: "PARTICIPANTS",
-    caption: "Saigon is where we found our footing. Fast, ambitious, never satisfied — shaped how we work and what we expect from ourselves.",
+    title: "participants",
+    caption: "Over 2000 participants have been a part of HackX across all editions, building, breaking and shipping ideas that push boundaries.",
     image: "https://pub-45c102ac14a64011a530ed2864a18405.r2.dev/hackx/1785920124566_7bh44k.avif",
   },
   {
     id: "03",
-    title: "PATENTS",
-    caption: "But good work doesn't stay in one place — and neither did we. We go wherever the next brief takes us.",
+    title: "projects",
+    caption: "Hundreds of projects have been built at HackX, spanning AI, blockchain, IoT, sustainability and beyond. Real problems, real solutions.",
     image: "https://pub-45c102ac14a64011a530ed2864a18405.r2.dev/hackx/1785920143453_k93m3g.avif",
   },
   {
     id: "04",
-    title: "PROJECTS",
-    caption: "The offices gave us roots in new places. The people gave us reasons to keep going.",
+    title: "hours",
+    caption: "36 hours of non-stop hacking, mentoring and building. No sleep, all code. This is where ideas become reality.",
     image: "https://pub-45c102ac14a64011a530ed2864a18405.r2.dev/hackx/1785920153789_2h6o4q.avif",
   }
 ];
@@ -342,7 +342,7 @@ export default function Stats() {
                     : "w-0 opacity-0 -translate-x-2"
                     }`}
                 >
-                  — {sec.title}
+                  {sec.title}
                 </span>
               </button>
             );
