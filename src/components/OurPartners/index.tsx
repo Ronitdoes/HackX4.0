@@ -117,7 +117,7 @@ function Grid2x2Card({
 
   return (
     <motion.div
-      className="w-[210px] md:w-[250px] lg:w-[290px] h-[175px] md:h-[210px] lg:h-[245px] rounded-2xl overflow-hidden bg-black/50 backdrop-blur-md border border-white/[0.1] flex items-center justify-center p-5 md:p-6 hover:border-white/25 hover:bg-black/75 transition-colors duration-300 flex-shrink-0"
+      className="w-[210px] md:w-[250px] lg:w-[290px] h-[175px] md:h-[210px] lg:h-[245px] rounded-2xl overflow-hidden bg-white/20 backdrop-blur-xl border border-white/30 shadow-[0_8px_32px_0_rgba(255,255,255,0.08)] flex items-center justify-center p-5 md:p-6 hover:border-white/50 hover:bg-white/30 transition-all duration-300 flex-shrink-0"
       style={{
         x: translateX,
         y: translateY,
@@ -294,7 +294,7 @@ export default function OurPartners() {
           {SPONSORS.map((sponsor) => (
             <div
               key={`mobile-${sponsor.id}`}
-              className="relative aspect-[4/3] rounded-lg overflow-hidden bg-black/50 backdrop-blur-md border border-white/[0.1] flex items-center justify-center p-4"
+              className="relative aspect-[4/3] rounded-lg overflow-hidden bg-white/20 backdrop-blur-xl border border-white/30 flex items-center justify-center p-4 hover:bg-white/30 transition-colors duration-300 shadow-[0_4px_20px_0_rgba(255,255,255,0.06)]"
             >
               <Image
                 src={sponsor.logo}
