@@ -16,20 +16,20 @@ export default function ThreeSteps() {
   const steps = [
     {
       num: "01",
-      title: "Apply Online",
-      desc: "Fill out our quick application form to share your profile, experience, and motivation.",
+      title: "Fill In The Form",
+      desc: "Fill in the form with all your details.",
       color: "from-[#D242D7] to-[#B86EF9]",
     },
     {
       num: "02",
-      title: "Get Shortlisted",
-      desc: "Our team will review your application and conduct a brief onboarding discussion.",
+      title: "Official Ambassador",
+      desc: "Once you receive the mail, you are officially a MUJ HackX Campus Ambassador.",
       color: "from-[#B86EF9] to-[#7801FF]",
     },
     {
       num: "03",
-      title: "Lead & Earn",
-      desc: "Promote HackX 4.0 on your campus, help teams register, and claim exclusive rewards.",
+      title: "Get Referral Code",
+      desc: "Get your referral code and start promoting, and enjoy perks.",
       color: "from-[#7801FF] to-[#D242D7]",
     },
   ];
@@ -182,7 +182,7 @@ export default function ThreeSteps() {
                 >
                   {/* Top of Card: Step Number */}
                   <div className="flex justify-between items-start">
-                    <span className={`font-sans font-black text-5xl md:text-6xl text-transparent bg-clip-text bg-gradient-to-r ${step.color} select-none`}>
+                    <span className="font-sans font-black text-5xl md:text-6xl text-white select-none">
                       {step.num}
                     </span>
 
