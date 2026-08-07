@@ -34,6 +34,14 @@ const antonFallback = localFont({
 export const metadata: Metadata = {
   title: "HackX 4.0 — MUJ's Largest Hackathon",
   description: "HackX 4.0 — Join MUJ's biggest hackathon and ignite innovation.",
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "32x32", type: "image/x-icon" },
+      { url: "/icon-192.ico", sizes: "192x192", type: "image/x-icon" },
+      { url: "/icon-512.ico", sizes: "512x512", type: "image/x-icon" },
+    ],
+    apple: "/apple-touch-icon.ico",
+  },
 };
 
 export default function RootLayout({
@@ -44,6 +52,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${oskariG2Sans.variable} ${instrumentSerifItalic.variable} ${antonFallback.variable} ${montserrat.variable}`}>
       <head>
+        <link rel="icon" href="/favicon.ico" type="image/x-icon" sizes="32x32" />
         <link
           rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
@@ -51,6 +60,12 @@ export default function RootLayout({
           crossOrigin="anonymous"
           referrerPolicy="no-referrer"
         />
+        <link rel="manifest" href="/manifest.json" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.ico" />
+        <meta name="theme-color" content="#000000" />
+        <meta name="mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
       </head>
       <body className="antialiased flex flex-col min-h-screen-stable justify-between bg-transparent text-white relative">
         <ViewportFix />
