@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useRef } from "react";
+import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
@@ -319,10 +320,12 @@ export default function Contacts() {
                   border: "1px solid rgba(168, 85, 247, 0.3)"
                 }}
               />
-              <img
-                src="/assets/hero/venue.png"
-                alt="HackX Venue Concept"
-                className="w-full h-full object-cover grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700 ease-out"
+              <Image
+                src="/assets/images/gallery/WhatsApp%20Image%202026-07-21%20at%2009.04.18_converted.webp"
+                alt="team"
+                fill
+                sizes="(max-width: 1024px) 100vw, 480px"
+                className="object-cover opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700 ease-out"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none" />
             </div>
