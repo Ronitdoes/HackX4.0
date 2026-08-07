@@ -385,36 +385,60 @@ export default function Navbar() {
     <>
       {/* Sleek Floating Header Bar */}
       <header className="fixed top-0 left-0 z-[100] isolate h-24 w-full overflow-hidden px-7 md:h-32 md:px-12 flex justify-between items-center pointer-events-none">
-        <button
-          ref={buttonRef}
-          type="button"
-          onClick={toggleMenu}
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}
-          className="pointer-events-auto relative z-10 group flex items-center gap-2.5 justify-center text-white hover:opacity-85 transition-opacity mix-blend-difference outline-none focus:outline-none focus-visible:outline-none focus:ring-0 focus-visible:ring-0 select-none [-webkit-tap-highlight-color:transparent]"
-          aria-label={isOpen ? "Close Menu" : "Open Menu"}
-          aria-expanded={isOpen}
-          aria-controls="site-navigation"
-        >
-          <div className="relative w-6 h-6 flex items-center justify-center overflow-hidden">
-            <span ref={line1Ref} className="absolute w-4 h-[0.5px] bg-white" style={{ transform: "translateY(-4px)" }}></span>
-            <span ref={line2Ref} className="absolute w-4 h-[0.5px] bg-white" style={{ transform: "translateY(4px)" }}></span>
-          </div>
-          <span className="text-[10px] uppercase tracking-[0.2em] font-semibold font-sans h-4 flex items-center overflow-hidden relative select-none px-1.5 -mx-1.5">
-            <AnimatePresence mode="wait">
-              <motion.span
-                key={isOpen ? "close" : "menu"}
-                initial={{ y: 12, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                exit={{ y: -12, opacity: 0 }}
-                transition={{ duration: 0.22 * animationSpeed, ease: "easeOut" }}
-                className="block"
-              >
-                {isOpen ? "Close" : "Menu"}
-              </motion.span>
-            </AnimatePresence>
-          </span>
-        </button>
+        <div className="flex items-center gap-4 sm:gap-6 pointer-events-auto mix-blend-difference">
+          {/* Logo X */}
+          <Link
+            href="/"
+            aria-label="Home"
+            className="group flex items-center justify-center text-white hover:opacity-85 transition-opacity"
+          >
+            <svg
+              className="w-5 h-5 sm:w-6 sm:h-6 fill-current text-white"
+              viewBox="0 0 895 1000"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path d="M0 0H335.426L559.574 400.568L895 1000H559.574L335.426 599.432L0 0Z" />
+              <path fillRule="evenodd" clipRule="evenodd" d="M335.426 1000H0L335.426 599.432V1000Z" />
+              <path fillRule="evenodd" clipRule="evenodd" d="M559.574 0H895L559.574 400.568V0Z" />
+            </svg>
+          </Link>
+
+          {/* Vertical Divider */}
+          <div className="h-6 sm:h-7 w-[1px] bg-white/40" />
+
+          {/* Menu Button */}
+          <button
+            ref={buttonRef}
+            type="button"
+            onClick={toggleMenu}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+            className="relative z-10 group flex items-center gap-2.5 justify-center text-white hover:opacity-85 transition-opacity outline-none focus:outline-none focus-visible:outline-none focus:ring-0 focus-visible:ring-0 select-none [-webkit-tap-highlight-color:transparent]"
+            aria-label={isOpen ? "Close Menu" : "Open Menu"}
+            aria-expanded={isOpen}
+            aria-controls="site-navigation"
+          >
+            <div className="relative w-6 h-6 flex items-center justify-center overflow-hidden">
+              <span ref={line1Ref} className="absolute w-4 h-[0.5px] bg-white" style={{ transform: "translateY(-4px)" }}></span>
+              <span ref={line2Ref} className="absolute w-4 h-[0.5px] bg-white" style={{ transform: "translateY(4px)" }}></span>
+            </div>
+            <span className="text-[10px] uppercase tracking-[0.2em] font-semibold font-sans h-4 flex items-center overflow-hidden relative select-none px-1.5 -mx-1.5">
+              <AnimatePresence mode="wait">
+                <motion.span
+                  key={isOpen ? "close" : "menu"}
+                  initial={{ y: 12, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  exit={{ y: -12, opacity: 0 }}
+                  transition={{ duration: 0.22 * animationSpeed, ease: "easeOut" }}
+                  className="block uppercase"
+                >
+                  {isOpen ? "CLOSE" : "MENU"}
+                </motion.span>
+              </AnimatePresence>
+            </span>
+          </button>
+        </div>
 
         <Link
           href="/#register"

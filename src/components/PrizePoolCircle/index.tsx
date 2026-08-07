@@ -77,14 +77,14 @@ const CircularText: React.FC<CircularTextProps> = ({
 };
 
 const PrizePoolCircle = () => {
-  const text = "TOTAL PRIZE POOL • TOTAL PRIZE POOL • ";
+  const text = "TOTAL PRIZE POOL | TOTAL PRIZE POOL | TOTAL PRIZE POOL | ";
   const isMobile = useIsMobile();
 
   return (
-    <div className="flex h-16 w-16 transform items-center justify-center rounded-full bg-[#D9D9D91A] backdrop-blur-2xl lg:h-24 lg:w-24">
+    <div className="flex h-16 w-16 transform items-center justify-center rounded-full bg-[#8b7a9f]/25 backdrop-blur-md border border-white/15 lg:h-24 lg:w-24 shadow-md">
       <CircularText text={text} spinDuration={15} radius={isMobile ? 27 : 42} />
       <div className="absolute inset-0 flex items-center justify-center">
-        <span className="text-[#FAF8F5] rotate-[-15.15deg] transform text-base font-bold lg:text-2xl">
+        <span className="text-white transform text-base font-extrabold lg:text-2xl tracking-tight">
           ₹6L+
         </span>
       </div>

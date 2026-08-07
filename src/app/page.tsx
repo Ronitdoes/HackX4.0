@@ -64,8 +64,8 @@ export default function Home() {
           >
             <div className="overflow-visible pb-1">
               <motion.div variants={lineVariants} className="block origin-bottom">
-                <GlassPill className="text-[0.26em] md:text-[0.22em] tracking-[0.15em]">
-                  Department of Computer Science and Engineering, SCSE, FOSTA
+                <GlassPill className="text-[0.26em] md:text-[0.22em] tracking-[0.15em] uppercase">
+                  DEPARTMENT OF COMPUTER SCIENCE AND ENGINEERING, SCSE, FOSTA
                 </GlassPill>
               </motion.div>
             </div>
@@ -81,31 +81,34 @@ export default function Home() {
                   {/* Bottom-right corner */}
                   <span className="absolute right-0 bottom-0 h-2 w-2 md:h-2.5 md:w-2.5 border-b-[3px] border-r-[3px] border-white" />
                   <span className="font-sans font-bold uppercase tracking-[0.3em] text-[#FAF8F5] text-[12px] sm:text-[14px] md:text-[16px]">
-                    Presents
+                    PRESENTS
                   </span>
                 </div>
               </motion.div>
             </div>
-            <div className="overflow-visible py-2 md:py-3">
+            <div className="overflow-visible py-0">
               <motion.div variants={lineVariants} className="block origin-bottom">
                 <div className="relative inline-block">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src="/assets/logos/hackx-white.svg"
                     alt="MUJ HackX 4.0"
-                    className="w-[55vw] max-w-[480px] md:w-[40vw] md:max-w-[620px] h-auto mx-auto select-none pointer-events-none"
+                    className="w-[70vw] max-w-[600px] md:w-[50vw] md:max-w-[760px] h-auto mx-auto select-none pointer-events-none"
                     draggable={false}
                   />
-                  <div className="absolute top-[-6%] -right-2 sm:-right-4 md:right-[14%] z-30">
+                  <div className="absolute -top-3 -right-2 sm:-top-4 sm:-right-4 md:-top-4 md:right-[5%] z-30">
                     <PrizePoolCircle />
                   </div>
                 </div>
               </motion.div>
             </div>
-            <div className="overflow-hidden py-1 md:py-2 -mt-6 md:-mt-10">
-              <motion.span variants={lineVariants} className="block origin-bottom font-medium whitespace-nowrap text-[0.42em] md:text-[0.44em] tracking-wide">
-                Muj's Largest Hackathon
-              </motion.span>
+            <div className="overflow-hidden py-0 w-full -mt-2 md:-mt-4">
+              <motion.div variants={lineVariants} className="flex items-center justify-between w-full gap-4 sm:gap-6">
+                <div className="h-[1.5px] flex-1 bg-[#F0ABFC]" />
+                <span className="font-serif italic font-normal tracking-wide text-xl sm:text-3xl md:text-4xl lg:text-[2.6rem] text-white whitespace-nowrap">
+                  MUJ&apos;s Largest Hackathon!
+                </span>
+              </motion.div>
             </div>
           </motion.h1>
 
