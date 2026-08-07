@@ -18,6 +18,8 @@ export const LANDING_SPONSORS: Sponsor[] = [
 
 // Grid Section Sponsors (16 Sponsors - 4 blocks of 2x2 grids)
 export const GRID_SPONSORS: Sponsor[] = [
+    { id: 115, name: "Sponsor S1", logo: "/assets/sponsors/S1.png" },
+  { id: 116, name: "Sponsor S3", logo: "/assets/sponsors/S3.png" },
   { id: 101, name: "Sponsor 9", logo: "/assets/sponsors/sponsor9.svg" },
   { id: 102, name: "Sponsor 10", logo: "/assets/sponsors/sponsor10.svg" },
   { id: 103, name: "Sponsor 11", logo: "/assets/sponsors/sponsor11.svg" },
@@ -32,8 +34,7 @@ export const GRID_SPONSORS: Sponsor[] = [
   { id: 112, name: "Sponsor 20", logo: "/assets/sponsors/sponsor20.svg" },
   { id: 113, name: "Sponsor 21", logo: "/assets/sponsors/sponsor21.svg" },
   { id: 114, name: "Sponsor 22", logo: "/assets/sponsors/sponsor22.svg" },
-  { id: 115, name: "Sponsor S1", logo: "/assets/sponsors/S1.png" },
-  { id: 116, name: "Sponsor S3", logo: "/assets/sponsors/S3.png" },
+
 ];
 
 // Combined dataset export

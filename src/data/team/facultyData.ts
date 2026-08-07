@@ -316,6 +316,6 @@ const generateFacultyForYear = (year: "2026" | "2025"): TeamMember[] => {
 };
 
 export const facultyMembers: TeamMember[] = [
-  // ── 2026 FACULTY ──
-  ...generateFacultyForYear("2026"),
+  // ── 2025 FACULTY ──
+  ...generateFacultyForYear("2025"),
 ];
