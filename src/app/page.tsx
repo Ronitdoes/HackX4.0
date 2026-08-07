@@ -7,6 +7,7 @@ import SdgComponent from "@/components/sdg";
 import SdgMarquee from "@/components/SdgMarquee";
 import Sponsors from "@/components/Sponsors";
 import GlassPill from "@/components/GlassPill";
+import JoinHackathon from "@/components/JoinHackathon";
 import PrizePoolCircle from "@/components/PrizePoolCircle";
 
 export default function Home() {
@@ -168,6 +169,7 @@ export default function Home() {
       </div>
 
       <Stats />
+      <JoinHackathon />
       <SdgComponent />
       <Sponsors />
     </>

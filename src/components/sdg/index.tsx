@@ -244,6 +244,7 @@ export default function SdgComponent() {
         if (sectionRef.current) {
           gsap.to(sectionRef.current, { opacity: 1, duration: 0.4 });
         }
+
       });
 
       // Refresh ScrollTrigger to ensure accurate layout calculations
@@ -254,13 +255,18 @@ export default function SdgComponent() {
 
   return (
     <section id="sdg-section" className="w-full bg-transparent select-none overflow-hidden">
+      <div className="hidden h-[37vh] items-end justify-center md:flex">
+        <h2 className="font-serif italic text-white text-[9vw] sm:text-[13vw] lg:text-[12vw] leading-[0.85] text-center tracking-normal whitespace-nowrap">
+          OUR THEMES
+        </h2>
+      </div>
       {/* Desktop View: Pinned Arc Conveyor */}
       <div
         ref={sectionRef}
         className="hidden md:flex w-full h-screen-stable relative items-center opacity-0"
       >
         {/* Brand Stack (Arc Motion Area) */}
-        <div className="absolute left-[24vw] top-0 h-full w-[50vw] flex items-start pt-[48vh] justify-start z-20 pointer-events-none">
+        <div className="absolute left-[24vw] top-0 h-full w-[50vw] flex items-start pt-[25vh] justify-start z-20 pointer-events-none">
           <div ref={stackGroupRef} className="relative w-full">
             {brands.map((brand, idx) => (
               <div
@@ -297,7 +303,7 @@ export default function SdgComponent() {
         </div>
 
         {/* Right Active Brand Info Panel */}
-        <div className="absolute right-[6.5vw] top-0 h-full w-[32vw] flex items-start pt-[48vh] z-30 pointer-events-auto">
+        <div className="absolute right-[6.5vw] top-0 h-full w-[32vw] flex items-start pt-[25vh] z-30 pointer-events-auto">
           <div className="relative w-full h-[120px] flex items-center -translate-y-1/2">
             {brands.map((brand, idx) => (
               <div
@@ -331,16 +337,12 @@ export default function SdgComponent() {
       <div className="block md:hidden w-full py-16 px-6 bg-transparent text-center select-none">
         <div className="max-w-lg mx-auto">
           {/* Header */}
-          <div className="flex items-center justify-center gap-2 font-serif italic text-base text-[#f9f6f0]/80 mb-3">
-            <span>{brands.length}</span>
-            <span>-</span>
-            <span>Sustainable Goals</span>
+          <div className="text-center mb-3">
+            <span className="font-serif italic text-white text-[17vw] sm:text-[15vw] lg:text-[13.5vw] leading-[0.85] text-center tracking-normal whitespace-nowrap">
+              OUR THEMES
+            </span>
           </div>
-
-          <p className="font-sans text-sm sm:text-base text-[#f9f6f0]/75 max-w-sm sm:max-w-md mx-auto text-center leading-relaxed mb-12 font-light">
-            Addressing global challenges through innovation, equality, health, and sustainable development to build a better future.
-          </p>
-
+          
           {/* 3-Column Logo Grid */}
           <div className="grid grid-cols-3 gap-y-12 gap-x-4 items-center justify-items-center">
             {brands.map((brand, idx) => (
