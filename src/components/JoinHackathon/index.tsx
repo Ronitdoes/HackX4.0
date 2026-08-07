@@ -4,11 +4,23 @@ import React from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 
-export default function JoinHackathon() {
+interface JoinHackathonProps {
+  title?: string;
+  highlightText?: string;
+  href?: string;
+  buttonText?: string;
+}
+
+export default function JoinHackathon({
+  title = "Join the",
+  highlightText = "Hackathon!",
+  href = "#",
+  buttonText = "Register now",
+}: JoinHackathonProps) {
   return (
     <section
       id="register"
-      className="relative w-full overflow-hidden px-4 py-6 sm:px-8 md:px-16 md:py-8"
+      className="relative w-full overflow-hidden px-4 py-4 sm:px-8 md:px-16 md:py-5"
       aria-labelledby="join-hackathon-title"
     >
       <motion.div
@@ -17,13 +29,12 @@ export default function JoinHackathon() {
         whileHover={{ y: -4, scale: 1.01 }}
         viewport={{ once: true, amount: 0.35 }}
         transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-        className="relative mx-auto max-w-3xl overflow-hidden rounded-[2.5rem] backdrop-blur-md"
+        className="relative mx-auto max-w-3xl overflow-hidden rounded-[2.5rem]"
         style={{
           background: "linear-gradient(115deg, color-mix(in srgb, var(--bg-gradient-from) 72%, #020207), color-mix(in srgb, var(--bg-gradient-via) 68%, #020207) 56%, color-mix(in srgb, var(--bg-gradient-to) 72%, #020207))",
           border: "1px solid color-mix(in srgb, var(--bg-gradient-from) 38%, white)",
           borderBottom: "0",
-          boxShadow: "0 20px 60px color-mix(in srgb, var(--bg-gradient-from) 30%, transparent)",
-          transition: "background 500ms ease, border-color 500ms ease, box-shadow 500ms ease",
+          transition: "background 500ms ease, border-color 500ms ease",
         }}
       >
         <div className="absolute inset-0 bg-black/10" />
@@ -45,23 +56,22 @@ export default function JoinHackathon() {
             <h2
               id="join-hackathon-title"
               className="[font-family:var(--font-montserrat)] text-3xl font-black uppercase leading-[0.92] tracking-[-0.04em] text-[#faf8f5] sm:text-4xl md:text-5xl">
-              Join the <span style={{ color: "color-mix(in srgb, var(--bg-gradient-from) 30%, white)" }}>Hackathon!</span>
+              {title} <span style={{ color: "color-mix(in srgb, var(--bg-gradient-from) 30%, white)" }}>{highlightText}</span>
             </h2>
           </div>
 
           <a
-            href="#"
+            href={href}
             className="group relative inline-flex shrink-0 items-center justify-center overflow-hidden rounded-full border px-5 py-3 font-sans text-[11px] font-extrabold uppercase tracking-[0.16em] text-[#10051f] transition duration-300 hover:-translate-y-1 hover:border-white hover:bg-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white sm:px-6"
             style={{
               backgroundColor: "color-mix(in srgb, var(--bg-gradient-from) 16%, white)",
               borderColor: "color-mix(in srgb, var(--bg-gradient-from) 12%, white)",
-              boxShadow: "0 12px 30px color-mix(in srgb, var(--bg-gradient-from) 34%, transparent)",
-              transition: "background-color 500ms ease, border-color 500ms ease, box-shadow 500ms ease, transform 300ms ease",
+              transition: "background-color 500ms ease, border-color 500ms ease, transform 300ms ease",
             }}
-            aria-label="Register now for HackX 4.0"
+            aria-label={`${title} ${highlightText}`}
           >
             <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/80 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
-            <span className="relative">Register now</span>
+            <span className="relative">{buttonText}</span>
             <svg
               className="relative ml-3 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
               viewBox="0 0 16 16"
