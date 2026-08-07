@@ -255,18 +255,13 @@ export default function SdgComponent() {
 
   return (
     <section id="sdg-section" className="w-full bg-transparent select-none overflow-hidden">
-      <div className="hidden h-[37vh] items-end justify-center md:flex">
-        <h2 className="font-serif italic text-white text-[9vw] sm:text-[13vw] lg:text-[12vw] leading-[0.85] text-center tracking-normal whitespace-nowrap">
-          OUR THEMES
-        </h2>
-      </div>
       {/* Desktop View: Pinned Arc Conveyor */}
       <div
         ref={sectionRef}
         className="hidden md:flex w-full h-screen-stable relative items-center opacity-0"
       >
         {/* Brand Stack (Arc Motion Area) */}
-        <div className="absolute left-[24vw] top-0 h-full w-[50vw] flex items-start pt-[25vh] justify-start z-20 pointer-events-none">
+        <div className="absolute left-[24vw] top-0 h-full w-[50vw] flex items-center justify-start z-20 pointer-events-none">
           <div ref={stackGroupRef} className="relative w-full">
             {brands.map((brand, idx) => (
               <div
@@ -303,8 +298,14 @@ export default function SdgComponent() {
         </div>
 
         {/* Right Active Brand Info Panel */}
-        <div className="absolute right-[6.5vw] top-0 h-full w-[32vw] flex items-start pt-[25vh] z-30 pointer-events-auto">
-          <div className="relative w-full h-[120px] flex items-center -translate-y-1/2">
+        <div className="absolute right-[6.5vw] top-0 h-full w-[32vw] flex flex-col justify-center items-center z-30 pointer-events-auto">
+          <h2
+            className="font-sans font-medium uppercase text-[27px] sm:text-[33px] md:text-[33px] lg:text-[39px] tracking-widest text-[#f9f6f0] text-center whitespace-nowrap mb-8"
+            style={{ fontFamily: "var(--font-sans)" }}
+          >
+            OUR THEMES
+          </h2>
+          <div className="relative w-full h-[120px] flex items-center">
             {brands.map((brand, idx) => (
               <div
                 key={idx}

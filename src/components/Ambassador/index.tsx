@@ -10,7 +10,7 @@ import About from "@/components/Ambassador/About";
 import WhyApply from "@/components/Ambassador/WhyApply";
 import Themes from "@/components/Themes";
 import ThreeSteps from "@/components/Ambassador/ThreeSteps";
-import PuzzleJoin from "@/components/PuzzleJoin";
+import JoinHackathon from "@/components/JoinHackathon";
 import FAQ from "@/components/FAQ";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -159,9 +159,14 @@ export default function Ambassador() {
         <ThreeSteps />
       </section>
 
-      {/* Puzzle Component Section */}
-      <section id="puzzle" className="relative w-full z-10">
-        <PuzzleJoin />
+      {/* Join Campus Ambassador Banner Section */}
+      <section id="join-ambassador" className="relative w-full z-10 py-6">
+        <JoinHackathon
+          title="Become the"
+          highlightText="Campus Ambassador!"
+          href="#apply"
+          buttonText="Register now"
+        />
       </section>
 
       {/* FAQ Component Section */}

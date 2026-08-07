@@ -444,7 +444,7 @@ export default function Navbar() {
           href="/#register"
           className="pointer-events-auto relative z-10 group/btn font-sans text-xs md:text-sm font-normal tracking-tight text-white hover:opacity-85 transition-opacity flex items-center gap-1.5 mix-blend-difference"
         >
-          <span>Register</span>
+          <span>Problem Statement</span>
           <span className="transition-transform duration-300 group-hover/btn:translate-x-1">→</span>
         </Link>
       </header>
