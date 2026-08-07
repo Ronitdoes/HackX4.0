@@ -10,7 +10,7 @@ export const executiveMembers: TeamMember[] = [
     role: "Student Convener",
     year: "2026",
     category: "EXECUTIVE",
-    subTeam: "STUDENT CONVENER",
+    subTeam: "STUDENT CONVENER 2026-27",
     image: "https://pub-2b91df05320148438318902a8dc7795b.r2.dev/media/1781889254081_37vzf.avif",
   },
   {
@@ -19,7 +19,7 @@ export const executiveMembers: TeamMember[] = [
     role: "Student Convener",
     year: "2026",
     category: "EXECUTIVE",
-    subTeam: "STUDENT CONVENER",
+    subTeam: "STUDENT CONVENER 2026-27",
     image: "https://pub-2b91df05320148438318902a8dc7795b.r2.dev/media/1782011065871_m0oq3a.avif",
   },
   {
@@ -28,7 +28,7 @@ export const executiveMembers: TeamMember[] = [
     role: "Student Convener",
     year: "2026",
     category: "EXECUTIVE",
-    subTeam: "STUDENT CONVENER",
+    subTeam: "STUDENT CONVENER 2026-27",
     image: "https://pub-2b91df05320148438318902a8dc7795b.r2.dev/media/1782011094578_2vzedf.avif",
   },
   {
@@ -37,7 +37,7 @@ export const executiveMembers: TeamMember[] = [
     role: "Student Convener",
     year: "2026",
     category: "EXECUTIVE",
-    subTeam: "STUDENT CONVENER",
+    subTeam: "STUDENT CONVENER 2026-27",
   },
 
   // 2. MUJ HACKX 4.0 ADVISORIES
@@ -532,14 +532,14 @@ export const executiveMembers: TeamMember[] = [
 
   // ── 2025 EXECUTIVE ──
 
-  // 1. STUDENT CONVENER 2024-25
+  // 1. STUDENT CONVENER 2025-26
   {
     id: "2025-exec-convener-1",
     name: "Aryan Verma",
     role: "Student Convener",
     year: "2025",
     category: "EXECUTIVE",
-    subTeam: "STUDENT CONVENER 2024-25",
+    subTeam: "STUDENT CONVENER 2025-26",
     initials: "AV",
     image: "https://pub-2b91df05320148438318902a8dc7795b.r2.dev/media/1781889246969_y6vynm.avif",
   },
@@ -549,7 +549,7 @@ export const executiveMembers: TeamMember[] = [
     role: "Student Convener",
     year: "2025",
     category: "EXECUTIVE",
-    subTeam: "STUDENT CONVENER 2024-25",
+    subTeam: "STUDENT CONVENER 2025-26",
     initials: "SG",
     image: "https://pub-2b91df05320148438318902a8dc7795b.r2.dev/media/1781889259800_nlyuc.avif",
   },
@@ -559,7 +559,7 @@ export const executiveMembers: TeamMember[] = [
     role: "Student Convener",
     year: "2025",
     category: "EXECUTIVE",
-    subTeam: "STUDENT CONVENER 2024-25",
+    subTeam: "STUDENT CONVENER 2025-26",
     initials: "TY",
     image: "https://pub-45c102ac14a64011a530ed2864a18405.r2.dev/hackx/1785956271180_sivqyl.webp",
   },
@@ -569,7 +569,7 @@ export const executiveMembers: TeamMember[] = [
     role: "Student Convener",
     year: "2025",
     category: "EXECUTIVE",
-    subTeam: "STUDENT CONVENER 2024-25",
+    subTeam: "STUDENT CONVENER 2025-26",
     initials: "HC",
     image: "https://pub-45c102ac14a64011a530ed2864a18405.r2.dev/hackx/1785957238235_cp69rc.webp",
   },
@@ -608,14 +608,14 @@ export const executiveMembers: TeamMember[] = [
 
   // ── 2024 EXECUTIVE ──
 
-  // 1. STUDENT CONVENER 2023-24
+  // 1. STUDENT CONVENER 2024-25
   {
     id: "2024-exec-convener-1",
     name: "Naad Dantale",
     role: "Student Convener",
     year: "2024",
     category: "EXECUTIVE",
-    subTeam: "STUDENT CONVENER 2023-24",
+    subTeam: "STUDENT CONVENER 2024-25",
     initials: "ND",
     image: "https://pub-45c102ac14a64011a530ed2864a18405.r2.dev/hackx/1785957463794_jpfpqi.webp",
   },
@@ -625,7 +625,7 @@ export const executiveMembers: TeamMember[] = [
     role: "Student Convener",
     year: "2024",
     category: "EXECUTIVE",
-    subTeam: "STUDENT CONVENER 2023-24",
+    subTeam: "STUDENT CONVENER 2024-25",
     initials: "RJ",
     image: "https://pub-45c102ac14a64011a530ed2864a18405.r2.dev/hackx/1785957258859_3dx2ri.webp",
   },
@@ -635,7 +635,7 @@ export const executiveMembers: TeamMember[] = [
     role: "Student Convener",
     year: "2024",
     category: "EXECUTIVE",
-    subTeam: "STUDENT CONVENER 2023-24",
+    subTeam: "STUDENT CONVENER 2024-25",
     initials: "SK",
     image: "https://pub-45c102ac14a64011a530ed2864a18405.r2.dev/hackx/1785957474759_uk19r.webp",
   },
@@ -645,7 +645,7 @@ export const executiveMembers: TeamMember[] = [
     role: "Student Convener",
     year: "2024",
     category: "EXECUTIVE",
-    subTeam: "STUDENT CONVENER 2023-24",
+    subTeam: "STUDENT CONVENER 2024-25",
     initials: "PG",
     image: "https://pub-45c102ac14a64011a530ed2864a18405.r2.dev/hackx/1785957270782_007n8.webp",
   },
@@ -655,7 +655,7 @@ export const executiveMembers: TeamMember[] = [
     role: "Student Convener",
     year: "2024",
     category: "EXECUTIVE",
-    subTeam: "STUDENT CONVENER 2023-24",
+    subTeam: "STUDENT CONVENER 2024-25",
     initials: "RC",
     image: "https://pub-45c102ac14a64011a530ed2864a18405.r2.dev/hackx/1785957493657_zc64ic.webp",
   },
@@ -665,7 +665,7 @@ export const executiveMembers: TeamMember[] = [
     role: "Student Convener",
     year: "2024",
     category: "EXECUTIVE",
-    subTeam: "STUDENT CONVENER 2023-24",
+    subTeam: "STUDENT CONVENER 2024-25",
     initials: "AJ",
     image: "https://pub-45c102ac14a64011a530ed2864a18405.r2.dev/hackx/1785957281415_aoemie.webp",
   },

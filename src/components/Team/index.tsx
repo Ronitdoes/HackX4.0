@@ -13,7 +13,7 @@ export default function Team() {
   const lenis = useLenis();
 
   const [selectedYear, setSelectedYear] = useState<TeamYear>("2026");
-  const [selectedCategory, setSelectedCategory] = useState<TeamCategory>("FACULTY");
+  const [selectedCategory, setSelectedCategory] = useState<TeamCategory>("EXECUTIVE");
 
   const [isMobile, setIsMobile] = useState(false);
 
