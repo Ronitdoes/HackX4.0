@@ -12,6 +12,7 @@ export const coreMembers: TeamMember[] = [
     category: "CORE",
     subTeam: "TECHNICAL TEAM",
     initials: "VK",
+    image: "https://pub-45c102ac14a64011a530ed2864a18405.r2.dev/team/vidhyanshu-kumar.avif",
   },
   {
     id: "2026-core-tech-2",
@@ -21,6 +22,7 @@ export const coreMembers: TeamMember[] = [
     category: "CORE",
     subTeam: "TECHNICAL TEAM",
     initials: "RM",
+    image: "https://pub-45c102ac14a64011a530ed2864a18405.r2.dev/team/ronit-mahajan.avif",
   },
   {
     id: "2026-core-tech-3",
@@ -30,6 +32,7 @@ export const coreMembers: TeamMember[] = [
     category: "CORE",
     subTeam: "TECHNICAL TEAM",
     initials: "DM",
+    image: "https://pub-45c102ac14a64011a530ed2864a18405.r2.dev/team/devishi-mathur.avif",
   },
   {
     id: "2026-core-tech-4",
@@ -39,6 +42,7 @@ export const coreMembers: TeamMember[] = [
     category: "CORE",
     subTeam: "TECHNICAL TEAM",
     initials: "ST",
+    image: "https://pub-45c102ac14a64011a530ed2864a18405.r2.dev/team/samya-tiwari.avif",
   },
   {
     id: "2026-core-tech-5",
@@ -59,6 +63,7 @@ export const coreMembers: TeamMember[] = [
     category: "CORE",
     subTeam: "CONTENT TEAM",
     initials: "DB",
+    image: "https://pub-45c102ac14a64011a530ed2864a18405.r2.dev/team/devika-beri.avif",
   },
   {
     id: "2026-core-content-2",
@@ -68,6 +73,7 @@ export const coreMembers: TeamMember[] = [
     category: "CORE",
     subTeam: "CONTENT TEAM",
     initials: "AG",
+    image: "https://pub-45c102ac14a64011a530ed2864a18405.r2.dev/team/anvi-goyal.avif",
   },
   {
     id: "2026-core-content-3",
@@ -77,6 +83,7 @@ export const coreMembers: TeamMember[] = [
     category: "CORE",
     subTeam: "CONTENT TEAM",
     initials: "MM",
+    image: "https://pub-45c102ac14a64011a530ed2864a18405.r2.dev/team/mehr-mehta.avif",
   },
 
   // 3. CURATIONS TEAM
@@ -88,6 +95,7 @@ export const coreMembers: TeamMember[] = [
     category: "CORE",
     subTeam: "CURATIONS TEAM",
     initials: "AB",
+    image: "https://pub-45c102ac14a64011a530ed2864a18405.r2.dev/team/ankush-bhardwaj.avif",
   },
   {
     id: "2026-core-curations-2",
@@ -97,6 +105,7 @@ export const coreMembers: TeamMember[] = [
     category: "CORE",
     subTeam: "CURATIONS TEAM",
     initials: "MS",
+    image: "https://pub-45c102ac14a64011a530ed2864a18405.r2.dev/team/mishika-sehgal.avif",
   },
   {
     id: "2026-core-curations-3",
@@ -106,6 +115,7 @@ export const coreMembers: TeamMember[] = [
     category: "CORE",
     subTeam: "CURATIONS TEAM",
     initials: "SS",
+    image: "https://pub-45c102ac14a64011a530ed2864a18405.r2.dev/team/sanvi-sinha.avif",
   },
   {
     id: "2026-core-curations-4",
@@ -124,6 +134,7 @@ export const coreMembers: TeamMember[] = [
     category: "CORE",
     subTeam: "CURATIONS TEAM",
     initials: "KM",
+    image: "https://pub-45c102ac14a64011a530ed2864a18405.r2.dev/team/kash.avif",
   },
 
   // 4. GRAPHIC DESIGN TEAM
@@ -135,6 +146,7 @@ export const coreMembers: TeamMember[] = [
     category: "CORE",
     subTeam: "GRAPHIC DESIGN TEAM",
     initials: "NK",
+    image: "https://pub-45c102ac14a64011a530ed2864a18405.r2.dev/team/nandini-khandelwal.avif",
   },
   {
     id: "2026-core-graphics-2",
@@ -144,6 +156,7 @@ export const coreMembers: TeamMember[] = [
     category: "CORE",
     subTeam: "GRAPHIC DESIGN TEAM",
     initials: "AG",
+    image: "https://pub-45c102ac14a64011a530ed2864a18405.r2.dev/team/ananya-ghosh.avif",
   },
   {
     id: "2026-core-graphics-3",
@@ -153,6 +166,7 @@ export const coreMembers: TeamMember[] = [
     category: "CORE",
     subTeam: "GRAPHIC DESIGN TEAM",
     initials: "AB",
+    image: "https://pub-45c102ac14a64011a530ed2864a18405.r2.dev/team/aditi-bhardwaj.avif",
   },
   {
     id: "2026-core-graphics-4",
@@ -162,6 +176,7 @@ export const coreMembers: TeamMember[] = [
     category: "CORE",
     subTeam: "GRAPHIC DESIGN TEAM",
     initials: "SR",
+    image: "https://pub-45c102ac14a64011a530ed2864a18405.r2.dev/team/shriya-raizada.avif",
   },
   {
     id: "2026-core-graphics-5",
@@ -171,6 +186,7 @@ export const coreMembers: TeamMember[] = [
     category: "CORE",
     subTeam: "GRAPHIC DESIGN TEAM",
     initials: "SM",
+    image: "https://pub-45c102ac14a64011a530ed2864a18405.r2.dev/team/soham-more.avif",
   },
   {
     id: "2026-core-graphics-6",
@@ -191,6 +207,7 @@ export const coreMembers: TeamMember[] = [
     category: "CORE",
     subTeam: "HOSPITALITY TEAM",
     initials: "MG",
+    image: "https://pub-45c102ac14a64011a530ed2864a18405.r2.dev/team/mishita-gogia.avif",
   },
   {
     id: "2026-core-hospitality-2",
@@ -200,6 +217,7 @@ export const coreMembers: TeamMember[] = [
     category: "CORE",
     subTeam: "HOSPITALITY TEAM",
     initials: "CB",
+    image: "https://pub-45c102ac14a64011a530ed2864a18405.r2.dev/team/chaitanya-bhardwaj.avif",
   },
   {
     id: "2026-core-hospitality-3",
@@ -209,6 +227,7 @@ export const coreMembers: TeamMember[] = [
     category: "CORE",
     subTeam: "HOSPITALITY TEAM",
     initials: "RG",
+    image: "https://pub-45c102ac14a64011a530ed2864a18405.r2.dev/team/rachit-goyal.avif",
   },
   {
     id: "2026-core-hospitality-4",
@@ -218,6 +237,7 @@ export const coreMembers: TeamMember[] = [
     category: "CORE",
     subTeam: "HOSPITALITY TEAM",
     initials: "TG",
+    image: "https://pub-45c102ac14a64011a530ed2864a18405.r2.dev/team/tansukh-goyal.avif",
   },
   {
     id: "2026-core-hospitality-5",
@@ -227,6 +247,7 @@ export const coreMembers: TeamMember[] = [
     category: "CORE",
     subTeam: "HOSPITALITY TEAM",
     initials: "AG",
+    image: "https://pub-45c102ac14a64011a530ed2864a18405.r2.dev/team/abhishek-singh-gaur.avif",
   },
   {
     id: "2026-core-hospitality-6",
@@ -236,6 +257,7 @@ export const coreMembers: TeamMember[] = [
     category: "CORE",
     subTeam: "HOSPITALITY TEAM",
     initials: "RB",
+    image: "https://pub-45c102ac14a64011a530ed2864a18405.r2.dev/team/radhika-bansal.jpeg",
   },
 
   // 6. MARKETING TEAM
@@ -247,6 +269,7 @@ export const coreMembers: TeamMember[] = [
     category: "CORE",
     subTeam: "MARKETING TEAM",
     initials: "NM",
+    image: "https://pub-45c102ac14a64011a530ed2864a18405.r2.dev/team/nishit-mathur.avif",
   },
   {
     id: "2026-core-marketing-2",
@@ -256,6 +279,7 @@ export const coreMembers: TeamMember[] = [
     category: "CORE",
     subTeam: "MARKETING TEAM",
     initials: "AY",
+    image: "https://pub-45c102ac14a64011a530ed2864a18405.r2.dev/team/alisha-yadav.heic",
   },
   {
     id: "2026-core-marketing-3",
@@ -265,6 +289,7 @@ export const coreMembers: TeamMember[] = [
     category: "CORE",
     subTeam: "MARKETING TEAM",
     initials: "DT",
+    image: "https://pub-45c102ac14a64011a530ed2864a18405.r2.dev/team/dt-agpt.avif",
   },
   {
     id: "2026-core-marketing-4",
@@ -274,6 +299,7 @@ export const coreMembers: TeamMember[] = [
     category: "CORE",
     subTeam: "MARKETING TEAM",
     initials: "AH",
+    image: "https://pub-45c102ac14a64011a530ed2864a18405.r2.dev/team/abir-harne.jpeg",
   },
   {
     id: "2026-core-marketing-5",
@@ -292,6 +318,7 @@ export const coreMembers: TeamMember[] = [
     category: "CORE",
     subTeam: "MARKETING TEAM",
     initials: "SC",
+    image: "https://pub-45c102ac14a64011a530ed2864a18405.r2.dev/team/samridhi-choraria.jpeg",
   },
 
   // 7. MEDIA & COVERAGE TEAM
@@ -312,6 +339,7 @@ export const coreMembers: TeamMember[] = [
     category: "CORE",
     subTeam: "MEDIA & COVERAGE TEAM",
     initials: "AR",
+    image: "https://pub-45c102ac14a64011a530ed2864a18405.r2.dev/team/aditya-raj.avif",
   },
   {
     id: "2026-core-media-3",
@@ -350,6 +378,7 @@ export const coreMembers: TeamMember[] = [
     category: "CORE",
     subTeam: "OPERATIONS TEAM",
     initials: "MP",
+    image: "https://pub-45c102ac14a64011a530ed2864a18405.r2.dev/team/manish-kumar.avif",
   },
   {
     id: "2026-core-ops-2",
@@ -359,6 +388,7 @@ export const coreMembers: TeamMember[] = [
     category: "CORE",
     subTeam: "OPERATIONS TEAM",
     initials: "PJ",
+    image: "https://pub-45c102ac14a64011a530ed2864a18405.r2.dev/team/parisikha-jain.avif",
   },
   {
     id: "2026-core-ops-3",
@@ -368,6 +398,7 @@ export const coreMembers: TeamMember[] = [
     category: "CORE",
     subTeam: "OPERATIONS TEAM",
     initials: "PC",
+    image: "https://pub-45c102ac14a64011a530ed2864a18405.r2.dev/team/pranav-chauhan.avif",
   },
   {
     id: "2026-core-ops-4",
@@ -386,6 +417,7 @@ export const coreMembers: TeamMember[] = [
     category: "CORE",
     subTeam: "OPERATIONS TEAM",
     initials: "DP",
+    image: "https://pub-45c102ac14a64011a530ed2864a18405.r2.dev/team/daksh.avif",
   },
   {
     id: "2026-core-ops-6",
@@ -395,6 +427,7 @@ export const coreMembers: TeamMember[] = [
     category: "CORE",
     subTeam: "OPERATIONS TEAM",
     initials: "AM",
+    image: "https://pub-45c102ac14a64011a530ed2864a18405.r2.dev/team/ananya-mishra.avif",
   },
   {
     id: "2026-core-ops-7",
@@ -413,6 +446,7 @@ export const coreMembers: TeamMember[] = [
     category: "CORE",
     subTeam: "OPERATIONS TEAM",
     initials: "AA",
+    image: "https://pub-45c102ac14a64011a530ed2864a18405.r2.dev/team/anshika-agarwal.avif",
   },
   {
     id: "2026-core-ops-9",
@@ -440,6 +474,7 @@ export const coreMembers: TeamMember[] = [
     category: "CORE",
     subTeam: "OPERATIONS TEAM",
     initials: "SG",
+    image: "https://pub-45c102ac14a64011a530ed2864a18405.r2.dev/team/sreshth-gulati.avif",
   },
   {
     id: "2026-core-ops-12",
@@ -476,6 +511,7 @@ export const coreMembers: TeamMember[] = [
     category: "CORE",
     subTeam: "OPERATIONS TEAM",
     initials: "SS",
+    image: "https://pub-45c102ac14a64011a530ed2864a18405.r2.dev/team/swapnil-srivastava.avif",
   },
   {
     id: "2026-core-ops-16",
@@ -485,6 +521,7 @@ export const coreMembers: TeamMember[] = [
     category: "CORE",
     subTeam: "OPERATIONS TEAM",
     initials: "SG",
+    image: "https://pub-45c102ac14a64011a530ed2864a18405.r2.dev/team/shwetanshu-gautam.pdf",
   },
   {
     id: "2026-core-ops-17",
@@ -494,6 +531,7 @@ export const coreMembers: TeamMember[] = [
     category: "CORE",
     subTeam: "OPERATIONS TEAM",
     initials: "DA",
+    image: "https://pub-45c102ac14a64011a530ed2864a18405.r2.dev/team/daksh-anand.avif",
   },
   {
     id: "2026-core-ops-18",
@@ -503,6 +541,7 @@ export const coreMembers: TeamMember[] = [
     category: "CORE",
     subTeam: "OPERATIONS TEAM",
     initials: "NG",
+    image: "https://pub-45c102ac14a64011a530ed2864a18405.r2.dev/team/nishka-gupta.avif",
   },
   {
     id: "2026-core-ops-19",
@@ -512,6 +551,7 @@ export const coreMembers: TeamMember[] = [
     category: "CORE",
     subTeam: "OPERATIONS TEAM",
     initials: "SS",
+    image: "https://pub-45c102ac14a64011a530ed2864a18405.r2.dev/team/shubhakshi-sinha.avif",
   },
 
   // 9. SOCIAL MEDIA TEAM
@@ -523,6 +563,7 @@ export const coreMembers: TeamMember[] = [
     category: "CORE",
     subTeam: "SOCIAL MEDIA TEAM",
     initials: "SM",
+    image: "https://pub-45c102ac14a64011a530ed2864a18405.r2.dev/team/saanvi-mittal.avif",
   },
   {
     id: "2026-core-social-2",
@@ -559,6 +600,7 @@ export const coreMembers: TeamMember[] = [
     category: "CORE",
     subTeam: "SOCIAL MEDIA TEAM",
     initials: "AK",
+    image: "https://pub-45c102ac14a64011a530ed2864a18405.r2.dev/team/ashray-kapoor.avif",
   },
 
   // 10. SPONSORSHIP & FINANCE TEAM
@@ -579,6 +621,7 @@ export const coreMembers: TeamMember[] = [
     category: "CORE",
     subTeam: "SPONSORSHIP & FINANCE TEAM",
     initials: "DN",
+    image: "https://pub-45c102ac14a64011a530ed2864a18405.r2.dev/team/daksh.jpeg",
   },
   {
     id: "2026-core-sponsorship-3",
@@ -588,6 +631,7 @@ export const coreMembers: TeamMember[] = [
     category: "CORE",
     subTeam: "SPONSORSHIP & FINANCE TEAM",
     initials: "AV",
+    image: "https://pub-45c102ac14a64011a530ed2864a18405.r2.dev/team/anukriti-verma.avif",
   },
   {
     id: "2026-core-sponsorship-4",
@@ -597,6 +641,7 @@ export const coreMembers: TeamMember[] = [
     category: "CORE",
     subTeam: "SPONSORSHIP & FINANCE TEAM",
     initials: "AV",
+    image: "https://pub-45c102ac14a64011a530ed2864a18405.r2.dev/team/atharv-vijayvergiya.avif",
   },
   {
     id: "2026-core-sponsorship-5",
@@ -606,6 +651,7 @@ export const coreMembers: TeamMember[] = [
     category: "CORE",
     subTeam: "SPONSORSHIP & FINANCE TEAM",
     initials: "LG",
+    image: "https://pub-45c102ac14a64011a530ed2864a18405.r2.dev/team/likisha-grover.avif",
   },
   {
     id: "2026-core-sponsorship-15",
