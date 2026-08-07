@@ -229,10 +229,10 @@ export default function OurPartners() {
             <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center justify-center z-10 pointer-events-none px-6 text-center">
               <h2
                 className="flex flex-col items-center justify-center font-sans font-black uppercase tracking-wide leading-[0.92] text-center"
-                style={{ fontSize: "clamp(3rem, 8vw, 8.5rem)" }}
+                style={{ fontSize: "clamp(2.5rem, 7vw, 7.5rem)" }}
               >
                 <span className="block text-white">OUR</span>
-                <span className="block text-white">PARTNERS</span>
+                <span className="block text-white">Previous PARTNERS</span>
               </h2>
 
               <p className="mt-8 max-w-lg text-white/60 text-sm md:text-base font-sans font-normal leading-relaxed text-center">
