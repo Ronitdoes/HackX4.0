@@ -38,6 +38,7 @@ export const executiveMembers: TeamMember[] = [
     year: "2026",
     category: "EXECUTIVE",
     subTeam: "STUDENT CONVENER 2026-27",
+    image: "https://pub-45c102ac14a64011a530ed2864a18405.r2.dev/hackx/1786116092946_wgxn3k.avif",
   },
 
   // 2. MUJ HACKX 4.0 ADVISORIES
@@ -204,6 +205,7 @@ export const executiveMembers: TeamMember[] = [
     year: "2026",
     category: "EXECUTIVE",
     subTeam: "GRAPHIC DESIGN TEAM",
+    image :"https://pub-45c102ac14a64011a530ed2864a18405.r2.dev/hackx/1786120187815_lz2ugr.avif",
   },
 
   // 7. HOSPITALITY TEAM
