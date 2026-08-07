@@ -318,7 +318,7 @@ export default function SdgComponent() {
                     brand.logo
                   )}
                 </div>
-                <p className="font-sans text-sm leading-relaxed font-normal text-[#f9f6f0]/90 select-text">
+                <p className="font-sans text-[15px] leading-relaxed font-normal text-[#f9f6f0]/90 select-text">
                   {brand.description}
                 </p>
               </div>
