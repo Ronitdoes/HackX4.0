@@ -95,8 +95,10 @@ export default function Team() {
   }, [currentMembers]);
 
   const handleYearSelect = (year: TeamYear) => {
-    if ((year === "2024" || year === "2025") && (selectedCategory === "CORE" || selectedCategory === "FACULTY")) {
+    if (year === "2024" && (selectedCategory === "CORE" || selectedCategory === "FACULTY")) {
       setSelectedCategory("EXECUTIVE");
+    } else if (year === "2025" && selectedCategory === "CORE") {
+      setSelectedCategory("FACULTY");
     }
     setSelectedYear(year);
   };
@@ -198,10 +200,12 @@ export default function Team() {
             ))}
           </div>
 
-          {/* Sub-Category Filter (FACULTY EXECUTIVE CORE for 2026, EXECUTIVE for 2025/2024) */}
+          {/* Sub-Category Filter */}
           <div className="flex items-center justify-center gap-6 sm:gap-10 pt-2">
             {(selectedYear === "2026"
               ? (["FACULTY", "EXECUTIVE", "CORE"] as TeamCategory[])
+              : selectedYear === "2025"
+              ? (["FACULTY", "EXECUTIVE"] as TeamCategory[])
               : (["EXECUTIVE"] as TeamCategory[])
             ).map((cat) => (
               <button
@@ -225,8 +229,12 @@ export default function Team() {
           </div>
         </div>
 
-        {/* Team Grid Grouped by Subheadings */}
-        {subTeamGroups.length > 0 ? (
+        {/* Team Grid Grouped by Subheadings or Coming Soon */}
+        {selectedYear === "2026" && selectedCategory === "FACULTY" ? (
+          <div className="text-center py-24 text-white/60 text-lg sm:text-xl font-bold tracking-widest uppercase">
+            Coming Soon..
+          </div>
+        ) : subTeamGroups.length > 0 ? (
           <div className="space-y-20 md:space-y-24 lg:space-y-28">
             {subTeamGroups.map((group) => (
               <div key={group.title} className="flex flex-col gap-6">

@@ -56,15 +56,9 @@ export default function FAQ({ data = faqData, heading }: FAQProps) {
       <div className="max-w-[1200px] mx-auto px-6 md:px-12">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-20">
           
-          {/* Left Column: FAQs Badge and Organizer Avatar Card */}
+          {/* Left Column: Organizer Avatar Card */}
           <div className="lg:col-span-4 lg:sticky lg:top-32 h-fit flex flex-col justify-start gap-4 lg:gap-16">
             
-            {/* Top FAQs indicator */}
-            <div className="flex items-center gap-2 text-xs md:text-sm font-sans tracking-widest uppercase text-white/50">
-              <span className="w-1.5 h-1.5 rounded-full bg-white"></span>
-              FAQs
-            </div>
-
             {/* HackX Logo */}
             <div className="w-full relative py-4">
               <div className="max-w-[240px] md:max-w-[280px] w-full relative">

@@ -47,6 +47,20 @@ const CyberWreath = ({ label1, label2, trackNo, colorClass = "text-violet-500" }
 );
 
 export default function ThemeCard({ card }: ThemeCardProps) {
+  if (card.image) {
+    return (
+      <div className="w-[260px] sm:w-[320px] md:w-[350px] aspect-[1/1.4] flex-shrink-0 relative transition-transform duration-300 hover:scale-[1.03] cursor-pointer overflow-hidden shadow-[0_10px_35px_rgba(0,0,0,0.6)] border border-white/10 group bg-[#070312]">
+        <img
+          src={card.image}
+          alt={card.title}
+          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+          loading="lazy"
+        />
+        <div className="absolute inset-0 ring-1 ring-white/10 group-hover:ring-white/30 transition-all duration-300 pointer-events-none" />
+      </div>
+    );
+  }
+
   const renderCardContent = () => {
     switch (card.styleType) {
       case "night-goggles":
