@@ -454,7 +454,7 @@ export default function FluidShaderBackground() {
 
       if (timelineSection) {
         const rect = timelineSection.getBoundingClientRect();
-        const vh = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--vh')) * 100 || window.innerHeight;
+        const vh = window.innerHeight;
         currentPos = (vh / 2) - rect.top;
 
         // minPos is currentPos when top of document is at window.scrollY = 0
@@ -951,7 +951,7 @@ export default function FluidShaderBackground() {
         className="pointer-events-none fixed top-0 left-0 w-full h-screen-stable"
         style={{
           zIndex: -20,
-          height: "calc(var(--vh, 1vh) * 100)",
+          height: "100dvh",
           background: "radial-gradient(ellipse at center, var(--bg-gradient-from, #180038) 0%, var(--bg-gradient-via, #0d0021) 60%, var(--bg-gradient-to, #05000d) 100%)",
         }}
       />
@@ -962,7 +962,7 @@ export default function FluidShaderBackground() {
         className="pointer-events-none fixed top-0 left-0 w-full h-screen-stable flex items-center justify-center select-none"
         style={{
           zIndex: -4,
-          height: "calc(var(--vh, 1vh) * 100)",
+          height: "100dvh",
           transformOrigin: "center center",
           transform: "translateZ(0)",
           willChange: "transform, opacity",
@@ -980,8 +980,8 @@ export default function FluidShaderBackground() {
           xmlns="http://www.w3.org/2000/svg"
           className="transition-opacity duration-700"
           style={{
-            height: isMobile ? "min(48vh, 72vw)" : "calc(var(--vh, 1vh) * 28)",
-            width: isMobile ? "min(42.96vh, 64.44vw)" : "calc(var(--vh, 1vh) * 25.06)",
+            height: isMobile ? "min(48vh, 72vw)" : "28vh",
+            width: isMobile ? "min(42.96vh, 64.44vw)" : "25.06vh",
             opacity: isMobile ? 0.85 : 0.65,
             transform: "translateZ(0)",
             willChange: "transform",
@@ -1019,7 +1019,7 @@ export default function FluidShaderBackground() {
         className="pointer-events-none fixed top-0 left-0 w-full h-screen-stable opacity-65"
         style={{
           zIndex: -15,
-          height: "calc(var(--vh, 1vh) * 100)",
+          height: "100dvh",
           filter: "blur(16px)",
           display: isMobile ? "none" : "block",
         }}
@@ -1032,7 +1032,7 @@ export default function FluidShaderBackground() {
         className="pointer-events-none fixed top-0 left-0 w-full h-screen-stable"
         style={{
           zIndex: -5,
-          height: "calc(var(--vh, 1vh) * 100)",
+          height: "100dvh",
           transform: "translateZ(0)",
           willChange: "transform, opacity",
           background: "linear-gradient(115deg, rgba(24, 0, 56, 0.10), rgba(13, 0, 33, 0.03) 55%, rgba(5, 0, 13, 0.08))",
@@ -1046,7 +1046,7 @@ export default function FluidShaderBackground() {
         className="pointer-events-none fixed top-0 left-0 w-full h-screen-stable opacity-[0.10]"
         style={{
           zIndex: -3,
-          height: "calc(var(--vh, 1vh) * 100)",
+          height: "100dvh",
         }}
       >
         <defs>
@@ -1071,7 +1071,7 @@ export default function FluidShaderBackground() {
         top: 0,
         left: 0,
         width: "100%",
-        height: "calc(var(--vh, 1vh) * 100)",
+        height: "100dvh",
         zIndex: -30,
         transformOrigin: "center center",
         willChange: "transform, opacity",
