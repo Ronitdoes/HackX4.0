@@ -71,6 +71,7 @@ export default function Stats() {
 
     const mm = gsap.matchMedia();
 
+    // Desktop view (>= 768px)
     mm.add(
       "(min-width: 768px)",
       () => {
@@ -149,7 +150,7 @@ export default function Stats() {
             id: "stats-scroll-trigger",
             trigger: containerRef.current,
             start: "top top",
-            end: () => `+=${(STATS_DATA.length - 1) * window.innerHeight}`,
+            end: () => `+=${(STATS_DATA.length - 1) * window.innerHeight * 1.6}`,
             scrub: 1,
             pin: true,
             pinSpacing: true,
@@ -270,6 +271,189 @@ export default function Stats() {
       }
     );
 
+    // Mobile view (< 768px)
+    mm.add(
+      "(max-width: 767px)",
+      () => {
+        const cardEl = imageRefs.current[0];
+        let cardWidth = window.innerWidth * 0.55;
+        let cardHeight = window.innerHeight * 0.32;
+        if (cardEl) {
+          const rect = cardEl.getBoundingClientRect();
+          cardWidth = rect.width;
+          cardHeight = rect.height;
+        }
+
+        const xOffsetVal = cardWidth * 0.95;
+        const yOffsetVal = cardHeight * 0.95;
+
+        STATS_DATA.forEach((_, idx) => {
+          gsap.set(textRefs.current[idx], {
+            opacity: idx === 0 ? 1 : 0,
+            y: idx === 0 ? 0 : 20,
+            pointerEvents: idx === 0 ? "auto" : "none",
+          });
+
+          if (numberRefs.current[idx]) {
+            gsap.set(numberRefs.current[idx], {
+              opacity: idx === 0 ? 1 : 0,
+              yPercent: idx === 0 ? 0 : 100,
+            });
+          }
+
+          if (idx === 0) {
+            gsap.set(imageRefs.current[0], {
+              x: 0,
+              y: 0,
+              scale: 1,
+              opacity: 1,
+              filter: "grayscale(0%)",
+              zIndex: 10,
+              rotation: 0,
+            });
+          } else if (idx === 1) {
+            gsap.set(imageRefs.current[1], {
+              x: xOffsetVal,
+              y: yOffsetVal,
+              scale: 1,
+              opacity: 0.15,
+              filter: "grayscale(100%)",
+              zIndex: 5,
+              rotation: 0,
+            });
+          } else {
+            const offX = xOffsetVal * 2;
+            const offY = yOffsetVal * 2;
+            gsap.set(imageRefs.current[idx], {
+              x: offX,
+              y: offY,
+              scale: 1,
+              opacity: 0,
+              filter: "grayscale(100%)",
+              zIndex: 1,
+              rotation: 0,
+            });
+          }
+        });
+
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            id: "stats-scroll-trigger-mobile",
+            trigger: containerRef.current,
+            start: "top top",
+            end: () => `+=${(STATS_DATA.length - 1) * window.innerHeight * 1.6}`,
+            scrub: 1,
+            pin: true,
+            pinSpacing: true,
+            anticipatePin: 1,
+            refreshPriority: 1,
+            onUpdate: (self) => {
+              const progress = self.progress;
+              const index = Math.round(progress * (STATS_DATA.length - 1));
+              if (index !== activeIndexRef.current) {
+                activeIndexRef.current = index;
+                setActiveIndex(index);
+              }
+            },
+          },
+        });
+
+        STATS_DATA.forEach((_, index) => {
+          tl.addLabel(`section_${index}`, index);
+        });
+
+        for (let i = 0; i < STATS_DATA.length - 1; i++) {
+          const labelFrom = `section_${i}`;
+
+          tl.to(textRefs.current[i], {
+            opacity: 0,
+            y: -20,
+            pointerEvents: "none",
+            duration: 0.35,
+            ease: "none",
+          }, labelFrom);
+
+          tl.to(textRefs.current[i + 1], {
+            opacity: 1,
+            y: 0,
+            pointerEvents: "auto",
+            duration: 0.4,
+            ease: "none",
+          }, `${labelFrom}+=0.55`);
+
+          if (numberRefs.current[i]) {
+            tl.to(numberRefs.current[i], {
+              opacity: 0,
+              yPercent: -100,
+              duration: 0.8,
+              ease: "power1.inOut",
+            }, labelFrom);
+          }
+
+          if (numberRefs.current[i + 1]) {
+            tl.to(numberRefs.current[i + 1], {
+              opacity: 1,
+              yPercent: 0,
+              duration: 0.8,
+              ease: "power1.inOut",
+            }, `${labelFrom}+=0.2`);
+          }
+
+          tl.to(imageRefs.current[i], {
+            x: -xOffsetVal,
+            y: -yOffsetVal,
+            scale: 1,
+            opacity: 0.15,
+            filter: "grayscale(100%)",
+            zIndex: 1,
+            rotation: 0,
+            duration: 1,
+            ease: "none",
+          }, labelFrom);
+
+          if (i - 1 >= 0) {
+            tl.to(imageRefs.current[i - 1], {
+              x: -xOffsetVal * 2,
+              y: -yOffsetVal * 2,
+              scale: 1,
+              opacity: 0,
+              filter: "grayscale(100%)",
+              zIndex: 1,
+              rotation: 0,
+              duration: 1,
+              ease: "none",
+            }, labelFrom);
+          }
+
+          tl.to(imageRefs.current[i + 1], {
+            x: 0,
+            y: 0,
+            scale: 1,
+            opacity: 1,
+            filter: "grayscale(0%)",
+            zIndex: 10,
+            rotation: 0,
+            duration: 1,
+            ease: "none",
+          }, labelFrom);
+
+          if (i + 2 < STATS_DATA.length) {
+            tl.to(imageRefs.current[i + 2], {
+              x: xOffsetVal,
+              y: yOffsetVal,
+              scale: 1,
+              opacity: 0.15,
+              filter: "grayscale(100%)",
+              zIndex: 5,
+              rotation: 0,
+              duration: 1,
+              ease: "none",
+            }, labelFrom);
+          }
+        }
+      }
+    );
+
     // Fade in container after paint/measure delay
     if (containerRef.current) {
       gsap.to(containerRef.current, { opacity: 1, duration: 0.4 });
@@ -285,22 +469,22 @@ export default function Stats() {
 
   return (
     <section className="relative w-full bg-transparent overflow-hidden" id="stats-archive-page">
-      {/* Desktop view with GSAP scroll animation */}
+      {/* View with GSAP scroll animation for all viewports */}
       <div
         ref={containerRef}
-        className="hidden md:block relative w-full h-screen-stable overflow-hidden opacity-0"
+        className="relative w-full h-screen-stable overflow-hidden opacity-0"
       >
         {/* Giant active section number background */}
-        <div className="absolute left-16 md:left-28 lg:left-40 bottom-[2vh] md:bottom-[3vh] lg:bottom-[4vh] z-30 hidden sm:flex items-end pointer-events-none select-none text-cream/90">
-          <span className="font-sans font-medium text-[20vw] md:text-[18vw] lg:text-[15vw] xl:text-[13vw] leading-none">0</span>
-          <div className="relative font-sans font-medium text-[20vw] md:text-[18vw] lg:text-[15vw] xl:text-[13vw] leading-none h-[1em] w-[0.7em] overflow-hidden">
+        <div className="absolute left-6 sm:left-16 md:left-28 lg:left-40 bottom-[4vh] md:bottom-[3vh] lg:bottom-[4vh] z-30 flex items-end pointer-events-none select-none text-cream/90 opacity-25 md:opacity-100">
+          <span className="font-sans font-medium text-[28vw] sm:text-[20vw] md:text-[18vw] lg:text-[15vw] xl:text-[13vw] leading-none">0</span>
+          <div className="relative font-sans font-medium text-[28vw] sm:text-[20vw] md:text-[18vw] lg:text-[15vw] xl:text-[13vw] leading-none h-[1em] w-[0.7em] overflow-hidden">
             {STATS_DATA.map((sec, idx) => {
               const secondDigit = sec.id.charAt(1) || sec.id;
               return (
                 <div
                   key={sec.id}
                   ref={(el) => { numberRefs.current[idx] = el; }}
-                  className="absolute bottom-0 left-0 font-sans font-medium text-[20vw] md:text-[18vw] lg:text-[15vw] xl:text-[13vw] leading-none will-change-[transform,opacity]"
+                  className="absolute bottom-0 left-0 font-sans font-medium text-[28vw] sm:text-[20vw] md:text-[18vw] lg:text-[15vw] xl:text-[13vw] leading-none will-change-[transform,opacity]"
                   style={{ display: "block", opacity: idx === 0 ? 1 : 0 }}
                   id={`stats-number-${sec.id}`}
                 >
@@ -313,7 +497,7 @@ export default function Stats() {
 
         {/* Left-side vertical rail */}
         <nav
-          className="absolute left-6 md:left-12 lg:left-16 top-1/2 -translate-y-1/2 z-40 hidden sm:flex flex-col gap-4 font-sans text-[10px] uppercase tracking-[0.25em] select-none"
+          className="absolute left-3 sm:left-6 md:left-12 lg:left-16 top-1/2 -translate-y-1/2 z-40 flex flex-col gap-2.5 sm:gap-4 font-sans text-[10px] uppercase tracking-[0.25em] select-none"
           aria-label="Stats Navigation Rail"
         >
           {STATS_DATA.map((sec, idx) => {
@@ -323,7 +507,7 @@ export default function Stats() {
                 key={sec.id}
                 ref={(el) => { railDotRefs.current[idx] = el; }}
                 onClick={() => scrollToSection(idx)}
-                className="flex items-center gap-3 py-1.5 text-left group transition-all duration-300 pointer-events-auto"
+                className="flex items-center gap-2 sm:gap-3 py-1 sm:py-1.5 text-left group transition-all duration-300 pointer-events-auto"
                 id={`rail-link-${sec.id}`}
                 aria-label={`Go to section ${sec.id} - ${sec.title}`}
               >
@@ -338,7 +522,7 @@ export default function Stats() {
                 {/* Slide/Fade text label */}
                 <span
                   className={`font-serif italic lowercase text-xs tracking-wider transition-all duration-500 overflow-hidden whitespace-nowrap ${isActive
-                    ? "w-32 opacity-100 text-[#faebac] translate-x-0"
+                    ? "w-24 sm:w-32 opacity-100 text-[#faebac] translate-x-0"
                     : "w-0 opacity-0 -translate-x-2"
                     }`}
                 >
@@ -351,7 +535,7 @@ export default function Stats() {
 
         {/* Central image archive conveyor belt */}
         <section className="relative w-full h-full flex items-center justify-center z-20 select-none">
-          <div className="relative w-[310px] h-[370px] md:w-[360px] md:h-[430px] lg:w-[400px] lg:h-[480px]">
+          <div className="relative w-[210px] h-[260px] xs:w-[240px] xs:h-[300px] sm:w-[280px] sm:h-[340px] md:w-[360px] md:h-[430px] lg:w-[400px] lg:h-[480px] -translate-y-8 md:translate-y-0">
             {STATS_DATA.map((sec, idx) => (
               <article
                 key={sec.id}
@@ -379,14 +563,14 @@ export default function Stats() {
           </div>
         </section>
 
-        {/* Right-side text block */}
-        <aside className="absolute md:right-16 lg:right-24 md:top-[40%] md:-translate-y-1/2 md:w-[320px] lg:w-[380px] text-left z-40 pointer-events-none select-none">
-          <div className="relative w-full h-24">
+        {/* Right-side / bottom text block */}
+        <aside className="absolute left-10 right-4 bottom-[9vh] sm:left-12 sm:right-6 md:left-auto md:right-16 lg:right-24 md:top-[40%] md:-translate-y-1/2 md:w-[320px] lg:w-[380px] text-left z-40 pointer-events-none select-none">
+          <div className="relative w-full h-24 md:h-24">
             {STATS_DATA.map((sec, idx) => (
               <div
                 key={sec.id}
                 ref={(el) => { textRefs.current[idx] = el; }}
-                className="absolute top-0 right-0 left-0 md:-translate-y-1/2 font-serif text-base md:text-lg lg:text-xl text-cream/90 leading-relaxed font-light pointer-events-auto"
+                className="absolute top-0 right-0 left-0 md:-translate-y-1/2 font-serif text-xs sm:text-base md:text-lg lg:text-xl text-cream/90 leading-relaxed font-light pointer-events-auto"
                 style={{ display: "block", opacity: idx === 0 ? 1 : 0 }}
                 id={`stats-caption-${sec.id}`}
               >
@@ -395,29 +579,6 @@ export default function Stats() {
             ))}
           </div>
         </aside>
-      </div>
-
-      {/* Mobile view: 2x2 Grid, No scroll animation */}
-      <div className="block md:hidden w-full py-8 px-4 sm:px-6 select-none">
-        <div className="max-w-md mx-auto">
-          <div className="grid grid-cols-2 gap-3 sm:gap-4">
-            {STATS_DATA.map((sec) => (
-              <div
-                key={sec.id}
-                className="relative w-full aspect-[5/6] overflow-hidden shadow-[0_10px_30px_rgba(0,0,0,0.5)] rounded-md bg-black/20"
-              >
-                <img
-                  src={sec.image}
-                  alt={sec.title}
-                  className="w-full h-full object-contain rounded-md"
-                  draggable={false}
-                  loading="lazy"
-                  decoding="async"
-                />
-              </div>
-            ))}
-          </div>
-        </div>
       </div>
     </section>
   );
