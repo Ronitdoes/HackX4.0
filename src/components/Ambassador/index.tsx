@@ -160,7 +160,7 @@ export default function Ambassador() {
       </section>
 
       {/* Join Campus Ambassador Banner Section */}
-      <section id="join-ambassador" className="relative w-full z-10 py-6">
+      <section id="join-ambassador" className="relative w-full z-10 pt-2 pb-0 -mb-6 md:-mb-10">
         <JoinHackathon
           title="Become the"
           highlightText="Campus Ambassador!"

@@ -5,7 +5,6 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import FluidShaderBackground from "@/components/FluidShaderBackground/FluidShaderBackground";
 import LenisProvider from "@/components/LenisProvider";
-import ViewportFix from "@/components/ViewportFix";
 import PageTransitionProvider from "@/components/PageTransitionProvider";
 import { NavTransitionProvider } from "@/context/NavTransitionContext";
 import { Montserrat } from "next/font/google";
@@ -68,7 +67,6 @@ export default function RootLayout({
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
       </head>
       <body className="antialiased flex flex-col min-h-screen-stable justify-between bg-transparent text-white relative">
-        <ViewportFix />
         <LenisProvider>
           <NavTransitionProvider>
             <PageTransitionProvider>

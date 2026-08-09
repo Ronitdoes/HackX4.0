@@ -25,13 +25,13 @@ const config: Config = {
         anton: ["var(--font-anton)", "sans-serif"],
       },
       height: {
-        "screen-stable": "calc(var(--vh, 1vh) * 100)",
+        "screen-stable": "100dvh",
       },
       minHeight: {
-        "screen-stable": "calc(var(--vh, 1vh) * 100)",
+        "screen-stable": "100dvh",
       },
       maxHeight: {
-        "screen-stable": "calc(var(--vh, 1vh) * 100)",
+        "screen-stable": "100dvh",
       },
     },
   },
