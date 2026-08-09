@@ -128,10 +128,10 @@ export default function SdgComponent() {
 
   const getArcPosition = (diff: number, isMobile = false) => {
     const absDiff = Math.abs(diff);
-    // Radius tuned for viewport (larger radius on mobile so the arc curve remains prominent and big)
-    const R = isMobile ? 560 : 850;
+    // Radius tuned for viewport (smaller radius on mobile so the arc curve remains prominent)
+    const R = isMobile ? 520 : 850;
     // Spacing angle in degrees
-    const angleDeg = isMobile ? 15 : 7.5;
+    const angleDeg = isMobile ? 14 : 7.5;
     const angleRad = (absDiff * angleDeg * Math.PI) / 180;
 
     // x shifts LEFT as distance from center increases
@@ -147,19 +147,12 @@ export default function SdgComponent() {
   // Helper: get visual properties based on distance from active item
   const getVisualProps = (diff: number, isMobile = false) => {
     const absDiff = Math.abs(diff);
-    if (isMobile) {
-      return {
-        scale: 1.0 - Math.min(absDiff * 0.06, 0.25),
-        opacity: absDiff === 0 ? 1 : Math.max(0.7 - absDiff * 0.15, 0.25),
-        blur: Math.min(absDiff * 0.25, 1.0),
-        fill: "#f9f6f0",
-        stroke: "0px transparent",
-      };
-    }
     return {
-      scale: 1.0 - Math.min(absDiff * 0.03, 0.2),
+      scale: isMobile
+        ? 1.0 - Math.min(absDiff * 0.08, 0.35)
+        : 1.0 - Math.min(absDiff * 0.03, 0.2),
       opacity: absDiff === 0 ? 1 : Math.max(0.4 - absDiff * 0.09, 0.1),
-      blur: Math.min(absDiff * 0.4, 2.5),
+      blur: isMobile ? Math.min(absDiff * 0.5, 2.0) : Math.min(absDiff * 0.4, 2.5),
       fill: "#f9f6f0",
       stroke: "0px transparent",
     };
@@ -208,10 +201,9 @@ export default function SdgComponent() {
 
         const tl = gsap.timeline({
           scrollTrigger: {
-            id: "sdg-scroll-trigger",
             trigger: sectionRef.current,
             start: "top top",
-            end: () => `+=${window.innerHeight * (brands.length - 1) * 0.85}`,
+            end: `+=${window.innerHeight * (brands.length - 1) * 0.45}`,
             scrub: 0.5,
             pin: true,
             anticipatePin: 1,
@@ -252,88 +244,7 @@ export default function SdgComponent() {
         if (sectionRef.current) {
           gsap.to(sectionRef.current, { opacity: 1, duration: 0.4 });
         }
-      });
 
-      // Mobile layout (<= 768px)
-      mm.add("(max-width: 768px)", () => {
-        if (!sectionRef.current) return;
-
-        brands.forEach((_, k) => {
-          if (cardRefs.current[k]) {
-            gsap.set(cardRefs.current[k], {
-              opacity: k === 0 ? 1 : 0,
-              y: 0,
-              filter: k === 0 ? "blur(0px)" : "blur(20px)",
-              pointerEvents: k === 0 ? "auto" : "none",
-            });
-          }
-        });
-
-        brands.forEach((_, k) => {
-          if (brandRefs.current[k]) {
-            const diff = k - 0;
-            const pos = getArcPosition(diff, true);
-            const vis = getVisualProps(diff, true);
-
-            gsap.set(brandRefs.current[k], {
-              x: pos.x,
-              y: pos.y,
-              yPercent: -50,
-              rotation: pos.rotation,
-              scale: vis.scale,
-              opacity: vis.opacity,
-              filter: `blur(${vis.blur}px)`,
-              transformOrigin: "left center",
-            });
-          }
-        });
-
-        const tl = gsap.timeline({
-          scrollTrigger: {
-            id: "sdg-scroll-trigger-mobile",
-            trigger: sectionRef.current,
-            start: "top top",
-            end: () => `+=${window.innerHeight * (brands.length - 1) * 0.85}`,
-            scrub: 0.5,
-            pin: true,
-            anticipatePin: 1,
-            invalidateOnRefresh: true,
-            onUpdate: (self) => {
-              const progressIdx = Math.round(self.progress * (brands.length - 1));
-              if (progressIdx !== activeIndexRef.current) {
-                activeIndexRef.current = progressIdx;
-                setActiveIndex(progressIdx);
-              }
-            },
-          },
-        });
-
-        for (let s = 1; s < brands.length; s++) {
-          for (let k = 0; k < brands.length; k++) {
-            const diff = k - s;
-            const pos = getArcPosition(diff, true);
-            const vis = getVisualProps(diff, true);
-
-            tl.to(
-              brandRefs.current[k],
-              {
-                x: pos.x,
-                y: pos.y,
-                rotation: pos.rotation,
-                scale: vis.scale,
-                opacity: vis.opacity,
-                filter: `blur(${vis.blur}px)`,
-                duration: 1,
-                ease: "none",
-              },
-              s - 1
-            );
-          }
-        }
-
-        if (sectionRef.current) {
-          gsap.to(sectionRef.current, { opacity: 1, duration: 0.4 });
-        }
       });
 
       // Refresh ScrollTrigger to ensure accurate layout calculations
@@ -344,13 +255,13 @@ export default function SdgComponent() {
 
   return (
     <section id="sdg-section" className="w-full bg-transparent select-none overflow-hidden">
-      {/* Pinned Arc Conveyor for all viewports */}
+      {/* Desktop View: Pinned Arc Conveyor */}
       <div
         ref={sectionRef}
-        className="flex w-full h-screen-stable relative items-center opacity-0"
+        className="hidden md:flex w-full h-screen-stable relative items-center opacity-0"
       >
         {/* Brand Stack (Arc Motion Area) */}
-        <div className="absolute left-[6vw] xs:left-[7vw] sm:left-[8vw] md:left-[24vw] top-0 h-full w-[52vw] sm:w-[50vw] md:w-[50vw] flex items-center justify-start z-20 pointer-events-none">
+        <div className="absolute left-[24vw] top-0 h-full w-[50vw] flex items-center justify-start z-20 pointer-events-none">
           <div ref={stackGroupRef} className="relative w-full">
             {brands.map((brand, idx) => (
               <div
@@ -358,12 +269,11 @@ export default function SdgComponent() {
                 ref={(el) => {
                   brandRefs.current[idx] = el;
                 }}
-                className="absolute left-0 font-sans font-bold text-[30px] xs:text-[34px] sm:text-[38px] md:text-[5vw] lg:text-[4.5vw] tracking-normal leading-tight text-[#f9f6f0] select-none cursor-pointer whitespace-nowrap origin-left pointer-events-auto max-w-full overflow-hidden text-ellipsis drop-shadow-[0_4px_12px_rgba(0,0,0,0.5)]"
+                className="absolute left-0 font-sans font-semibold text-[5vw] lg:text-[4.5vw] tracking-normal leading-tight text-[#f9f6f0] select-none cursor-pointer whitespace-nowrap origin-left pointer-events-auto max-w-full overflow-hidden text-ellipsis"
                 onClick={() => {
-                  const scrollTriggerInstance =
-                    ScrollTrigger.getById("sdg-scroll-trigger") ||
-                    ScrollTrigger.getById("sdg-scroll-trigger-mobile") ||
-                    ScrollTrigger.getAll().find((st) => st.trigger === sectionRef.current);
+                  const scrollTriggerInstance = ScrollTrigger.getAll().find(
+                    (st) => st.trigger === sectionRef.current
+                  );
                   if (scrollTriggerInstance) {
                     const startPos = scrollTriggerInstance.start;
                     const endPos = scrollTriggerInstance.end;
@@ -388,9 +298,9 @@ export default function SdgComponent() {
         </div>
 
         {/* Right Active Brand Info Panel */}
-        <div className="absolute right-[2vw] sm:right-[4vw] md:right-[6.5vw] top-0 h-full w-[40vw] sm:w-[38vw] md:w-[32vw] flex flex-col justify-center items-center z-30 pointer-events-auto">
+        <div className="absolute right-[6.5vw] top-0 h-full w-[32vw] flex flex-col justify-center items-center z-30 pointer-events-auto">
           <h2
-            className="font-sans font-medium uppercase text-[16px] xs:text-[20px] sm:text-[26px] md:text-[33px] lg:text-[39px] tracking-widest text-[#f9f6f0] text-center whitespace-nowrap mb-4 sm:mb-6 md:mb-8"
+            className="font-sans font-medium uppercase text-[27px] sm:text-[33px] md:text-[33px] lg:text-[39px] tracking-widest text-[#f9f6f0] text-center whitespace-nowrap mb-8"
             style={{ fontFamily: "var(--font-sans)" }}
           >
             OUR THEMES
@@ -402,22 +312,56 @@ export default function SdgComponent() {
                 ref={(el) => {
                   cardRefs.current[idx] = el;
                 }}
-                className="absolute left-0 w-full flex flex-col items-center sm:grid sm:grid-cols-[1.2fr_1.6fr] gap-2 sm:gap-6 md:gap-10 pointer-events-none text-center sm:text-left"
+                className="absolute left-0 w-full grid grid-cols-[1.2fr_1.6fr] items-center gap-10 pointer-events-none"
               >
-                <div className="flex items-center justify-center sm:justify-start h-full max-h-[60px] sm:max-h-[85px]">
+                <div className="flex items-center justify-start h-full max-h-[85px]">
                   {typeof brand.logo === "string" ? (
                     <img
                       src={brand.logo}
                       alt={brand.name}
-                      className="h-10 sm:h-16 md:h-20 w-auto object-contain drop-shadow-[0_0_12px_rgba(249,246,240,0.35)]"
+                      className="h-16 md:h-20 w-auto object-contain drop-shadow-[0_0_12px_rgba(249,246,240,0.35)]"
                     />
                   ) : (
                     brand.logo
                   )}
                 </div>
-                <p className="font-sans text-[11px] sm:text-[14px] md:text-[15px] leading-snug sm:leading-relaxed font-normal text-[#f9f6f0]/90 select-text">
+                <p className="font-sans text-[15px] leading-relaxed font-normal text-[#f9f6f0]/90 select-text">
                   {brand.description}
                 </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Mobile View: 3-Column Logo Grid Matching Reference Image */}
+      <div className="block md:hidden w-full py-16 px-6 bg-transparent text-center select-none">
+        <div className="max-w-lg mx-auto">
+          {/* Header */}
+          <div className="text-center mb-3">
+            <span className="font-serif italic text-white text-[17vw] sm:text-[15vw] lg:text-[13.5vw] leading-[0.85] text-center tracking-normal whitespace-nowrap">
+              OUR THEMES
+            </span>
+          </div>
+          
+          {/* 3-Column Logo Grid */}
+          <div className="grid grid-cols-3 gap-y-12 gap-x-4 items-center justify-items-center">
+            {brands.map((brand, idx) => (
+              <div
+                key={idx}
+                className="w-full flex items-center justify-center p-1 text-[#f9f6f0]"
+              >
+                <div className="w-full max-w-[165px] h-auto flex items-center justify-center">
+                  {typeof brand.logo === "string" ? (
+                    <img
+                      src={brand.logo}
+                      alt={brand.name}
+                      className="h-16 sm:h-20 w-auto object-contain drop-shadow-[0_0_10px_rgba(249,246,240,0.35)]"
+                    />
+                  ) : (
+                    brand.logo
+                  )}
+                </div>
               </div>
             ))}
           </div>
