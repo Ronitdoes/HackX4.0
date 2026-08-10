@@ -351,7 +351,7 @@ export default function SdgComponent() {
           scrollTrigger: {
             trigger: mobileSectionRef.current,
             start: "top top",
-            end: `+=${window.innerHeight * (brands.length - 1) * 0.35}`,
+            end: `+=${window.innerHeight * (brands.length - 1) * 0.55}`,
             scrub: 0.3,
             pin: true,
             anticipatePin: 1,
