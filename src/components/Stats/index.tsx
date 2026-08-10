@@ -147,7 +147,11 @@ export default function Stats() {
           id: "stats-scroll-trigger",
           trigger: containerRef.current,
           start: "top top",
-          end: () => `+=${(STATS_DATA.length - 1) * window.innerHeight}`,
+          end: () => {
+            const isMobile = window.innerWidth < 768;
+            const multiplier = isMobile ? 1.8 : 1;
+            return `+=${(STATS_DATA.length - 1) * window.innerHeight * multiplier}`;
+          },
           scrub: 1,
           pin: true,
           pinSpacing: true,
