@@ -163,7 +163,7 @@ export default function Home() {
         </div>
 
         {/* SDG Marquee at the bottom of the hero (visible on mobile below REGISTER NOW) */}
-        <div className="w-full z-20 mt-4 md:mt-0 md:absolute md:bottom-2 lg:bottom-4 left-0">
+        <div className="w-full z-20 mt-8 sm:mt-10 md:mt-0 md:absolute md:bottom-2 lg:bottom-4 left-0">
           <SdgMarquee />
         </div>
       </div>

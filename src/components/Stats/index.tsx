@@ -404,12 +404,12 @@ export default function Stats() {
             {STATS_DATA.map((sec) => (
               <div
                 key={sec.id}
-                className="relative w-full aspect-[5/6] overflow-hidden shadow-[0_10px_30px_rgba(0,0,0,0.5)] rounded-md bg-black/20"
+                className="relative w-full overflow-hidden flex items-center justify-center"
               >
                 <img
                   src={sec.image}
                   alt={sec.title}
-                  className="w-full h-full object-contain rounded-md"
+                  className="w-full h-auto object-contain rounded-md"
                   draggable={false}
                   loading="lazy"
                   decoding="async"

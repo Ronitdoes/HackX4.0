@@ -23,6 +23,14 @@ export default function SdgMarquee() {
   const marqueeItems = [...SDG_IMAGES, ...SDG_IMAGES];
   const scrollWrapperRef = useRef<HTMLDivElement>(null);
 
+  // Split items into 2 parts for mobile marquee
+  const mobilePart1 = SDG_IMAGES.slice(0, 5);
+  const mobilePart2 = SDG_IMAGES.slice(5);
+
+  // Quadruple arrays for smooth infinite looping without gaps across mobile viewports
+  const mobileMarqueeRow1 = [...mobilePart1, ...mobilePart1, ...mobilePart1, ...mobilePart1];
+  const mobileMarqueeRow2 = [...mobilePart2, ...mobilePart2, ...mobilePart2, ...mobilePart2];
+
   useGSAP(() => {
     if (!scrollWrapperRef.current) return;
 
@@ -46,27 +54,57 @@ export default function SdgMarquee() {
   }, { scope: scrollWrapperRef });
 
   return (
-    <div className="w-full py-4 md:py-14 select-none pointer-events-auto relative z-10 overflow-hidden">
-      {/* Mobile View: Static 3x3 Grid, no movement */}
-      <div className="block md:hidden w-full max-w-md mx-auto px-2 py-2">
-        <div className="grid grid-cols-3 gap-y-7 gap-x-3 items-center justify-items-center">
-          {SDG_IMAGES.map((item, idx) => (
-            <div
-              key={idx}
-              className="flex items-center justify-center p-1"
-            >
-              <img
-                src={item.src}
-                alt={item.alt}
-                width={90}
-                height={90}
-                className="h-[76px] sm:h-[88px] w-auto object-contain pointer-events-none"
-                draggable={false}
-                loading="lazy"
-                decoding="async"
-              />
+    <div className="w-full pt-6 pb-2 md:py-14 select-none pointer-events-auto relative z-10 overflow-hidden">
+      {/* Mobile View: 2 Dual Moving Marquee Tracks */}
+      <div className="block md:hidden w-full flex flex-col gap-6 pt-4 pb-2 mask-gradient">
+        {/* Mobile Row 1 (Items 1-5): Scrolls Left */}
+        <div className="w-full overflow-hidden">
+          <div className="flex w-max animate-marquee hover:[animation-play-state:paused] active:[animation-play-state:paused]">
+            <div className="flex items-center gap-8 px-3">
+              {mobileMarqueeRow1.map((item, idx) => (
+                <div
+                  key={`m1-${idx}`}
+                  className="flex-shrink-0 flex items-center justify-center"
+                >
+                  <img
+                    src={item.src}
+                    alt={item.alt}
+                    width={110}
+                    height={110}
+                    className="h-[90px] sm:h-[102px] w-auto object-contain pointer-events-none"
+                    draggable={false}
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </div>
+              ))}
             </div>
-          ))}
+          </div>
+        </div>
+
+        {/* Mobile Row 2 (Items 6-9): Scrolls Right */}
+        <div className="w-full overflow-hidden">
+          <div className="flex w-max animate-marquee-reverse hover:[animation-play-state:paused] active:[animation-play-state:paused]">
+            <div className="flex items-center gap-8 px-3">
+              {mobileMarqueeRow2.map((item, idx) => (
+                <div
+                  key={`m2-${idx}`}
+                  className="flex-shrink-0 flex items-center justify-center"
+                >
+                  <img
+                    src={item.src}
+                    alt={item.alt}
+                    width={110}
+                    height={110}
+                    className="h-[90px] sm:h-[102px] w-auto object-contain pointer-events-none"
+                    draggable={false}
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
 
