@@ -185,6 +185,136 @@ const FRAGMENT_SHADER_SOURCE = `
   }
 `;
 
+const FRAGMENT_SHADER_SOURCE_MOBILE = `
+  precision mediump float;
+
+  uniform float uTime;
+  uniform vec2 uResolution;
+  uniform float uZoom;
+  uniform float uColorTransition;
+  varying vec2 vUv;
+
+  float smin(float a, float b, float k) {
+    float h = clamp(0.5 + 0.5 * (b - a) / k, 0.0, 1.0);
+    return mix(b, a, h) - k * h * (1.0 - h);
+  }
+
+  float distSegment(vec2 p, vec2 a, vec2 b) {
+    vec2 pa = p - a, ba = b - a;
+    float h = clamp(dot(pa, ba) / dot(ba, ba), 0.0, 1.0);
+    return length(pa - ba * h);
+  }
+
+  vec2 getFigure8Point(float theta, float cos_p, float sin_p, float A, float B) {
+    float sin_t = sin(theta);
+    float cos_t = cos(theta);
+    float x_base = A * sin_t;
+    float y_base = B * 2.0 * sin_t * cos_t;
+    return vec2(
+      x_base * cos_p - y_base * sin_p,
+      x_base * sin_p + y_base * cos_p
+    );
+  }
+
+  // Optimized 4-segment figure-8 stroke evaluation for mobile GPUs
+  float distToFigure8StrokeMobile(vec2 p, float phi, float phase, float A, float B, float startThick, float k_blend, float t) {
+    float d = 100.0;
+    
+    float omega = 0.28;
+    float theta0 = omega * t + phase;
+    
+    float cos_p = cos(phi);
+    float sin_p = sin(phi);
+    
+    vec2 p_prev = getFigure8Point(theta0, cos_p, sin_p, A, B);
+    
+    // Segment 1 (u = 0.25)
+    vec2 p_curr = getFigure8Point(theta0 - 0.4125, cos_p, sin_p, A, B);
+    d = smin(d, distSegment(p, p_prev, p_curr) - startThick * 0.64952, k_blend);
+    p_prev = p_curr;
+    
+    // Segment 2 (u = 0.50)
+    p_curr = getFigure8Point(theta0 - 0.825, cos_p, sin_p, A, B);
+    d = smin(d, distSegment(p, p_prev, p_curr) - startThick * 0.35355, k_blend);
+    p_prev = p_curr;
+    
+    // Segment 3 (u = 0.75)
+    p_curr = getFigure8Point(theta0 - 1.2375, cos_p, sin_p, A, B);
+    d = smin(d, distSegment(p, p_prev, p_curr) - startThick * 0.125, k_blend);
+    p_prev = p_curr;
+    
+    // Segment 4 (u = 1.00)
+    p_curr = getFigure8Point(theta0 - 1.65, cos_p, sin_p, A, B);
+    d = smin(d, distSegment(p, p_prev, p_curr), k_blend);
+    
+    return d;
+  }
+
+  void main() {
+    vec2 p = vUv - 0.5;
+    float aspect = uResolution.x / uResolution.y;
+    p.x *= aspect;
+    p *= uZoom;
+
+    float cycle = 0.88 + 0.12 * sin(uTime * 0.35);
+
+    float t1 = 0.029 * cycle;
+    float k_blend = 0.030 * cycle;
+
+    // 4 desynchronized strokes on mobile
+    float d = 100.0;
+
+    float d1 = distToFigure8StrokeMobile(p, 0.0, 0.0, 0.58, 0.11, t1, k_blend, uTime);
+    d = smin(d, d1, k_blend);
+
+    float d2 = distToFigure8StrokeMobile(p, 0.0, 3.14159 + 0.5, 0.58, 0.11, t1, k_blend, uTime);
+    d = smin(d, d2, k_blend);
+
+    float d3 = distToFigure8StrokeMobile(p, 1.0472, 1.0, 0.44, 0.09, t1, k_blend, uTime);
+    d = smin(d, d3, k_blend);
+
+    float d4 = distToFigure8StrokeMobile(p, 2.0944, 2.0, 0.44, 0.09, t1, k_blend, uTime);
+    d = smin(d, d4, k_blend);
+
+    float glow = exp(-max(d, 0.0) * 16.0);
+
+    vec3 colDeepWhite   = vec3(0.58, 0.54, 0.49);
+    vec3 colGreyWhite   = vec3(0.78, 0.74, 0.69);
+    vec3 colBrightWhite = vec3(0.92, 0.88, 0.83);
+    vec3 colPureWhite   = vec3(0.98, 0.95, 0.91);
+
+    vec3 colDeepWhite2  = vec3(0.52, 0.48, 0.43);
+    vec3 colGreyWhite2  = vec3(0.74, 0.70, 0.64);
+    vec3 colBrightWhite2= vec3(0.89, 0.85, 0.79);
+    vec3 colPureWhite2  = vec3(0.97, 0.94, 0.89);
+
+    vec3 mixedDeep     = mix(colDeepWhite, colDeepWhite2, uColorTransition);
+    vec3 mixedPurple   = mix(colGreyWhite, colGreyWhite2, uColorTransition);
+    vec3 mixedBright   = mix(colBrightWhite, colBrightWhite2, uColorTransition);
+    vec3 mixedCore     = mix(colPureWhite, colPureWhite2, uColorTransition);
+
+    float wave = sin(uTime * 0.3) * 0.5 + 0.5;
+    vec3 dynamicBright = mix(mixedBright, mixedPurple, wave * 0.2);
+    vec3 dynamicCyan = mix(mixedCore, mixedBright, wave * 0.2);
+
+    float mDeepBlue = smoothstep(0.01, 0.22, glow);
+    float mBlue     = smoothstep(0.15, 0.58, glow);
+    float mBright   = smoothstep(0.38, 0.80, glow);
+    float mCyan     = smoothstep(0.62, 0.98, glow);
+
+    float alpha = clamp(glow * 1.25, 0.0, 1.0);
+
+    vec3 finalColor = vec3(0.0);
+    finalColor = mix(finalColor, mixedDeep, mDeepBlue);
+    finalColor = mix(finalColor, mixedPurple, mBlue);
+    finalColor = mix(finalColor, dynamicBright, mBright);
+    finalColor = mix(finalColor, dynamicCyan, mCyan);
+
+    gl_FragColor = vec4(finalColor * alpha, alpha);
+  }
+`;
+
+
 
 export default function FluidShaderBackground() {
   const pathname = usePathname();
@@ -198,16 +328,23 @@ export default function FluidShaderBackground() {
   const defaultLogoTransform = "scale(1)";
 
   useEffect(() => {
+    let timeoutId: NodeJS.Timeout;
     const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => {
+        setIsMobile(window.innerWidth < 768);
+      }, 100);
     };
-    checkMobile();
+    setIsMobile(window.innerWidth < 768);
     window.addEventListener("resize", checkMobile);
-    return () => window.removeEventListener("resize", checkMobile);
+    return () => {
+      clearTimeout(timeoutId);
+      window.removeEventListener("resize", checkMobile);
+    };
   }, []);
 
   useEffect(() => {
-    if (pathname === "/team" || pathname === "/gallery" || isMobile) return;
+    if (pathname === "/team" || pathname === "/gallery") return;
     const canvas = canvasRef.current;
     if (!canvas) return;
 
@@ -231,7 +368,10 @@ export default function FluidShaderBackground() {
     };
 
     const vertexShader = compileShader(VERTEX_SHADER_SOURCE, gl.VERTEX_SHADER);
-    const fragmentShader = compileShader(FRAGMENT_SHADER_SOURCE, gl.FRAGMENT_SHADER);
+    const fragmentShader = compileShader(
+      isMobile ? FRAGMENT_SHADER_SOURCE_MOBILE : FRAGMENT_SHADER_SOURCE,
+      gl.FRAGMENT_SHADER
+    );
     if (!vertexShader || !fragmentShader) return;
 
     const program = gl.createProgram();
@@ -273,20 +413,40 @@ export default function FluidShaderBackground() {
     let isLoopRunning = false;
     let isDocumentVisible = document.visibilityState === "visible";
     let isNavigationOpen = document.documentElement.dataset.navOpen === "true";
+    let lastRenderTime = 0;
     const startTime = performance.now();
 
     const shouldRender = () => isDocumentVisible && !isNavigationOpen;
 
-    const resize = () => {
-      // Capped at 1.0 because the canvas has a 10px blur filter overlay,
-      // rendering at higher DPR yields no visual gain but wastes massive GPU fill rate.
-      const dpr = Math.min(window.devicePixelRatio || 1, 1.0);
-      const rect = canvas.getBoundingClientRect();
-      const width = rect.width;
-      const height = rect.height;
+    let lastWidth = 0;
+    let lastHeight = 0;
 
-      canvas.width = width * dpr;
-      canvas.height = height * dpr;
+    const resize = () => {
+      const rect = canvas.getBoundingClientRect();
+      const width = Math.round(rect.width);
+      const height = Math.round(rect.height);
+
+      if (isMobile && lastWidth && lastHeight) {
+        const widthDiff = Math.abs(width - lastWidth);
+        const heightDiff = Math.abs(height - lastHeight);
+        if (widthDiff === 0 && heightDiff < 60) {
+          return;
+        }
+      }
+      lastWidth = width;
+      lastHeight = height;
+
+      // Capped at 1.0 for desktop and 0.5 for mobile.
+      // On mobile, rendering at 0.5x DPR under CSS blur saves ~75% GPU fill rate with zero visual loss.
+      const maxDpr = isMobile ? 0.5 : 1.0;
+      const dpr = Math.min(window.devicePixelRatio || 1, maxDpr);
+      const canvasWidth = Math.round(width * dpr);
+      const canvasHeight = Math.round(height * dpr);
+
+      if (canvas.width !== canvasWidth || canvas.height !== canvasHeight) {
+        canvas.width = canvasWidth;
+        canvas.height = canvasHeight;
+      }
 
       gl.viewport(0, 0, canvas.width, canvas.height);
       gl.uniform2f(resolutionLoc, canvas.width, canvas.height);
@@ -295,11 +455,18 @@ export default function FluidShaderBackground() {
     window.addEventListener("resize", resize);
     resize();
 
-    const render = () => {
+    const render = (now: number) => {
       if (!shouldRender()) {
         isLoopRunning = false;
         return;
       }
+
+      // Throttle render loop on mobile to ~30 FPS (32ms threshold) to prevent battery drain & thermal throttling
+      if (isMobile && lastRenderTime && now - lastRenderTime < 32) {
+        animationFrameId = requestAnimationFrame(render);
+        return;
+      }
+      lastRenderTime = now;
 
       const elapsedSeconds = (performance.now() - startTime) / 1000;
       gl.uniform1f(timeLoc, elapsedSeconds);
@@ -381,7 +548,7 @@ export default function FluidShaderBackground() {
         logoContainer.style.opacity = pathname === "/gallery" ? "0" : "1";
       }
       if (canvas && pathname !== "/" && pathname !== "") {
-        canvas.style.opacity = isMobile ? "0" : pathname === "/gallery" ? "0" : pathname === "/timeline" ? "0.75" : "0.65";
+        canvas.style.opacity = pathname === "/gallery" ? "0" : pathname === "/timeline" ? "0.75" : isMobile ? "0.45" : "0.65";
       }
       return;
     }
@@ -516,11 +683,16 @@ export default function FluidShaderBackground() {
       shaderParams.current.zoom = targetZoom;
       shaderParams.current.colorTransition = targetColorTransition;
 
-      // 1. Shift WebGL Canvas horizontally and ramp opacity (desktop only)
+      // 1. Shift WebGL Canvas horizontally and ramp opacity
       const canvas = canvasRef.current;
-      if (canvas && !isMobileView) {
-        canvas.style.transform = `translateX(${xShiftVw}vw)`;
-        canvas.style.opacity = `${0.65 + timelineProgress * 0.20}`;
+      if (canvas) {
+        if (!isMobileView) {
+          canvas.style.transform = `translateX(${xShiftVw}vw)`;
+          canvas.style.opacity = `${0.65 + timelineProgress * 0.20}`;
+        } else {
+          canvas.style.transform = "none";
+          canvas.style.opacity = `${0.45 + timelineProgress * 0.15}`;
+        }
       }
 
       // 2. Shift and scale X logo in tandem, plus soft blur dissolve
@@ -548,15 +720,18 @@ export default function FluidShaderBackground() {
 
       // 3. Dynamic Backdrop Blur & Film Grain ramping over timeline scroll
       const blurOverlay = blurOverlayRef.current;
-      if (blurOverlay) {
+      if (blurOverlay && !isMobileView) {
         const backdropBlur = 10 + timelineProgress * 14;
         const saturate = 1.3 + timelineProgress * 0.3;
         blurOverlay.style.backdropFilter = `blur(${backdropBlur}px) saturate(${saturate}) contrast(1.02)`;
         blurOverlay.style.setProperty("-webkit-backdrop-filter", `blur(${backdropBlur}px) saturate(${saturate}) contrast(1.02)`);
+      } else if (blurOverlay && isMobileView) {
+        blurOverlay.style.backdropFilter = "none";
+        blurOverlay.style.setProperty("-webkit-backdrop-filter", "none");
       }
 
       const grainOverlay = grainOverlayRef.current;
-      if (grainOverlay) {
+      if (grainOverlay && !isMobileView) {
         grainOverlay.style.opacity = `${0.09 + timelineProgress * 0.07}`;
       }
 
@@ -606,15 +781,20 @@ export default function FluidShaderBackground() {
       }
       if (canvasRef.current) {
         canvasRef.current.style.transform = "none";
-        canvasRef.current.style.opacity = isMobile ? "0" : "0.45";
+        canvasRef.current.style.opacity = isMobile ? "0.45" : "0.45";
       }
       if (logoContainerRef.current) {
         logoContainerRef.current.style.transform = defaultLogoTransform;
         logoContainerRef.current.style.filter = "blur(0px)";
       }
       if (blurOverlayRef.current) {
-        blurOverlayRef.current.style.backdropFilter = "blur(10px) saturate(1.3) contrast(1.02)";
-        blurOverlayRef.current.style.setProperty("-webkit-backdrop-filter", "blur(10px) saturate(1.3) contrast(1.02)");
+        if (isMobile) {
+          blurOverlayRef.current.style.backdropFilter = "none";
+          blurOverlayRef.current.style.setProperty("-webkit-backdrop-filter", "none");
+        } else {
+          blurOverlayRef.current.style.backdropFilter = "blur(10px) saturate(1.3) contrast(1.02)";
+          blurOverlayRef.current.style.setProperty("-webkit-backdrop-filter", "blur(10px) saturate(1.3) contrast(1.02)");
+        }
       }
       if (grainOverlayRef.current) {
         grainOverlayRef.current.style.opacity = "0.09";
@@ -668,14 +848,19 @@ export default function FluidShaderBackground() {
       }
 
       if (blurOverlay) {
-        gsap.set(blurOverlay, { backdropFilter: "blur(10px) saturate(1.3) contrast(1.02)" });
-        blurOverlay.style.setProperty("-webkit-backdrop-filter", "blur(10px) saturate(1.3) contrast(1.02)");
+        if (isMobileView) {
+          gsap.set(blurOverlay, { backdropFilter: "none" });
+          blurOverlay.style.setProperty("-webkit-backdrop-filter", "none");
+        } else {
+          gsap.set(blurOverlay, { backdropFilter: "blur(10px) saturate(1.3) contrast(1.02)" });
+          blurOverlay.style.setProperty("-webkit-backdrop-filter", "blur(10px) saturate(1.3) contrast(1.02)");
+        }
       }
       if (grainOverlay) {
-        gsap.set(grainOverlay, { opacity: 0.09 });
+        gsap.set(grainOverlay, { opacity: isMobileView ? 0 : 0.09 });
       }
       if (canvas) {
-        gsap.set(canvas, { y: "0vh", opacity: isMobileView ? 0 : 0.65 });
+        gsap.set(canvas, { y: "0vh", opacity: isMobileView ? 0.45 : 0.65 });
       }
 
       // Hero scroll trigger: SVG X logo comes up from center bottom and gets placed into position on scroll
@@ -770,7 +955,7 @@ export default function FluidShaderBackground() {
 
       let lastBlur = -1;
       let lastSat = -1;
-      if (blurOverlay) {
+      if (blurOverlay && !isMobileView) {
         tl.to(blurParams, {
           blur: 28,
           sat: 1.6,
@@ -787,7 +972,7 @@ export default function FluidShaderBackground() {
         }, 0);
       }
 
-      if (grainOverlay) {
+      if (grainOverlay && !isMobileView) {
         tl.to(grainOverlay, {
           opacity: 0.18,
           duration: 1,
@@ -795,9 +980,9 @@ export default function FluidShaderBackground() {
         }, 0);
       }
 
-      if (canvas && !isMobileView) {
+      if (canvas) {
         tl.to(canvas, {
-          opacity: 0.85,
+          opacity: isMobileView ? 0.65 : 0.85,
           duration: 1,
           ease: "power1.out"
         }, 0);
@@ -869,7 +1054,7 @@ export default function FluidShaderBackground() {
         }
       }, 4.6);
 
-      if (blurOverlay) {
+      if (blurOverlay && !isMobileView) {
         tl.to(blurParams, {
           blur: 10,
           sat: 1.3,
@@ -886,7 +1071,7 @@ export default function FluidShaderBackground() {
         }, 4.6);
       }
 
-      if (grainOverlay) {
+      if (grainOverlay && !isMobileView) {
         tl.to(grainOverlay, {
           opacity: 0.09,
           duration: 1,
@@ -894,9 +1079,9 @@ export default function FluidShaderBackground() {
         }, 4.6);
       }
 
-      if (canvas && !isMobileView) {
+      if (canvas) {
         tl.to(canvas, {
-          opacity: 0.65,
+          opacity: isMobileView ? 0.45 : 0.65,
           duration: 1,
           ease: "power1.in"
         }, 4.6);
@@ -985,70 +1170,73 @@ export default function FluidShaderBackground() {
             opacity: isMobile ? 0.85 : 0.65,
             transform: "translateZ(0)",
             willChange: "transform",
-            filter: isMobile
-              ? "blur(0.5px) drop-shadow(0 0 30px var(--x-shadow-1, rgba(189, 138, 255, 0.6))) drop-shadow(0 0 60px var(--x-shadow-2, rgba(107, 17, 224, 0.5)))"
-              : "blur(1.5px) drop-shadow(0 0 20px var(--x-shadow-1, rgba(174, 115, 242, 0.35))) drop-shadow(0 0 40px var(--x-shadow-2, rgba(82, 0, 199, 0.30)))",
-          }}
-        >
-          <defs>
-            <linearGradient id="movingGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="var(--x-color-stop-0, #5200c7)" />
-              <stop offset="33%" stopColor="var(--x-color-stop-33, #ae73f2)" />
-              <stop offset="66%" stopColor="var(--x-color-stop-66, #7801ff)" />
-              <stop offset="100%" stopColor="var(--x-color-stop-100, #5200c7)" />
-              <animateTransform
-                attributeName="gradientTransform"
-                type="rotate"
-                from="0 447.5 500"
-                to="360 447.5 500"
-                dur="15s"
-                repeatCount="indefinite"
-              />
-            </linearGradient>
-          </defs>
-          <path
-            d="M335.279 0.25L559.355 400.69L894.574 999.75H559.721L335.645 599.31L0.425781 0.25H335.279ZM335.177 999.75H0.535156L335.177 600.119V999.75ZM894.465 0.25L559.823 399.88V0.25H894.465Z"
-            fill="url(#movingGradient)"
-          />
-        </svg>
-      </div>
-
-      {/* 3. Transparent WebGL Canvas. Covers the entire viewport to prevent box clipping. */}
-      <canvas
-        ref={canvasRef}
-        className="pointer-events-none fixed top-0 left-0 w-full h-screen-stable opacity-65"
-        style={{
-          zIndex: -15,
-          height: "100dvh",
-          filter: "blur(16px)",
-          display: isMobile ? "none" : "block",
-        }}
-      />
-
-      {/* 4. The canvas is blurred directly above. A fullscreen backdrop-filter here
-             would continuously re-rasterize page content during scrolling. */}
-      <div
-        ref={blurOverlayRef}
-        className="pointer-events-none fixed top-0 left-0 w-full h-screen-stable"
-        style={{
-          zIndex: -5,
-          height: "100dvh",
-          transform: "translateZ(0)",
-          willChange: "transform, opacity",
-          background: "linear-gradient(115deg, rgba(24, 0, 56, 0.10), rgba(13, 0, 33, 0.03) 55%, rgba(5, 0, 13, 0.08))",
-        }}
-      />
-
-      {/* 5. Monochrome Film Grain Overlay. Adds a highly premium, textured grain
-             layer over the blurred backdrop. Optimized to 1 octave for rasterizer performance. */}
-      <svg
-        ref={grainOverlayRef}
-        className="pointer-events-none fixed top-0 left-0 w-full h-screen-stable opacity-[0.10]"
-        style={{
-          zIndex: -3,
-          height: "100dvh",
+          filter: isMobile
+            ? "drop-shadow(0 0 35px var(--x-shadow-1, rgba(189, 138, 255, 0.6)))"
+            : "blur(1.5px) drop-shadow(0 0 20px var(--x-shadow-1, rgba(174, 115, 242, 0.35))) drop-shadow(0 0 40px var(--x-shadow-2, rgba(82, 0, 199, 0.30)))",
         }}
       >
+        <defs>
+          <linearGradient id="movingGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="var(--x-color-stop-0, #5200c7)" />
+            <stop offset="33%" stopColor="var(--x-color-stop-33, #ae73f2)" />
+            <stop offset="66%" stopColor="var(--x-color-stop-66, #7801ff)" />
+            <stop offset="100%" stopColor="var(--x-color-stop-100, #5200c7)" />
+            <animateTransform
+              attributeName="gradientTransform"
+              type="rotate"
+              from="0 447.5 500"
+              to="360 447.5 500"
+              dur="15s"
+              repeatCount="indefinite"
+            />
+          </linearGradient>
+        </defs>
+        <path
+          d="M335.279 0.25L559.355 400.69L894.574 999.75H559.721L335.645 599.31L0.425781 0.25H335.279ZM335.177 999.75H0.535156L335.177 600.119V999.75ZM894.465 0.25L559.823 399.88V0.25H894.465Z"
+          fill="url(#movingGradient)"
+        />
+      </svg>
+    </div>
+
+    {/* 3. Transparent WebGL Canvas. Covers the entire viewport to prevent box clipping. */}
+    <canvas
+      ref={canvasRef}
+      className="pointer-events-none fixed top-0 left-0 w-full h-screen-stable opacity-65"
+      style={{
+        zIndex: -15,
+        height: "100dvh",
+        filter: isMobile ? "blur(10px)" : "blur(16px)",
+        display: "block",
+      }}
+    />
+
+    {/* 4. The canvas is blurred directly above. On desktop, a backdrop-filter provides glassmorphism.
+           On mobile, backdrop-filter is disabled ("none") to eliminate heavy GPU fill-rate re-rasterization. */}
+    <div
+      ref={blurOverlayRef}
+      className="pointer-events-none fixed top-0 left-0 w-full h-screen-stable"
+      style={{
+        zIndex: -5,
+        height: "100dvh",
+        transform: "translateZ(0)",
+        willChange: "transform, opacity",
+        backdropFilter: isMobile ? "none" : undefined,
+        WebkitBackdropFilter: isMobile ? "none" : undefined,
+        background: "linear-gradient(115deg, rgba(24, 0, 56, 0.10), rgba(13, 0, 33, 0.03) 55%, rgba(5, 0, 13, 0.08))",
+      }}
+    />
+
+    {/* 5. Monochrome Film Grain Overlay. Adds a highly premium, textured grain
+           layer over the blurred backdrop on desktop. Hidden on mobile to avoid feTurbulence re-rasterization. */}
+    <svg
+      ref={grainOverlayRef}
+      className="pointer-events-none fixed top-0 left-0 w-full h-screen-stable opacity-[0.10]"
+      style={{
+        zIndex: -3,
+        height: "100dvh",
+        display: isMobile ? "none" : "block",
+      }}
+    >
         <defs>
           <filter id="visionNoise">
             <feTurbulence type="fractalNoise" baseFrequency="0.75" numOctaves="1" result="noise" />

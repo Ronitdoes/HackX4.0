@@ -2,6 +2,9 @@
 
 import React from "react";
 import { motion } from "framer-motion";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react";
 import Stats from "@/components/Stats";
 import SdgComponent from "@/components/sdg";
 import SdgMarquee from "@/components/SdgMarquee";
@@ -10,7 +13,16 @@ import GlassPill from "@/components/GlassPill";
 import JoinHackathon from "@/components/JoinHackathon";
 import PrizePoolCircle from "@/components/PrizePoolCircle";
 
+gsap.registerPlugin(ScrollTrigger);
+
 export default function Home() {
+  useGSAP(() => {
+    // Normalize scroll behavior on mobile viewports so Chrome address bar stays static
+    const mm = gsap.matchMedia();
+    mm.add("(max-width: 767px)", () => {
+      ScrollTrigger.normalizeScroll({ allowNestedScroll: true });
+    });
+  });
   // Smooth staggered entry animations
   const containerVariants = {
     hidden: {},
@@ -163,7 +175,7 @@ export default function Home() {
         </div>
 
         {/* SDG Marquee at the bottom of the hero (visible on mobile below REGISTER NOW) */}
-        <div className="w-full z-20 mt-4 md:mt-0 md:absolute md:bottom-2 lg:bottom-4 left-0">
+        <div className="w-full z-20 mt-8 sm:mt-10 md:mt-0 md:absolute md:bottom-2 lg:bottom-4 left-0">
           <SdgMarquee />
         </div>
       </div>

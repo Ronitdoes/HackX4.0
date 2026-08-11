@@ -12,6 +12,12 @@ export default function LenisProvider({ children }: { children: React.ReactNode 
     // Register ScrollTrigger plugin
     gsap.registerPlugin(ScrollTrigger);
 
+    // Normalize mobile touch scroll behavior so Chrome address bar stays static on mobile
+    const mm = gsap.matchMedia();
+    mm.add("(max-width: 767px)", () => {
+      ScrollTrigger.normalizeScroll({ allowNestedScroll: true });
+    });
+
     // Sync Lenis scroll updates with the GSAP ticker
     function update(time: number) {
       lenisRef.current?.lenis?.raf(time * 1000);
@@ -27,6 +33,7 @@ export default function LenisProvider({ children }: { children: React.ReactNode 
 
     return () => {
       gsap.ticker.remove(update);
+      mm.revert();
     };
   }, []);
 
