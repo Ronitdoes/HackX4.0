@@ -534,3 +534,6 @@ export default function Navbar() {
     </>
   );
 }
+
+export { default as NavbarFadeOverlay } from "./NavbarFadeOverlay";
+
