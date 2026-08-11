@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-import Navbar from "@/components/Navbar";
+import Navbar, { NavbarFadeOverlay } from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import FluidShaderBackground from "@/components/FluidShaderBackground/FluidShaderBackground";
 import LenisProvider from "@/components/LenisProvider";
@@ -72,6 +72,7 @@ export default function RootLayout({
             <PageTransitionProvider>
               <FluidShaderBackground />
               <Navbar />
+              <NavbarFadeOverlay />
               <main className="flex-grow relative z-10">
                 {children}
               </main>
