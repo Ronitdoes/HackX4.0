@@ -13,13 +13,13 @@ export const LANDING_SPONSORS: Sponsor[] = [
   { id: 5, name: "Ecell", logo: "/assets/sponsors/sponsor8.svg" },
   { id: 6, name: "GFG", logo: "/assets/sponsors/S3.png" },
   { id: 7, name: "CD", logo: "/assets/sponsors/sponsor16.svg" },
-  { id: 8, name: "E-Cell", logo: "/assets/sponsors/S1.png" },
+  { id: 8, name: "Accenture", logo: "/assets/sponsors/S1.png" },
 ];
 
 // Grid Section Sponsors (16 Sponsors - 4 blocks of 2x2 grids)
 export const GRID_SPONSORS: Sponsor[] = [
-    { id: 115, name: "Sponsor S1", logo: "/assets/sponsors/S1.png" },
-  { id: 116, name: "Sponsor S3", logo: "/assets/sponsors/S3.png" },
+  { id: 115, name: "Sponsor 1", logo: "/assets/sponsors/sponsor1.svg" },
+  { id: 116, name: "Sponsor 2", logo: "/assets/sponsors/sponsor2.svg" },
   { id: 101, name: "Sponsor 9", logo: "/assets/sponsors/sponsor9.svg" },
   { id: 102, name: "Sponsor 10", logo: "/assets/sponsors/sponsor10.svg" },
   { id: 103, name: "Sponsor 11", logo: "/assets/sponsors/sponsor11.svg" },
@@ -34,7 +34,6 @@ export const GRID_SPONSORS: Sponsor[] = [
   { id: 112, name: "Sponsor 20", logo: "/assets/sponsors/sponsor20.svg" },
   { id: 113, name: "Sponsor 21", logo: "/assets/sponsors/sponsor21.svg" },
   { id: 114, name: "Sponsor 22", logo: "/assets/sponsors/sponsor22.svg" },
-
 ];
 
 // Combined dataset export
