@@ -7,11 +7,24 @@ import FluidShaderBackground from "@/components/FluidShaderBackground/FluidShade
 import LenisProvider from "@/components/LenisProvider";
 import PageTransitionProvider from "@/components/PageTransitionProvider";
 import { NavTransitionProvider } from "@/context/NavTransitionContext";
-import { Montserrat } from "next/font/google";
-
-const montserrat = Montserrat({
-  subsets: ["latin"],
-  weight: ["700", "800", "900"],
+const montserrat = localFont({
+  src: [
+    {
+      path: "../../public/assets/fonts/Montserrat-Bold.ttf",
+      weight: "700",
+      style: "normal",
+    },
+    {
+      path: "../../public/assets/fonts/Montserrat-ExtraBold.ttf",
+      weight: "800",
+      style: "normal",
+    },
+    {
+      path: "../../public/assets/fonts/Montserrat-Black.ttf",
+      weight: "900",
+      style: "normal",
+    },
+  ],
   variable: "--font-montserrat",
 });
 
